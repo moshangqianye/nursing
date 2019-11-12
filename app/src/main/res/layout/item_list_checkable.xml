@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+
+            android:visibility="invisible"
+            android:id="@+id/star"
+            android:textColor="@color/red"
+            android:text="*"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_weight="1"
+        android:textColor="@color/title_color"
+        android:id="@+id/tv_title"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <com.mixiaoxiao.smoothcompoundbutton.SmoothCheckBox
+        android:visibility="gone"
+        android:id="@+id/id_cb1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cb" />
+    <com.mixiaoxiao.smoothcompoundbutton.SmoothCheckBox
+        android:visibility="gone"
+        android:id="@+id/id_cb2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cb" />
+
+    <com.mixiaoxiao.smoothcompoundbutton.SmoothCheckBox
+        android:visibility="gone"
+        android:id="@+id/id_cb3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cb" />
+
+    <com.mixiaoxiao.smoothcompoundbutton.SmoothCheckBox
+        android:visibility="gone"
+        android:id="@+id/id_cb4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cb" />
+
+    <com.mixiaoxiao.smoothcompoundbutton.SmoothCheckBox
+        android:visibility="gone"
+        android:id="@+id/id_cb5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cb" />
+
+    <com.mixiaoxiao.smoothcompoundbutton.SmoothCheckBox
+        android:visibility="gone"
+        android:id="@+id/id_cb6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cb" />
+
+    <com.mixiaoxiao.smoothcompoundbutton.SmoothCheckBox
+        android:visibility="gone"
+        android:id="@+id/id_cb7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cb" />
+
+    <com.mixiaoxiao.smoothcompoundbutton.SmoothCheckBox
+        android:visibility="gone"
+        android:id="@+id/id_cb8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cb" />
+
+    <com.mixiaoxiao.smoothcompoundbutton.SmoothCheckBox
+        android:visibility="gone"
+        android:id="@+id/id_cb9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cb" />
+
+    <com.mixiaoxiao.smoothcompoundbutton.SmoothCheckBox
+        android:visibility="gone"
+        android:id="@+id/id_cb10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cb" />
+
+
+    <com.mixiaoxiao.smoothcompoundbutton.SmoothRadioGroup
+
+        android:id="@+id/id_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.mixiaoxiao.smoothcompoundbutton.SmoothRadioButton
+            android:visibility="gone"
+            android:id="@+id/id_rb1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rb1" />
+
+        <com.mixiaoxiao.smoothcompoundbutton.SmoothRadioButton
+            android:visibility="gone"
+            android:id="@+id/id_rb2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rb2" />
+        <com.mixiaoxiao.smoothcompoundbutton.SmoothRadioButton
+            android:visibility="gone"
+            android:id="@+id/id_rb3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rb3" />
+
+        <com.mixiaoxiao.smoothcompoundbutton.SmoothRadioButton
+            android:visibility="gone"
+            android:id="@+id/id_rb4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rb4" />
+
+        <com.mixiaoxiao.smoothcompoundbutton.SmoothRadioButton
+            android:visibility="gone"
+            android:id="@+id/id_rb5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rb5" />
+
+        <com.mixiaoxiao.smoothcompoundbutton.SmoothRadioButton
+            android:visibility="gone"
+            android:id="@+id/id_rb6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rb6" />
+
+        <com.mixiaoxiao.smoothcompoundbutton.SmoothRadioButton
+            android:visibility="gone"
+            android:id="@+id/id_rb7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rb7" />
+
+        <com.mixiaoxiao.smoothcompoundbutton.SmoothRadioButton
+            android:visibility="gone"
+            android:id="@+id/id_rb8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rb8" />
+
+        <com.mixiaoxiao.smoothcompoundbutton.SmoothRadioButton
+            android:visibility="gone"
+            android:id="@+id/id_rb9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rb9" />
+
+        <com.mixiaoxiao.smoothcompoundbutton.SmoothRadioButton
+            android:visibility="gone"
+            android:id="@+id/id_rb10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rb10" />
+
+
+
+
+    </com.mixiaoxiao.smoothcompoundbutton.SmoothRadioGroup>
+
+
+    <!-- <TextView
+         android:id="@+id/id_tv"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="dasdasddasdas" />
+
+     <RadioGroup
+         android:id="@+id/id_rg"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+         android:layout_weight="1"
+         android:orientation="horizontal">
+
+         <RadioButton
+             android:id="@+id/id_rb"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="rb" />
+
+         <RadioButton
+             android:id="@+id/id_rb2"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="rb2" />
+     </RadioGroup>-->
+
+</LinearLayout>

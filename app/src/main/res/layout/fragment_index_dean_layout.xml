@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/fl_layout"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar4"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorTheme"
+        app:contentInsetStart="0.0dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <!--// app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"可以出水波纹-->
+        <!--<TextView-->
+            <!--android:id="@+id/index_title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="首页"-->
+            <!--android:textAppearance="@style/ToolBar.Title"-->
+            <!--android:layout_gravity="center"/>-->
+        <Spinner
+
+            android:popupBackground="#ffffff"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:overlapAnchor="false"
+            android:spinnerMode="dropdown"
+            android:padding="10dip"
+            android:id="@+id/index_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"></Spinner>
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_gravity="left"
+            android:layout_marginLeft="@dimen/dp_3"
+            android:visibility="gone">
+            <ImageView
+                android:layout_width="@dimen/img_width_18dp"
+                android:layout_height="@dimen/img_height_18dp"
+                android:contentDescription=""
+                android:src="@mipmap/arrow_left"
+                android:scaleType="fitXY"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/back"
+                android:textAppearance="@style/ToolBar.Title"
+                android:layout_marginLeft="@dimen/dp_3"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_nursing_title_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_gravity="right"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_nursing_title_menu"
+                android:layout_width="23dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription=""
+                android:src="@mipmap/message_white" />
+        </FrameLayout>
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
+        android:id="@+id/view_search"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="right" />
+
+    <LinearLayout
+
+        android:layout_marginLeft="10dip"
+        android:gravity="center"
+        android:layout_gravity="left"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_rili"
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
+            android:scaleType="fitXY"
+            android:src="@mipmap/g_date_new" />
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt_size_normal"
+            android:layout_marginLeft="@dimen/dp_6"/>
+    </LinearLayout>
+
+
+</FrameLayout>
+

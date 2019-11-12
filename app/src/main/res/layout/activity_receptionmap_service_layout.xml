@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/activity_map_service_head_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_weight="1">-->
+
+                <!--<com.amap.api.maps.MapView-->
+                    <!--android:id="@+id/mv_map"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent">-->
+
+                <!--</com.amap.api.maps.MapView>-->
+
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_data_type"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentLeft="true"-->
+                    <!--android:layout_alignParentTop="true"-->
+                    <!--android:layout_marginLeft="@dimen/dp_6"-->
+                    <!--android:layout_marginTop="@dimen/dp_6"-->
+                    <!--android:background="@drawable/white_background_with_3dp_color_theme_round_corner"-->
+                    <!--android:text=""-->
+                    <!--android:textColor="@color/colorTheme"-->
+                    <!--android:textSize="@dimen/txt_size_normal"-->
+                    <!--android:visibility="gone"/>-->
+
+                <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/iv_show_or_hide_list"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="@dimen/dp_40"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="@dimen/dp_40"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_alignParentRight="true"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_alignParentTop="true"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_marginRight="@dimen/dp_9"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_marginTop="@dimen/dp_9"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:scaleType="fitXY"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:src="@mipmap/g_map_menu" />&ndash;&gt;-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/iv_goto_my_position"-->
+                    <!--android:layout_width="@dimen/dp_40"-->
+                    <!--android:layout_height="@dimen/dp_40"-->
+                    <!--android:layout_alignParentLeft="true"-->
+                    <!--android:layout_alignParentBottom="true"-->
+                    <!--android:layout_marginLeft="@dimen/dp_9"-->
+                    <!--android:layout_marginBottom="@dimen/dp_9"-->
+                    <!--android:scaleType="fitXY"-->
+                    <!--android:src="@mipmap/g_goto_my_position"/>-->
+
+                <!--<com.jqsoft.nursing.view.map.TouchToDrawCircleView-->
+                    <!--android:id="@+id/ttdcv_draw"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:visibility="gone">-->
+
+                <!--</com.jqsoft.nursing.view.map.TouchToDrawCircleView>-->
+            <!--</RelativeLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:id="@+id/ll_icon_text"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/white"-->
+                <!--android:descendantFocusability="blocksDescendants"-->
+                <!--android:orientation="vertical">-->
+
+                <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:orientation="horizontal">&ndash;&gt;-->
+
+                                        <!--&lt;!&ndash;android:id="@+id/itl_ambient"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_image_id="@mipmap/g_map_ambient_h"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_text_color="@color/colorTheme"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_image_id="@mipmap/g_map_ambient_n"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_text_color="@color/list_item_sub_text_color"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:text_string="周边"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/itl_draw_to_search"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_image_id="@mipmap/g_map_draw_to_search_h"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_text_color="@color/colorTheme"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_image_id="@mipmap/g_map_draw_to_search_n"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_text_color="@color/list_item_sub_text_color"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:text_string="画图搜索nursing"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/itl_region"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_image_id="@mipmap/g_map_region_h"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_text_color="@color/colorTheme"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_image_id="@mipmap/g_map_region_n"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_text_color="@color/list_item_sub_text_color"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:text_string="区域nursing"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/itl_more"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_image_id="@mipmap/g_map_more_h"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_text_color="@color/colorTheme"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_image_id="@mipmap/g_map_more_n"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_text_color="@color/list_item_sub_text_color"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:text_string="更多"&ndash;&gt;-->
+                <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
+                <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/ll_kind_search_hot"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:orientation="horizontal"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:visibility="gone">&ndash;&gt;-->
+
+                                        <!--&lt;!&ndash;android:id="@+id/itl_kind"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_image_id="@mipmap/g_map_kind_h"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_text_color="@color/colorTheme"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_image_id="@mipmap/g_map_kind_n"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_text_color="@color/list_item_sub_text_color"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:text_string="分类"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/itl_search"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_image_id="@mipmap/g_map_search_h"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_text_color="@color/colorTheme"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_image_id="@mipmap/g_map_search_n"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_text_color="@color/list_item_sub_text_color"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:text_string="搜索"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/itl_hot_picture"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_image_id="@mipmap/g_map_hot_picture_h"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_text_color="@color/colorTheme"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_image_id="@mipmap/g_map_hot_picture_n"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_text_color="@color/list_item_sub_text_color"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:text_string="热力图"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/itl_placeholder"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:visibility="invisible"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_image_id="@mipmap/g_map_more_h"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:hilight_text_color="@color/colorTheme"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_image_id="@mipmap/g_map_more_n"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:normal_text_color="@color/list_item_sub_text_color"&ndash;&gt;-->
+                        <!--&lt;!&ndash;app:text_string="占位符"&ndash;&gt;-->
+                <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+            <!--</LinearLayout>-->
+
+        <!--</LinearLayout>-->
+
+        <!--<FrameLayout-->
+            <!--android:id="@+id/framelayout"-->
+            <!--android:layout_width="@dimen/left_recycler_view_width"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:background="@color/white"-->
+            <!--android:visibility="gone">-->
+
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:id="@+id/recyclerview"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:visibility="gone" />-->
+
+            <!--<include-->
+                <!--android:id="@+id/lay_map_service_load_failure"-->
+                <!--layout="@layout/layout_load_list_result_empty_placeholder_view"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:visibility="gone" />-->
+        <!--</FrameLayout>-->
+
+
+    <!--</RelativeLayout>-->
+
+
+</LinearLayout>

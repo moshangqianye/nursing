@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_new_color"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/activity_round_room_detail_head_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+
+
+            <FrameLayout
+
+                android:layout_marginTop="1dip"
+                android:id="@+id/framelayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/lay_specific_nursing_load_failure"
+                    layout="@layout/layout_load_list_result_empty_placeholder_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+
+
+                <include
+                    android:id="@+id/lay_content_nursing_list"
+                    layout="@layout/layout_recyclerview_elder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+            </FrameLayout>
+
+
+</LinearLayout>

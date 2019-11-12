@@ -1,0 +1,56 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.tencent.bugly:symtabfileuploader:2.1.0'
+
+//        classpath "com.tencent.bugly:tinker-support:latest.release"
+//        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    //    classpath 'com.tencent.tinker:tinker-patch-gradle-plugin:1.7.7'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+allprojects {
+    repositories {
+        jcenter()
+        flatDir {
+            // 由于Library module中引用了 gif 库的 aar，在多 module 的情况下，
+            // 其他的module编译会报错，所以需要在所有工程的repositories
+            // 下把Library module中的libs目录添加到依赖关系中
+            dirs 'libs'
+
+            dirs project(':livebody_verify_lib').file('libs') //借助 project()函数的位置查找
+            //dirs '../baseapp/libs'  // 直接指明路径，注意前边的../, 要先回到根目录去查找别的module
+        }
+
+    }
+}
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url "https://jitpack.io"
+        }
+        google()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+ext {
+    compileSdk =27
+    buildTools = '26.0.2'
+    minSdk = 19
+    targetSdk = 25
+    support = "25.3.1"
+
+
+}

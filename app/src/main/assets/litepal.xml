@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="DBDictionaryInfoNew" ></dbname>
+
+    <version value="1" ></version>
+
+    <list>
+        <mapping class="com.jqsoft.nursing.bean.DictionaryAreaData"></mapping>
+        <!--<mapping class="com.jqsoft.nursing.bean.nursing.SaveRoundDataBean"></mapping>-->
+
+        <!--<mapping class="com.jqsoft.nursing.bean.resident.SRCLoginAreaBean"></mapping>-->
+        <!--<mapping class="com.jqsoft.nursing.bean.grassroots_civil_administration.SRCLoginDataDictionaryBean"></mapping>-->
+        <!--<mapping class="com.jqsoft.nursing.bean.grassroots_civil_administration.SRCLoginSalvationBean"></mapping>-->
+        <!--<mapping class="com.jqsoft.nursing.bean.grassroots_civil_administration.SettingServerBean"></mapping>-->
+
+
+
+    </list>
+
+</litepal>

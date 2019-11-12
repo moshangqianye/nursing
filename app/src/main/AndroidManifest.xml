@@ -1,0 +1,895 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.jqsoft.nursing"
+    android:installLocation="auto"
+
+    >
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="android.permission.GET_TOP_ACTIVITY_INFO" />
+    <uses-permission android:name="android.permission.NFC" />
+    <!-- 悬浮框权限 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 读取联系人权限，上传联系人需要用到此权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <!--去掉定位权限-->
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <!-- 用于申请调用A-GPS模块 -->
+    <!--<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />-->
+    <!--<uses-permission android:name="android.permission.ACCES_MOCK_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_GPS" />-->
+    <!-- 用于申请获取蓝牙信息进行室内定位 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!-- NFC识别身份证权限 -->
+    <uses-permission android:name="android.permission.NFC" />
+
+    <!-- <uses-feature -->
+    <!-- android:name="android.hardware.nfc" -->
+    <!-- android:required="true" /> -->
+
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
+    <!-- <uses-feature -->
+    <!-- android:name="android.hardware.usb.host" -->
+    <!-- android:required="true" /> -->
+    <application
+        android:name="com.jqsoft.nursing.di_app.DaggerApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/mytubiao"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/r_app_icon_new"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon, android:theme">
+
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+        <!-- http url -->
+        <meta-data
+            android:name="HTTP_ACCESS_URL"
+            android:value="${HTTP_ACCESS_URL_VALUE}" />
+        <meta-data
+            android:name="BUGLY_APP_ID"
+            android:value="${BUGLY_APP_ID_VALUE}" />
+        <meta-data
+            android:name="LOGIN_APP_NAME"
+            android:value="${LOGIN_APP_NAME_VALUE}" />
+        <!-- 高德地图 -->
+        <!-- 高德地图 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="d0b36be2e81e02b44195200c58f59a84" />
+        <service android:name="com.amap.api.location.APSService" />
+        <!-- 高德地图 -->
+        <!--    <meta-data
+                 android:name="com.amap.api.v2.apikey"
+                 android:value="025bedebb924cfe533612a79e04918a7" />-->
+        <activity
+            android:name="com.amap.api.navi.AmapRouteActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.map_navi.BusRouteActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.map_navi.BusRouteDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${FILE_PROVIDER_AUTHORITIES_VALUE}"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <provider
+            android:name="com.jqsoft.nursing.util.MyFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".di.ui.activity.RedRoomNFC"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
+        <!-- android:authorities="${FILE_PROVIDER_AUTHORITIES_VALUE}" -->
+        <!-- android:authorities="signed_resident_client.fileProvider" -->
+
+        <!--并入provider_paths中-->
+        <!--<provider-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authoritinursing-android:exported="false"-->
+        <!--android:grantUriPermissions="true">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/file_paths" />-->
+        <!--</provider>-->
+
+
+        <service android:name="com.amap.api.location.APSService"></service>
+
+        <service
+            android:name="com.jqsoft.nursing.service.LongTermService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=".src_long_term_service">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.jqsoft.nursing.receiver.LongTermReceiver"
+            android:enabled="true">
+            <!--<intent-filter>-->
+            <!--<action android:name="cn.jpush.android.intent.REGISTRATION" />-->
+            <!--<action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />-->
+            <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />-->
+            <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />-->
+            <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />-->
+            <!--<action android:name="cn.jpush.android.intent.CONNECTION" />-->
+
+            <!--<category android:name="${JPUSH_PKGNAME}" />-->
+            <!--</intent-filter>-->
+        </receiver>
+
+        <service
+            android:name="com.jqsoft.nursing.service.FirService"
+            android:process=":fir" />
+        <service
+            android:name="com.jqsoft.nursing.service.SecService"
+            android:process=":sec" />
+        <service
+            android:name="com.jqsoft.nursing.service.MyJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <!--
+         <receiver
+             android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
+             android:name=".receiver.StaticRegisterReceiver" >
+             <intent-filter >
+                 <action android:name="android.intent.action.SCREEN_ON" />
+                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+             </intent-filter>
+         </receiver>
+        -->
+
+
+        <!--
+                 <receiver android:name=".receiver.StaticRegisterReceiver">
+                android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
+                    <action android:name="android.intent.action.SCREEN_ON" />
+                    <action android:name="android.intent.action.SCREEN_OFF" />
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
+                    <action android:name="android.intent.action.USER_PRESENT" />
+                    <action android:name="android.intent.action.PACKAGE_RESTARTED" />
+                </intent-filter>
+            </receiver>
+        -->
+        <activity
+            android:name=".di.ui.activity.nursing.NursingDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <activity
+            android:name="com.jqsoft.nursing.keepalive.single_pixel.SinglePixelActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:finishOnTaskLaunch="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/SinglePixelActivityStyle" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.map_navi.MapServiceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.map_navi.SelectMapLocationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.AreaSelectActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.FamilyDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.IntroductionActivity"
+            android:hardwareAccelerated="false"
+            android:resizeableActivity="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.WorkbenchActivity"
+            android:clearTaskOnLaunch="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <!-- <activity -->
+        <!-- android:name=".di.ui.activity.LoginActivity" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/AppTheme"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.LoginActivityNew"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
+
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ArcFaceListActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
+        <activity
+            android:name="com.jqsoft.nursing.arcface.ScanCardActivity"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
+
+        <activity
+            android:name="com.jqsoft.nursing.arcface.MainMapActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
+        <activity
+            android:name=".arcface.CardImageLiveFaceVerifyActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".arcface.HeadCollectActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.StatisticsSecondLevelCategoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.StatisticsThirdLevelCategoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.StatisticsMultipageContainerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.StatisticsSpecificActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.FamilyMemberActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.AddFamilyMemberActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.RetrievePasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.PolicyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ReliefItemActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.PolicyDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.NotificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.NotificationDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ChatDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.HouseholdDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SocialHistoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!-- <activity -->
+        <!-- android:name=".di.ui.activity.ChatActivity" -->
+        <!-- android:launchMode="singleTop" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/AppTheme" /> -->
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.MedicalInstitutionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <!-- <activity -->
+        <!-- android:name=".di.ui.activity.MedicalInstitutionDetailActivity" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/AppTheme" /> -->
+        <activity
+            android:name="com.jqsoft.nursing.di.RouteNaviActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SettingActivityNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <!-- <activity -->
+        <!-- android:name=".jmessage.messages.MessageListActivity" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/AppTheme" -->
+        <!-- android:windowSoftInputMode="adjustResize" /> -->
+        <!-- <activity -->
+        <!-- android:name=".jmessage.messages.VideoActivity" -->
+        <!-- android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" /> -->
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.base.ImageDisplayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ExecutionProjectsActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".di.ui.activity.OnlineConsultationActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".di.ui.activity.SignSeverPakes"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".di.ui.activity.RoomBedDetail"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.DoctorServerDetails"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.MyInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.GuideActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.IgGuideActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.DirectoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.VillageLevelMedicalInstitutionDirectoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.MedicalPersonDirectoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.MySignInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".di.ui.activity.IntelligentHonourAgreementRemindActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SignServiceAssessActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SignServiceIncomeActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".di.ui.activity.SignApplicationActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".di.ui.activity.WriteNFC"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ReceptionListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.PoliticsActivity"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SmartAlertActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".di.ui.activity.SignClientDoctorSeverPakes"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SignedAgreement"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.CivilobjectActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.BuildingRoomActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SocialDetailActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.IgGuidePostListActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.HandleProgress"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ActivityProgress"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.PersonalInfoActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.HandleProgressDetailActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.AboutInfoActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ChangePasswordActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ReceptionActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ReceptionDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.map_navi.ReceptionMapServiceActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SettingServerChangeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SettingServerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.PersonCollectionActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SocialHistoryPageActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.HouseholdSurveysActivity"
+
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.AddServeryActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.AddImgVideoServeryActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ReceptionDetailNewListActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <!-- <activity -->
+        <!-- android:name=".di.ui.activity.AppointmentRegistrationActivity" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/AppTheme" /> -->
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.AddDemocraticActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.DisPlayDemocraticActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.DeviceListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="蓝牙设置"
+            android:theme="@android:style/Theme.Dialog" />
+
+        <!-- <activity android:name=".ui.activity.main.SplashActivity"> -->
+        <!-- &lt;!&ndash;<intent-filter>&ndash;&gt; -->
+        <!-- &lt;!&ndash;<action android:name="android.intent.action.MAIN" />&ndash;&gt; -->
+
+
+        <!-- &lt;!&ndash;<category android:name="android.intent.category.LAUNCHER" />&ndash;&gt; -->
+        <!-- &lt;!&ndash;</intent-filter>&ndash;&gt; -->
+        <!-- </activity> -->
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@android:style/Theme.Translucent" />
+
+
+        <!-- <service android:name="com.amap.api.location.APSService" /> -->
+
+
+        <!-- <receiver -->
+        <!-- android:name=".receiver.MyReceiver" -->
+        <!-- android:enabled="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="cn.jpush.android.intent.REGISTRATION" /> -->
+        <!-- <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> -->
+        <!-- <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> -->
+        <!-- <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> -->
+        <!-- <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" /> -->
+        <!-- <action android:name="cn.jpush.android.intent.CONNECTION" /> -->
+
+
+        <!-- <category android:name="signed_resident_client" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ExecuProjectActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".di.ui.activity.DetailPeopleInfoActivity" />
+        <activity android:name="com.jqsoft.nursing.di.ui.activity.PendExecuActivity" />
+        <activity android:name=".di.ui.activity.ReservationServiceActivity" />
+        <activity android:name=".di.ui.activity.OnLineSignApplication" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.MotifyExecuActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name="com.jqsoft.nursing.di.ui.activity.AccessFileActivity" />
+        <activity android:name="com.jqsoft.nursing.di.ui.activity.ReserrverServerActivity" />
+        <activity android:name="com.jqsoft.nursing.di.ui.activity.ClientSignServiceAssessActivity" />
+        <activity android:name="com.jqsoft.nursing.di.ui.activity.SignServiceEvalution" />
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.AddFindActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.HadReserrverServerActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.DetailFindActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name="com.jqsoft.nursing.di.ui.activity.DetailFindDiscoverActivity"></activity>
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SocialAssestansActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.UrbanLowInsuranceActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.AddUrbanLowActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.HandleFindActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.DetailFindDaibanActivity"
+
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.UrbanFamilyActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.UrbanFamilybianjiActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.UrbanFamilybianjiStatusActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.AddUrbanLowBianjiActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.StatisticsThirdLevelCategorySubsistenceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.StatisticsThirdLevelCategoryVeryPoorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.StatisticsThirdLevelCategoryLowSalaryFamilyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.StatisticsThirdLevelCategoryMedicalAssistanceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.StatisticsThirdLevelCategoryTempAssistanceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.StatisticsThirdLevelCategoryFamilyEconomyCheckActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.StatisticsThirdLevelCategoryDisasterAssistanceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity android:name="com.jqsoft.nursing.di.ui.activity.MainMapActivity" />
+
+        <activity android:name="com.jqsoft.nursing.di.ui.activity.SearchMapActivity" />
+
+        <activity android:name="com.jqsoft.nursing.di.ui.activity.SearchResultActivity" />
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ReceptionNewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.WorkGuideActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.ListGuideActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.MyMessageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.MyMessageDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.SchedulingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".di.ui.activity.nursing.RoundRoomDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <activity
+            android:name=".di.ui.activity.nursing.ElderItemActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name=".util.qrcode.ZxingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <activity
+            android:name="com.jqsoft.nursing.di.ui.activity.nursing.MacFragmentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <!-- 老人信息 -->
+        <activity
+            android:name=".di.ui.activity.OldPersonInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <!-- 病例列表 -->
+        <activity android:name=".di.ui.activity.CaseListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <!-- 图片预览页面 -->
+        <activity
+            android:name=".di.ui.activity.PreviewPicActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+    </application>
+
+</manifest>

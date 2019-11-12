@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_marginTop="10dp"
+    android:padding="@dimen/dp_10">
+    <com.jqsoft.nursing.view.ZQImageViewRoundOval
+        android:id="@+id/civ_head"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:scaleType="fitXY"
+        android:src="@mipmap/icon_room"
+        >
+
+    </com.jqsoft.nursing.view.ZQImageViewRoundOval>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_8"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="医护人员姓名"
+                        android:textColor="@color/dark_black_color"
+                        android:textSize="@dimen/txt_size_16" />
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/tv_gender_and_age"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="女:35岁"
+                        android:textColor="@color/light_gray_color"
+                        android:textSize="@dimen/txt_size_14"
+                        android:layout_marginLeft="@dimen/dp_4"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_star_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="★★★★★"
+                    android:textColor="@color/emphasis_color_2"
+                    android:textSize="@dimen/txt_size_16"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:text="绑定"
+                android:textColor="@color/main_color"
+                android:textSize="@dimen/txt_size_16"
+                android:background="@drawable/positive_background_positive_round_corner_border"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_nursing_level"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:layout_weight="1"
+                android:text="护理级别"
+                android:textColor="@color/main_color"
+                android:textSize="@dimen/txt_size_14" />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:orientation="horizontal"
+               >
+                <ImageView
+                    android:layout_width="@dimen/dp_18"
+                    android:layout_height="@dimen/dp_18"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/clock"/>
+                <TextView
+                    android:id="@+id/tv_service_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="查房0次"
+                    android:textColor="@color/main_color"
+                    android:textSize="@dimen/txt_size_14"
+                    android:layout_marginLeft="@dimen/dp_4"/>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/white"-->
+    <!--android:orientation="vertical">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:paddingTop="@dimen/dp_8">-->
+
+    <!--<View-->
+    <!--android:layout_width="@dimen/dp_2"-->
+    <!--android:layout_height="@dimen/dp_16"-->
+    <!--android:background="@color/main_color" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_service_category"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="@dimen/dp_4"-->
+    <!--android:layout_weight="1"-->
+    <!--android:text="服务类别:"-->
+    <!--android:textColor="@color/dark_black_color"-->
+    <!--android:textSize="@dimen/txt_size_16" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_service_status"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="@dimen/dp_4"-->
+    <!--android:layout_marginRight="@dimen/dp_4"-->
+    <!--android:text="等待用户支付"-->
+    <!--android:textColor="@color/main_color"-->
+    <!--android:textSize="@dimen/txt_size_16" />-->
+    <!--</LinearLayout>-->
+
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/line_1px"-->
+    <!--android:layout_marginTop="@dimen/dp_8"-->
+    <!--android:background="@color/menu_background_color"-->
+    <!--android:visibility="visible"/>-->
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--android:paddingLeft="@dimen/dp_6"-->
+    <!--android:paddingRight="@dimen/dp_6"-->
+    <!--android:layout_marginTop="@dimen/dp_8"-->
+    <!--&gt;-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:orientation="horizontal">-->
+
+
+    <!--<com.jqsoft.nursing.view.ZQImageViewRoundOval-->
+    <!--android:id="@+id/civ_head"-->
+    <!--android:layout_width="@dimen/dp_40"-->
+    <!--android:layout_height="@dimen/dp_40"-->
+    <!--android:scaleType="fitXY"-->
+    <!--android:src="@mipmap/icon_touxiang"-->
+    <!--&gt;-->
+
+    <!--</com.jqsoft.nursing.view.ZQImageViewRoundOval>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="@dimen/dp_4"-->
+    <!--android:layout_weight="1"-->
+    <!--android:orientation="vertical">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_nurse"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="医护人员:"-->
+    <!--android:textColor="@color/dark_black_color"-->
+    <!--android:textSize="@dimen/txt_size_15" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_department"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="@dimen/dp_4"-->
+    <!--android:layout_weight="1"-->
+    <!--android:text=""-->
+    <!--android:textColor="@color/light_gray_color"-->
+    <!--android:textSize="@dimen/txt_size_13" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="@dimen/dp_4"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_service_item"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="服务项目:"-->
+    <!--android:textColor="@color/dark_black_color"-->
+    <!--android:textSize="@dimen/txt_size_15" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_money"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="@dimen/dp_4"-->
+    <!--android:layout_weight="1"-->
+    <!--android:gravity="right"-->
+    <!--android:text=""-->
+    <!--android:textColor="@color/emphasis_color_2"-->
+    <!--android:textSize="@dimen/txt_size_15" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_patient"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="@dimen/dp_4"-->
+    <!--android:text="长者姓名:"-->
+    <!--android:textColor="@color/light_gray_color"-->
+    <!--android:textSize="@dimen/txt_size_14" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_service_address"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="@dimen/dp_4"-->
+    <!--android:text="服务地址:"-->
+    <!--android:textColor="@color/light_gray_color"-->
+    <!--android:textSize="@dimen/txt_size_14" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_nursing_level"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="@dimen/dp_4"-->
+    <!--android:text="护理级别:"-->
+    <!--android:textColor="@color/light_gray_color"-->
+    <!--android:textSize="@dimen/txt_size_14" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_service_time"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="@dimen/dp_4"-->
+    <!--android:text="护理时间:"-->
+    <!--android:textColor="@color/light_gray_color"-->
+    <!--android:textSize="@dimen/txt_size_14" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="@dimen/dp_4"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:gravity="center_vertical|right"-->
+    <!--android:padding="@dimen/dp_6">-->
+    <!--<net.qiujuer.genius.ui.widget.Button-->
+    <!--android:id="@+id/btn_cancel_order"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="取消订单"-->
+    <!--android:textColor="@color/light_black_color"-->
+    <!--android:textSize="@dimen/txt_size_14"-->
+    <!--android:background="@drawable/negative_background_negative_round_corner_border"-->
+    <!--/>-->
+    <!--<net.qiujuer.genius.ui.widget.Button-->
+    <!--android:id="@+id/btn_confirm_purchase"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="@dimen/dp_6"-->
+    <!--android:text="确定支付"-->
+    <!--android:textColor="@color/main_color"-->
+    <!--android:textSize="@dimen/txt_size_14"-->
+    <!--android:background="@drawable/positive_background_positive_round_corner_border"-->
+    <!--/>-->
+    <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->

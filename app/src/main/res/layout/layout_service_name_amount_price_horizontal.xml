@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dp_10"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@color/recycler_view_separator_color">
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:scaleType="fitXY"
+        android:src="@mipmap/icon_touxiang"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/dp_8">
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/dark_black_color"
+            android:textSize="@dimen/txt_size_15"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/emphasis_color_2"
+            android:textSize="@dimen/txt_size_15"
+            android:layout_marginTop="@dimen/dp_8"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/dark_black_color"
+        android:textSize="@dimen/txt_size_15"
+        android:layout_marginLeft="@dimen/dp_8"
+        />
+
+    <TextView
+        android:id="@+id/tv_sum_price"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text=""
+        android:textColor="@color/emphasis_color_2"
+        android:textSize="@dimen/txt_size_15"
+        android:layout_marginLeft="@dimen/dp_8"
+        />
+
+
+</LinearLayout>

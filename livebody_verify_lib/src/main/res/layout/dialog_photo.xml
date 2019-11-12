@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialog_input_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@drawable/dialog_tips_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dialog_input_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:gravity="center"
+            android:text="申请人工审核"
+            android:textColor="@color/dialog_tips_title_txt"
+            android:textSize="18sp" />
+
+
+        <ImageView
+            android:id="@+id/takephoto"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:scaleType="fitXY"
+            android:gravity="center"
+            android:layout_marginLeft="25dp"
+
+            android:src="@mipmap/cf_camera"
+            />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/dialog_input_content_input"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/input_bg"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/dialog_tips_content_txt"
+        android:textSize="16sp" />
+
+    <LinearLayout
+
+        android:id="@+id/ll_kuaijie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="10dip"
+        android:layout_marginBottom="10dip"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="快捷填写:"
+            android:textColor="#191616"
+            android:textSize="15sp" />
+
+        <com.zhy.view.flowlayout.TagFlowLayout
+            android:id="@+id/search_page_flowlayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            zhy:max_select="1" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="10dp"
+        android:background="@color/dialog_tips_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dialog_input_negative_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_tips_negative_btn_sel"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:textColor="@color/dialog_tips_negative_btn_txt"
+            android:textSize="18sp" />
+
+        <View
+            android:id="@+id/dialog_input_divider_line"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/dialog_tips_line"
+            android:minHeight="50dp" />
+
+        <Button
+            android:id="@+id/dialog_input_positive_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_tips_positive_btn_sel"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:textColor="@color/dialog_tips_positive_btn_txt"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

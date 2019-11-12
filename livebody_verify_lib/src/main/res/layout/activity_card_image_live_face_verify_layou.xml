@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/head_layout"
+        layout="@layout/activity_register_recognize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="请上传您本人身份证照片"
+                android:textAppearance="@style/TextView.Title"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="身份证正面照片"
+                    android:textAppearance="@style/TextView.Title"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/cf_user" />
+
+                    <TextView
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:gravity="left"
+                        android:text="身份证正面照(点击下方身份证可以重拍)"
+                        android:textAppearance="@style/TextView.Title" />
+                    <TextView
+                        android:id="@+id/apply_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="申请人工审核"
+                        android:textColor="@color/colorTheme"
+                        android:layout_marginLeft="15dp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/image_background"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_margin="10dip"
+                        android:id="@+id/iv_card_front"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/cf_id_card_number" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <include
+                android:id="@+id/info_layout"
+                layout="@layout/activity_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="身份证背面照片"
+                    android:textAppearance="@style/TextView.Title" />
+
+                <ImageView
+                    android:id="@+id/iv_card_back"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/cf_card_back" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="请上传您手持本人身份证的正脸照片"
+                android:textAppearance="@style/TextView.Title"
+                android:visibility="gone"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/cf_smile_head" />
+
+                    <TextView
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:gravity="left"
+                        android:text="头像采集(点击下方头像可以重拍)"
+                        android:textAppearance="@style/TextView.Title" />
+
+                    <LinearLayout
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        ></LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_SwBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <com.kyleduo.switchbutton.SwitchButton
+                            android:id="@+id/btn_changeCamera"
+                            android:layout_width="40dp"
+                            android:layout_height="20dp"
+                            app:kswTintColor="@color/colorTheme"
+                            />
+
+                        <TextView
+                            android:textSize="14sp"
+                            android:id="@+id/changeCamera"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:gravity="right"
+                            android:text="后置"
+                            android:textAppearance="@style/TextView.Title"
+                            />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/image_background"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_face"
+                    android:layout_width="190dp"
+                    android:layout_height="190dp"
+                    android:src="@mipmap/cf_click_to_collect" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <com.jqsoft.livebody_verify_lib.view.CheckBoxSample
+                    android:id="@+id/cb_license"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:color_background="@color/colorTheme"
+                    app:color_border="@color/colorTheme"
+                    app:size="24dp" />
+
+                <!--<net.qiujuer.genius.ui.widget.CheckBox-->
+                <!--android:id="@+id/cb_license"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:background="@null"-->
+                <!--android:gravity="center"-->
+                <!--android:text=""-->
+                <!--app:gBorderSize="2dp"-->
+                <!--app:gIntervalSize="2dp"-->
+                <!--app:gMarkColor="@drawable/m_check_box"-->
+                <!--app:gMarkSize="22dp" />-->
+
+                <!--<CheckBox-->
+                <!--android:id="@+id/cb_license"-->
+                <!--android:layout_width="24dp"-->
+                <!--android:layout_height="24dp"-->
+                <!--android:checked="false"/>-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:gravity="left"
+                    android:text="同意许可协议"
+                    android:textAppearance="@style/TextView.Title"
+                    android:textColor="@color/colorTheme" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_verify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorTheme"
+                android:text="保存"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

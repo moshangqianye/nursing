@@ -1,0 +1,7 @@
+#grassroots_civil_administration_platform
+
+#打包时注意事项
+在模块app下的build.gradle中进行如下步骤:
+1.申请bugly的id与appkey,并初始化到applicationVariants.all中的buglyAppId和buglyAppKey变量.
+2.县区中文名称初始化到applicationVariants.all中的countyName变量.
+3.productFlavors中增加一条县区flavor,applicationId置为新包名,HTTP_ACCESS_URL_VALUE置为服务器地址,FILE_PROVIDER_AUTHORITIES_VALUE置为新值,LOGIN_APP_NAME_VALUE置为登录页面所要显示的标题,BUGLY_APP_ID_VALUE置为B+{bugly id}(注意BUGLY_APP_ID_VALUE值的格式为B+{真实的id}),JPUSH_APPKEY置为申请的极光推送appkey(也要将从极光官网申请的appkey与master secret发给服务端开发人员并让其配置到服务器中),JPUSH_CHANNEL置为极光统计渠道名称.

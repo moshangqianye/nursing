@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--民族数组-->
+    <string-array name="nation_name">
+        <item>汉族</item>
+        <item>蒙古族</item>
+        <item>回族</item>
+        <item>藏族</item>
+        <item>维吾尔族</item>
+        <item>苗族</item>
+        <item>彝族</item>
+        <item>壮族</item>
+        <item>布依族</item>
+        <item>朝鲜族</item>
+        <item>满族</item>
+        <item>侗族</item>
+        <item>瑶族</item>
+        <item>白族</item>
+        <item>土家族</item>
+        <item>哈尼族</item>
+        <item>哈萨克族</item>
+        <item>傣族</item>
+        <item>黎族</item>
+        <item>傈僳族</item>
+        <item>佤族</item>
+        <item>畲族</item>
+        <item>高山族</item>
+        <item>拉祜族</item>
+        <item>水族</item>
+        <item>东乡族</item>
+        <item>纳西族</item>;
+        <item>景颇族</item>
+        <item>柯尔克孜族</item>
+        <item>土族</item>
+        <item>达斡尔族</item>
+        <item>仫佬族</item>
+        <item>羌族</item>
+        <item>布朗族</item>
+        <item>撒拉族</item>
+        <item>毛南族</item>
+        <item>仡佬族</item>
+        <item>锡伯族</item>
+        <item>阿昌族</item>
+        <item>普米族</item>
+        <item>塔吉克族</item>
+        <item>怒族</item>
+        <item>乌孜别克族</item>
+        <item>俄罗斯族</item>
+        <item>鄂温克族</item>
+        <item>崩龙族</item>
+        <item>保安族</item>
+        <item>裕固族</item>
+        <item>京族</item>
+        <item>塔塔尔族</item>
+        <item>独龙族</item>
+        <item>鄂伦春族</item>
+        <item>赫哲族</item>
+        <item>门巴族</item>
+        <item>珞巴族</item>
+        <item>基诺族</item>
+        <item>其他</item>
+        <item>外国血统中国籍人士</item>
+    </string-array>
+
+    <!--是否异常数组-->
+    <string-array name="comment_condition">
+        <item>未见异常</item>
+        <item>异常</item>
+    </string-array>
+
+    <!--是否无有数组-->
+    <string-array name="have_nothing">
+        <item>无</item>
+        <item>有</item>
+    </string-array>
+
+    <!--锻炼规律数组-->
+    <string-array name="exercise_law">
+        <item>每天</item>
+        <item>每周一次以上</item>
+        <item>偶尔</item>
+        <item>不锻炼</item>
+    </string-array>
+
+    <!--饮食规律数组-->
+    <string-array name="diet_law">
+        <item>荤素均衡</item>
+        <item>荤食为主</item>
+        <item>素食为主</item>
+        <item>嗜盐</item>
+        <item>嗜油</item>
+        <item>嗜糖</item>
+    </string-array>
+
+    <!--吸烟状况数组-->
+    <string-array name="smoking_status">
+        <item>从不吸烟</item>
+        <item>已戒烟</item>
+        <item>吸烟</item>
+    </string-array>
+
+    <!--饮酒规律数组-->
+    <string-array name="drinking_law">
+        <item>从不</item>
+        <item>偶尔</item>
+        <item>经常</item>
+        <item>每天</item>
+    </string-array>
+
+    <!--戒酒数组-->
+    <string-array name="stop_drinking">
+        <item>未知</item>
+        <item>未戒酒</item>
+        <item>已戒酒</item>
+    </string-array>
+
+    <!--近一年是否曾饮酒数组-->
+    <string-array name="last_drinking">
+        <item>未知</item>
+        <item>是</item>
+        <item>否</item>
+    </string-array>
+
+    <!--饮酒种类数组-->
+    <string-array name="drinking_type">
+        <item>白酒</item>
+        <item>啤酒</item>
+        <item>红酒</item>
+        <item>黄酒</item>
+        <item>其他</item>
+    </string-array>
+
+    <!--脑血管疾病-->
+    <string-array name="cerebrovascular_diseases">
+        <item>未发现</item>
+        <item>缺血性卒中</item>
+        <item>脑出血</item>
+        <item>蛛网膜下腔出血</item>
+        <item>短暂性脑缺血发作</item>
+        <item>其他</item>
+    </string-array>
+
+    <!--肾脏疾病集合-->
+    <string-array name="kidney_disease">
+        <item>未发现</item>
+        <item>糖尿病肾病</item>
+        <item>肾功能衰竭</item>
+        <item>急性肾炎</item>
+        <item>慢性肾炎</item>
+        <item>其他</item>
+    </string-array>
+
+    <!--心脏疾病集合-->
+    <string-array name="heart_disease">
+        <item>未发现</item>
+        <item>心肌梗死</item>
+        <item>心绞痛</item>
+        <item>冠状动脉血运重建</item>
+        <item>充血性心力衰竭</item>
+        <item>心前区疼痛</item>
+        <item>其他</item>
+    </string-array>
+
+    <!--血管疾病集合-->
+    <string-array name="vascular_disease">
+        <item>未发现</item>
+        <item>夹层动脉瘤</item>
+        <item>动脉闭塞性疾病</item>
+        <item>其他</item>
+    </string-array>
+
+    <!--眼部疾病集合-->
+    <string-array name="eye_disease">
+        <item>未发现</item>
+        <item>视网膜出血或渗出</item>
+        <item>视乳头水肿</item>
+        <item>白内障</item>
+        <item>其他</item>
+<!--        <item>正常</item>-->
+<!--        <item>异常</item>-->
+    </string-array>
+    <string-array name="eyes">
+
+                <item>正常</item>
+                <item>异常</item>
+    </string-array>
+
+    <!--神经系统疾病-->
+    <string-array name="neurological_diseases">
+        <item>未发现</item>
+        <item>有</item>
+    </string-array>
+
+    <!--体检异常数组-->
+    <string-array name="have_abnormal">
+        <item>体检无异常</item>
+        <item>有异常</item>
+    </string-array>
+
+    <!--危险因素控制数组-->
+    <string-array name="hazards_control">
+        <item>戒烟</item>
+        <item>健康饮酒</item>
+        <item>饮食</item>
+        <item>锻炼</item>
+        <item>减体重</item>
+        <item>建议接种疫苗</item>
+        <item>其他</item>
+    </string-array>
+
+    <!--建议接种疫苗数组-->
+    <string-array name="recommended_vaccination">
+        <item>肺炎疫苗</item>
+        <item>流感疫苗</item>
+        <item>其他疫苗</item>
+    </string-array>
+
+    <!--其他数组-->
+    <string-array name="others">
+        <item>预防骨质疏松</item>
+        <item>防跌倒</item>
+        <item>预防意外伤害</item>
+        <item>相关自救措施</item>
+        <item>其他</item>
+    </string-array>
+
+    <!--口唇数组 -->
+    <string-array name="lips">
+        <item>红润</item>
+        <item>苍白</item>
+        <item>发绀</item>
+        <item>皲裂</item>
+        <item>疱疹</item>
+    </string-array>
+
+    <!--咽部数组-->
+    <string-array name="pharynx">
+        <item>无充血</item>
+        <item>充血</item>
+        <item>淋巴滤泡增生</item>
+    </string-array>
+
+    <!--齿列数组-->
+    <string-array name="dentition">
+        <item>正常</item>
+        <item>缺齿</item>
+        <item>龋齿</item>
+        <item>义齿(假牙)</item>
+    </string-array>
+
+    <!--听力数组-->
+    <string-array name="hearing">
+        <item>听见</item>
+        <item>听不清或无法听见</item>
+    </string-array>
+
+    <!--眼底数组-->
+
+    <!--皮肤数组-->
+    <string-array name="skin">
+        <item>正常</item>
+        <item>潮红</item>
+        <item>苍白</item>
+        <item>发绀</item>
+        <item>黄染</item>
+        <item>色素沉着</item>
+        <item>其他</item>
+    </string-array>
+
+    <!--巩膜数组-->
+    <string-array name="sclera">
+        <item>正常</item>
+        <item>黄染</item>
+        <item>充血</item>
+        <item>其他</item>
+    </string-array>
+
+    <!--淋巴结数组-->
+    <string-array name="lymph_gland">
+        <item>未触及</item>
+        <item>锁骨上</item>
+        <item>腋窝</item>
+        <item>其他</item>
+    </string-array>
+
+    <!--桶状胸数组-->
+    <string-array name="barrel_chest">
+        <item>否</item>
+        <item>是</item>
+    </string-array>
+
+    <!--心律数组-->
+    <string-array name="rhythm">
+        <item>齐</item>
+        <item>不齐</item>
+        <item>绝对不齐</item>
+    </string-array>
+
+    <!--下肢水肿数组-->
+    <string-array name="legs_edema">
+        <item>无</item>
+        <item>单侧</item>
+        <item>双侧对称</item>
+        <item>双侧不对称</item>
+    </string-array>
+
+    <!--足背动脉搏动-->
+    <string-array name="artery_pulsation">
+        <item>未触及</item>
+        <item>触及双侧对称</item>
+        <item>触及左侧弱或消失</item>
+        <item>触及右侧弱或消失</item>
+    </string-array>
+    <!--信息类别-->
+    <string-array name="artery_sInformationCategories">
+        <item>公共场所</item>
+        <item>饮用水卫生</item>
+        <item>学校卫生</item>
+        <item>非法行医(采供血)</item>
+        <item>计划生育</item>
+        <item>食源性疾病</item>
+        <item>医疗机构</item>
+        <item>放射卫生</item>
+        <item>职业卫生</item>
+
+
+
+
+    </string-array>
+    <!--症状数组-->
+    <string-array name="symptoms">
+        <item>无症状</item>
+        <item>头痛</item>
+        <item>头晕</item>
+        <item>心悸</item>
+        <item>胸闷</item>
+        <item>胸痛</item>
+        <item>慢性咳嗽</item>
+        <item>咳痰</item>
+        <item>呼吸困难</item>
+        <item>多饮</item>
+        <item>多尿</item>
+        <item>体重下降</item>
+        <item>乏力</item>
+        <item>关节肿痛</item>
+        <item>视力模糊</item>
+        <item>手脚麻木</item>
+        <item>尿急</item>
+        <item>尿痛</item>
+        <item>便秘</item>
+        <item>腹泻</item>
+        <item>恶心呕吐</item>
+        <item>眼花</item>
+        <item>耳鸣</item>
+        <item>乳房胀痛</item>
+        <item>其他</item>
+    </string-array>
+
+    <!--报表统计标题数组-->
+    <string-array name="report_statistics_title">
+        <item>两卡制情况</item>
+        <item>健康档案</item>
+        <item>健康教育</item>
+        <item>儿童保健</item>
+        <item>孕产妇</item>
+        <item>老年人</item>
+        <item>高血压</item>
+        <item>糖尿病</item>
+        <item>精神障碍</item>
+        <item>肺结核</item>
+        <item>卫生监督</item>
+    </string-array>
+
+    <!--报表统计标题数组添加签约报表-->
+    <string-array name="report_statistics_new_title">
+        <item>两卡制情况</item>
+        <item>健康档案</item>
+        <item>健康教育</item>
+        <item>儿童保健</item>
+        <item>孕产妇</item>
+        <item>老年人</item>
+        <item>高血压</item>
+        <item>糖尿病</item>
+        <item>精神障碍</item>
+        <item>肺结核</item>
+        <item>卫生监督</item>
+        <item>签约报表</item>
+    </string-array>
+
+    <!--两卡制情况数组-->
+    <string-array name="two_card">
+        <item>我的得分</item>
+        <item>总得分</item>
+        <item>各级得分</item>
+        <item>专业类型</item>
+        <item>医生排名</item>
+        <item>机构排名</item>
+        <item>服务机构情况</item>
+        <item>居民定位服务</item>
+        <item>地图服务</item>
+    </string-array>
+
+    <!--健康档案数组-->
+    <string-array name="health_records">
+        <item>建档率</item>
+        <item>使用率</item>
+        <item>合格率</item>
+    </string-array>
+
+    <!--健康教育数组-->
+    <string-array name="health_education">
+        <item>活动统计</item>
+    </string-array>
+
+    <!--儿童保健数组-->
+    <string-array name="child_care">
+        <item>访视率</item>
+        <item>健康管理率</item>
+    </string-array>
+
+    <!--孕产妇数组-->
+    <string-array name="pregnant_woman">
+        <item>早孕建册率</item>
+        <item>产后访视率</item>
+    </string-array>
+
+    <!--老年人数组-->
+    <string-array name="old_person">
+        <item>健康管理率</item>
+        <item>体检完整率</item>
+        <item>中医药管理率</item>
+    </string-array>
+
+    <!--高血压-->
+    <string-array name="hypertension">
+        <item>规范管理率</item>
+        <item>血压控制率</item>
+    </string-array>
+
+    <!--糖尿病-->
+    <string-array name="diabetes">
+        <item>规范管理率</item>
+        <item>血糖控制率</item>
+    </string-array>
+
+    <!--精神障碍-->
+   <string-array name="mental_disorder">
+       <item>规范率</item>
+       <item>稳定率</item>
+       <item>服药规范率</item>
+       <item>面访率</item>
+   </string-array>
+
+    <!--结核病-->
+    <string-array name="tuberculosis">
+        <item>规范率</item>
+        <item>规则服药率</item>
+    </string-array>
+
+    <!--卫生监督-->
+    <string-array name="health_supervision">
+        <item>实施进度</item>
+    </string-array>
+
+    <!--卫生监督-->
+    <string-array name="sign_supervision">
+        <item>项目执行进度汇总</item>
+        <item>签约服务进度统计</item>
+        <item>服务完成率统计</item>
+    </string-array>
+
+
+    <!--健康体检基本信息-->
+    <string-array name="health_state">
+        <item>满意</item>
+        <item>基本满意</item>
+        <item>说不清楚</item>
+        <item>不太满意</item>
+        <item>不满意</item>
+    </string-array>
+
+    <string-array name="health_life_valuation">
+        <item>可自理(0～3分)</item>
+        <item>轻度依赖(4～8分)</item>
+        <item>中度依赖(9～18分)</item>
+        <item>不能自理(≥19分)</item>
+    </string-array>
+    <string-array name="health_emotional">
+        <item>粗筛阴性</item>
+        <item>粗筛阳性</item>
+    </string-array>
+
+    <!--健康教育数组（颍上）-->
+    <string-array name="healthy_edu">
+        <item>印刷资料</item>
+        <item>音像资料</item>
+        <item>宣传栏</item>
+        <item>咨询活动</item>
+        <item>知识讲座</item>
+    </string-array>
+    <!--健康教育数组-->
+    <string-array name="healthy_edu_new">
+        <item>印刷资料</item>
+        <item>音像资料</item>
+        <item>宣传栏</item>
+        <item>咨询活动</item>
+        <item>知识讲座</item>
+        <item>个体化健康教育</item>
+    </string-array>
+</resources>

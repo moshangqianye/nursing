@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/background_color"
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include
+                android:id="@+id/view_title"
+                layout="@layout/fragment_nursing_head_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/lay_content_nursing_list"
+                layout="@layout/layout_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/lay_specific_nursing_load_failure"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/dp_80"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/tv_load_failure_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/hint_list_empty_please_reload"
+                android:textColor="@color/colorTheme"
+                android:textSize="@dimen/txt_size_normal" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

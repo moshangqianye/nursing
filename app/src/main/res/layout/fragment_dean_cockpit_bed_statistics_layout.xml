@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_color">
+
+    <include
+        layout="@layout/fragment_dean_cockpit_bed_statistics_head_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+
+        android:id="@+id/ll_institution_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|left"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:padding="@dimen/dp_6"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="机构名称:"
+            android:textColor="@color/colorTheme"
+            android:textSize="@dimen/txt_size_normal" />
+
+        <TextView
+            android:id="@+id/tv_institution_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:background="@drawable/white_background_with_3dp_color_theme_round_corner"
+            android:text=""
+            android:textColor="@color/colorTheme"
+            android:textSize="@dimen/txt_size_normal" />
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/block_background_color_with_block_round_corner"
+        >
+
+
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+            android:id="@+id/hbc_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.github.mikephil.charting.charts.HorizontalBarChart>
+
+        <include
+            android:id="@+id/lay_dean_cockpit_bed_load_failure"
+            layout="@layout/layout_load_list_result_empty_placeholder_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+
+    </FrameLayout>
+
+</LinearLayout>

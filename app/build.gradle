@@ -1,0 +1,651 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'bugly'
+
+repositories {
+    maven {
+        repositories {
+            url 'https://oss.sonatype.org/content/repositories/releases/'
+        }
+    }
+}
+
+//andresguard
+apply plugin: 'AndResGuard'
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.3'
+    }
+}
+
+andResGuard {
+    // mappingFile = file("./resource_mapping.txt")
+    mappingFile = null
+    use7zip = true
+    useSign = true
+    // it will keep the origin path of your resources when it's true
+    keepRoot = false
+    whiteList = [
+            // your icon
+            "R.mipmap.r_app_icon"
+    ]
+    compressFilePattern = [
+            "*.png",
+            "*.jpg",
+            "*.jpeg",
+            "*.gif",
+            "resources.arsc"
+    ]
+    sevenzip {
+        artifact = 'com.tencent.mm:SevenZip:1.2.3'
+    }
+}
+//andresguard end
+
+
+bugly {
+    appId = ""
+    appKey = ""
+    debug = false
+    execute = false        //	boolean	true	插件开关
+    upload = false         //boolean	true	上传开关
+    uploadMapping = false   //	boolean	true	Mapping文件上传开关
+    uploadSymbol = false     //	boolean	true	Symbol文件上传开关
+}
+//bugly {
+//    appId = "ca50ce3b12"
+//    appKey = "e2d77bc9-460a-446a-9739-65decd38538c"
+//    debug = false
+//}
+
+
+def releaseTime() {
+    return new Date().format("yyyy.MM.dd_HH_mm_ss", TimeZone.getTimeZone("GMT+8"))
+}
+
+def appName = "老人信息采集"
+def appType = ""
+def genius_version = "2.0.0"
+
+
+android {
+    compileSdkVersion rootProject.ext.compileSdk
+    buildToolsVersion rootProject.ext.buildTools
+
+
+    defaultConfig {
+        applicationId "com.jqsoft.launcher"
+        minSdkVersion rootProject.ext.minSdk//也可以支持16级以上的不过页面跳转效果就没有了，透明状态栏也没有。
+        targetSdkVersion 26
+        versionCode 2
+        versionName "2.0.1"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //buildConfigField "String", "TINKER_ID", "\"${getTinkerIdValue()}\""
+        multiDexEnabled true
+
+        resConfigs "zh"
+        manifestPlaceholders = [
+                "OCR_API_KEY" : "9ee81b73cb2bd3f70fb217685cc0cc89"    //OCR密钥
+        ]
+        ndk {
+//            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+//            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+//            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64'
+//            abiFilters 'armeabi', 'x86', 'x86_64'
+            abiFilters 'armeabi-v7a'
+        }
+
+//        //极光推送
+//        manifestPlaceholders = [
+//                JPUSH_PKGNAME: applicationId,
+//                JPUSH_APPKEY : "1929be09bbcec76a970d91b1", //JPush上注册的包名对应的appkey.
+//                JPUSH_CHANNEL: "SIGNED_DOCTOR_CLIENT", //用户渠道统计的渠道名称
+//        ]
+    }
+    signingConfigs {
+        debug {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        release {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    signingConfigs {
+
+        //chenxu
+//       release {
+//              keyAlias 'android_key'
+//              keyPassword '12345678'
+//              storeFile file('E:/work/keystore/android_signature_keystore.jks')
+//              storePassword '12345678'
+//          }
+//          debug {
+//              keyAlias 'androiddebugkey'
+//              keyPassword 'android'
+//              storeFile file('C:/Users/Administrator/.android/debug.keystore')
+//              storePassword 'android'
+//          }
+
+        //lxj
+
+//        release {
+//            keyAlias 'android_key'
+//            keyPassword '111111'
+//            storeFile file('D:/JQproject/ChargeVillageskey')
+//            storePassword '111111'
+//        }
+//        debug {
+//            keyAlias 'androiddebugkey'
+//            keyPassword 'android'
+//            storeFile file('C:/Users/Administrator/.android/debug.keystore')
+//            storePassword 'android'
+//        }
+
+        //zyz
+//        release {
+//            keyAlias 'android_key'
+//            keyPassword '123456'
+//            storeFile file('E:/apk/mykey.jks')
+//            storePassword '123456'
+//        }
+//        debug {
+//            keyAlias 'androiddebugkey'
+//            keyPassword 'android'
+//            storeFile file('C:/Users/YLL/.android/debug.keystore')
+//            storePassword 'android'
+//
+//        }
+
+        //zyz
+//        release {
+//            keyAlias 'android_key'
+//            keyPassword '123456'
+//            storeFile file('E:/apk/mykey.jks')
+//            storePassword '123456'
+//        }
+//        debug {
+//            keyAlias 'androiddebugkey'
+//            keyPassword 'android'
+//            storeFile file('C:/Users/YLL/.android/debug.keystore')
+//            storePassword 'android'
+//        }
+
+        // yedong
+        release {
+            keyAlias 'android_key'
+            keyPassword '12345678'
+            storeFile file('../android_signature_keystore.jks')
+            storePassword '12345678'
+        }
+        debug {
+            keyAlias 'android_key'
+            keyPassword '12345678'
+            storeFile file('../android_signature_keystore.jks')
+            storePassword '12345678'
+
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    configurations.all {
+        resolutionStrategy {
+            force "com.android.support:support-v4:${rootProject.ext.support}"
+            force "com.android.support:design:${rootProject.ext.support}"
+            force "com.android.support:appcompat-v7:${rootProject.ext.support}"
+        }
+    }
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.android.support') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion '25.3.1'
+                }
+            }
+
+        }
+    }
+    applicationVariants.all { variant ->
+        def buglyAppId = null;
+        def buglyAppKey = null;
+        def countyName = '';
+        if (variant.flavorName.equals("generic")) { // 渠道1：channel1
+//            buglyAppId = 'e2d514d150'
+//            buglyAppKey = 'aced7116-af0e-4465-9dff-2d2b0b8810a4'
+//            countyName = '内部测试版'
+//荣康医院
+            buglyAppId = '0c15ec0404'
+            buglyAppKey = 'e4c35cca-6ba0-4d6f-a291-085e0e915594'
+            countyName = '内部测试版'
+        }
+        if (buglyAppId != null) {
+            variant.ext.buglyAppId = buglyAppId
+        }
+        if (buglyAppKey != null) {
+            variant.ext.buglyAppKey = buglyAppKey
+        }
+
+//        if (variant.buildType.name.equals('release')){
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                // 输出apk名称为appname-1.0-beta1-xxxx-xx-xx.apk
+                def fileName = "${appName}${countyName}V${variant.versionName}.apk"
+//                    def fileName = "${appName}${appType}${countyName}V${variant.versionName}.apk"
+//                            def fileName = "${appName}-${variant.flavorName}-v${variant.versionName}-versioncode-${variant.versionCode}-${releaseTime()}.apk"
+//                            def fileName = "${appName}-${variant.flavorName}-v${defaultConfig.versionName}-versioncode-${defaultConfig.versionCode}-${releaseTime()}.apk"
+//                            def fileName = "${appName}-${variant.productFlavors[0].name}-v${defaultConfig.versionName}-versioncode-${defaultConfig.versionCode}-${releaseTime()}.apk"
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
+        }
+
+//        }
+    }
+
+// -------------------------------------------------------------------------------
+//   发布新地区应用程序时需配置上方的countyName值与下方的productFlavor中的值
+// -------------------------------------------------------------------------------
+    productFlavors {
+        generic {
+            applicationId = "com.jqsoft.launcher"
+            versionCode = 2
+            versionName = "2.0.1"
+
+            manifestPlaceholders = [
+//                        HTTP_ACCESS_URL_VALUE          : "http://60.173.247.168:9092/fdss-api/",
+//                    HTTP_ACCESS_URL_VALUE          : "http://192.168.44.226:9092/fdss-api/",
+//HTTP_ACCESS_URL_VALUE          : "http://192.168.44.134:8080/sri/",
+// HTTP_ACCESS_URL_VALUE          : "http://60.173.247.168:8060/sri/",
+//HTTP_ACCESS_URL_VALUE          : "http://192.168.44.71:8080/sri/",
+//HTTP_ACCESS_URL_VALUE          : "http://192.168.44.230:8080/sri/",
+//HTTP_ACCESS_URL_VALUE          : "http://www.jqsoft.net:6072/sri/",
+// HTTP_ACCESS_URL_VALUE          : "http://192.168.44.51:8080/sri/",
+///HTTP_ACCESS_URL_VALUE          : "http://192.168.45.53:8080/sri/",
+////HTTP_ACCESS_URL_VALUE          : "http://192.168.45.53:8080/sri/",
+// HTTP_ACCESS_URL_VALUE          : "http://192.168.44.83:8080/sri/",
+//HTTP_ACCESS_URL_VALUE          : "http://192.168.44.140:6868/",
+//HTTP_ACCESS_URL_VALUE          :"http://192.168.45.66:6868/",
+//HTTP_ACCESS_URL_VALUE          :"http://192.168.44.170:8002/",
+//HTTP_ACCESS_URL_VALUE          :"http://192.168.44.140:6868/",
+//HTTP_ACCESS_URL_VALUE          :"http://60.173.247.168:6868/",
+//外网测试地址
+//        HTTP_ACCESS_URL_VALUE          :"http://api.365yiyang.com/",
+
+//荣康医院正式地址
+//HTTP_ACCESS_URL_VALUE          :"http://172.30.30.248:8002/",
+
+// 外网测试地址
+//HTTP_ACCESS_URL_VALUE          : "http://112.29.233.114:8002",
+
+// 内网测试地址
+HTTP_ACCESS_URL_VALUE          :"http://192.168.45.20:5444/",
+//HTTP_ACCESS_URL_VALUE          :"http://60.173.247.168:9600/",
+//内网地址
+//HTTP_ACCESS_URL_VALUE          :"http://192.168.44.140:6868/",
+//HTTP_ACCESS_URL_VALUE          :"http://api.365yiyang.com/",
+//                HTTP_ACCESS_URL_VALUE          : "http://192.168.88.36:8080/fdss-api/",
+FILE_PROVIDER_AUTHORITIES_VALUE: "com.jqsoft.launcher.fileProvider",
+LOGIN_APP_NAME_VALUE           : "老人信息采集",
+//                    BUGLY_APP_ID_VALUE值的格式为B+{真实的id}------------------
+//BUGLY_APP_ID_VALUE             : "Be2d514d150"
+//荣康医院
+BUGLY_APP_ID_VALUE             : "B0c15ec0404"
+//                    BUGLY_APP_ID_VALUE值的格式为B+{真实的id}------------------
+//,
+//JPUSH_PKGNAME                  : applicationId,
+//JPUSH_APPKEY                   : "", //JPush上注册的包名对应的appkey.
+//JPUSH_CHANNEL                  : "" //用户渠道统计的渠道名称
+            ]
+        }
+
+    }
+    productFlavors.all {
+//        flavor -> flavor.manifestPlaceholders = [MTA_CHANNEL_VALUE: name]
+    }
+
+    lintOptions {
+        abortOnError false
+        disable 'MissingTranslation'
+    }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            force "com.android.support:support-v4:${rootProject.ext.support}"
+            force "com.android.support:design:${rootProject.ext.support}"
+            force "com.android.support:appcompat-v7:${rootProject.ext.support}"
+        }
+    }
+}
+
+repositories   {
+    flatDir {
+        dirs 'libs'
+    }
+}
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //    compile fileTree(include: ['*.jar'], dir: 'src/main/jniLibs')
+
+    //support library
+    compile "com.android.support:appcompat-v7:${rootProject.ext.support}"
+    compile "com.android.support:palette-v7:${rootProject.ext.support}"
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    compile "com.android.support:design:${rootProject.ext.support}"
+    compile "com.android.support:cardview-v7:${rootProject.ext.support}"
+    compile "com.android.support:support-v4:${rootProject.ext.support}"
+    androidTestCompile "com.android.support:support-annotations:${rootProject.ext.support}"
+    //multi-dex
+    compile 'com.android.support:multidex:1.0.1'
+    // 多dex配置
+
+    //    Utility Code--------------------------------------------
+    compile 'com.blankj:utilcode:1.3.6'
+    compile 'org.xutils:xutils:3.3.36'
+    // -------------------------------------------------------------
+
+    //    UI组件--------------------------------------------
+
+    //进度条
+    compile 'com.dalong:rotaryballview:1.0.0'
+    //    compile 'com.wang.avi:library:2.1.3'
+
+    //toggle button
+    compile 'com.github.zcweng:switch-button:0.0.3@aar'
+    //genius android
+
+    // ui module
+    compile "net.qiujuer.genius:ui:${genius_version}"
+    compile "net.qiujuer.genius:res:${genius_version}"
+    // use to bitmap blur and more
+    compile 'net.qiujuer.genius:graphics:2.0.0'
+    // ping/telnet/tracert/dns and run cmd
+    compile 'net.qiujuer.genius:kit-cmd:2.0.0'
+    // shuttle between ui-thread and child-thread
+    compile 'net.qiujuer.genius:kit-handler:2.0.0'
+    // class reflect
+    compile 'net.qiujuer.genius:kit-reflect:2.0.0'
+    //genius android steady branch
+
+    //    compile 'com.github.qiujuer:genius:2.4.1'
+    compile 'info.hoang8f:android-segmented:1.0.6'
+    //单选按钮
+    compile 'com.7heaven.widgets:segmentcontrol:1.17'
+    compile 'com.github.lovetuzitong:MultiImageSelector:1.2'
+    //flycotablayout
+    compile 'com.flyco.roundview:FlycoRoundView_Lib:1.1.2@aar'
+    compile 'com.flyco.tablayout:FlycoTabLayout_Lib:1.5.0@aar'
+    //    material design
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    //    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
+    compile 'com.github.vajro:MaterialDesignLibrary:1.6'
+    //material dialog
+    compile 'com.afollestad.material-dialogs:core:0.9.4.4'
+    compile 'com.afollestad.material-dialogs:commons:0.9.4.4'
+    //material edit text
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    //日期选择
+    compile 'com.wdullaer:materialdatetimepicker:3.2.1'
+    //    compile 'com.borax12.materialdaterangepicker:library:1.9'
+
+    //选择器
+    compile 'cn.qqtheme.framework:AndroidPicker:1.0.3'
+    compile 'biz.kasual:materialnumberpicker:1.2.1'
+    //    compile('cn.qqtheme.framework:WheelPicker:1.5.2') {
+
+    //        exclude group: 'com.android.support'
+
+    //    }
+
+
+    //banner
+    compile 'com.youth.banner:banner:1.4.9'
+    //首页搜索View
+    compile 'org.sufficientlysecure:html-textview:1.3'
+    //动画库
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.hedgehog.ratingbar:app:1.1.2'
+    //    //根据视图大小自动适应文本大小
+    compile 'me.grantland:autofittextview:0.2.1'
+    //分割线
+    compile 'com.yanyusong.y_divideritemdecoration:y_divideritemdecoration:2.0'
+    // -------------------------------------------------------------
+
+    //    推送通知,即时通讯--------------------------------------------
+
+    //极光推送
+
+    //    compile 'cn.jiguang.sdk:jpush:3.0.5'  // 此处以JPush 3.0.5 版本为例。
+
+    //    compile 'cn.jiguang.sdk:jcore:1.1.2'  // 此处以JCore 1.1.2 版本为例。
+
+    //    compile 'cn.jiguang.sdk:jmessage:2.1.2'  // 此处以JMessage 2.1.2 版本为例
+
+    //    //jmessage
+
+    //    compile 'cn.jiguang.imui:messagelist:0.2.0'
+
+    //    compile 'cn.jiguang.imui:chatinput:0.2.0'
+
+    // -------------------------------------------------------------
+
+    //    版本升级,崩溃日志--------------------------------------------
+
+    //bugly
+    compile 'com.tencent.bugly:crashreport_upgrade:1.3.1'
+    //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    compile 'com.tencent.bugly:nativecrashreport:3.3.1'
+    //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+
+    // -------------------------------------------------------------
+
+    //    网络通信,网络状态--------------------------------------------
+
+    //fastJson retrofit2 Covert
+    compile 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.0'
+    //    gson
+    compile 'com.google.code.gson:gson:2.6.2'
+    //network status
+    compile 'com.caption:netmonitorlibrary:1.0.0'
+    //okhttputils  zhy
+    compile 'com.zhy:okhttputils:2.6.2'
+    compile 'me.jessyan:retrofit-url-manager:1.2.5'
+
+    // -------------------------------------------------------------
+
+    //    图片显示,加载,转换--------------------------------------------
+
+    //图片加载
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    // compile 'com.github.bumptech.glide:glide:4.0.0'
+
+    //图片转换
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
+    //圆形图片加载库,图片显示
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    //    compile 'com.github.chrisbanes:PhotoView:1.3.0'
+
+    //large image
+    compile 'com.shizhefei:LargeImageView:1.0.9'
+    // -------------------------------------------------------------
+
+    //    单元测试,功能测试--------------------------------------------
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test:runner:0.5', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile 'com.android.support.test:rules:0.5', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+    //    androidTestCompile 'com.android.support.test.espresso:espresso-accessibility:3.0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.2'
+    //    androidTestCompile 'com.android.support.test.espresso.idling:idling-concurrent:3.0.1'
+
+    // The following Espresso dependency can be either "compile"
+
+    // or "androidTestCompile", depending on your app's implementation
+    androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
+    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
+    //    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+
+    // -------------------------------------------------------------
+
+    //    高德地图,导航--------------------------------------------
+    compile 'com.amap.api:location:3.5.0'
+    compile 'com.amap.api:search:5.3.1'
+    compile 'com.amap.api:navi-3dmap:5.3.0_3dmap5.3.0'
+    compile 'com.amap.api:map2d:latest.integration'
+    //    compile 'com.amap.api:3dmap:5.0.0'
+
+    // -------------------------------------------------------------
+
+    //    依赖注入--------------------------------------------
+
+    //使用APT生成工具，生成需要的DI代码
+    compile 'com.google.dagger:dagger-compiler:2.5'
+    //    //JSR250的jar包，使用这个和使用glassFish的那个一样，仅为了使用@Inject 和@Named注解
+
+    //    provided 'javax.annotation:jsr250-api:1.0'
+
+    //Dagger2 的依赖
+    compile 'com.google.dagger:dagger:2.5'
+    // -------------------------------------------------------------
+
+    //    RxJava,RxAndroid,RxBinding--------------------------------------------
+
+    //RxJava RxAndroid
+    compile 'io.reactivex:rxandroid:1.2.1'
+    //    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    //rxlifecycle
+    compile 'com.trello:rxlifecycle:0.3.0'
+    compile 'com.trello:rxlifecycle-components:0.3.0'
+    //    compile 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'constraint
+
+    //// If you want to bind to Android-specific lifecycles
+
+    //    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.1.0'
+
+    //// If you want pre-written Activities and Fragments you can subclass as providers
+
+    //    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
+
+    // -------------------------------------------------------------
+
+    //    View注入框架--------------------------------------------
+
+
+    // -------------------------------------------------------------
+
+    //    列表视图--------------------------------------------
+
+    //recycler view adapter
+
+    //    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v2.1.1'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.18'
+    //    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
+
+    // -------------------------------------------------------------
+
+    //    图表--------------------------------------------
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    //    --------------------------------------------
+
+    //    Other--------------------------------------------
+
+    //    annotation
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+    //内存泄露检测
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+
+    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
+    //permissions
+    compile 'pub.devrel:easypermissions:0.4.0'
+    //android-job
+    compile 'com.evernote:android-job:1.1.11'
+    //non memory leak handler
+    compile 'com.badoo.mobile:android-weak-handler:1.1'
+    // -------------------------------------------------------------
+
+    //数据库
+//    compile 'org.litepal.android:core:1.6.1'
+    //图片选择
+
+    /* compile 'com.github.LuckSiege:PictureSelectorLight:v1.1.4'*/
+
+    //省市县联动
+    compile 'com.contrarywind:Android-PickerView:3.2.4'
+    compile 'com.facebook.fresco:fresco:0.12.0'
+    //圆心ImageView
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+
+    compile project(':calendarview')
+    compile 'com.bakerj:backgrounddark-popupwindow:1.0.0'
+
+    // compile 'com.github.arcadefire:nice-spinner:1.3.1'
+//    annotationProcessor 'com.github.arcadefire:nice-spinner:1.3.1'
+
+//    compile 'com.sunshuai:android-zxing:1.0.0'
+    compile 'cn.yipianfengye.android:zxing-library:2.2'
+
+    // 支持缩放的ImageView库
+    compile 'com.github.chrisbanes:PhotoView:2.1.3'
+    compile project(path: ':livebody_verify_lib')
+    compile(name: 'library-ocr-1.0.5-SNAPSHOT', ext: 'aar')
+    compile 'org.litepal.android:java:3.0.0'
+
+    //    butterknife
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    //权限处理
+    compile 'com.yanzhenjie.permission:support:2.0.1'
+}
+
+// 依赖插件脚本
+//如果使用tinker,请取消注释下面这行代码
+// apply from: 'tinker-support.gradle'
+

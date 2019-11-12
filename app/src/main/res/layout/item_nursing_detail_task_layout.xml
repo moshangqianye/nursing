@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dp_10"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@color/white">
+
+    <com.jqsoft.nursing.view.ZQImageViewRoundOval
+        android:id="@+id/civ_image"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:scaleType="fitXY"
+        android:src="@mipmap/icon_touxiang"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/dp_8">
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/dark_black_color"
+            android:textSize="@dimen/txt_size_15"
+            />
+
+        <TextView
+            android:id="@+id/tv_execution_person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/dark_black_color"
+            android:textSize="@dimen/txt_size_15"
+            android:layout_marginTop="@dimen/dp_8"
+            />
+
+
+        <TextView
+            android:id="@+id/tv_begin_end_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/dark_black_color"
+            android:textSize="@dimen/txt_size_15"
+            android:layout_marginTop="@dimen/dp_8"
+            />
+
+        <TextView
+            android:id="@+id/tv_execution_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/emphasis_color_2"
+            android:textSize="@dimen/txt_size_15"
+            android:layout_marginTop="@dimen/dp_8"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_gravity="right"
+            android:id="@+id/iv_speak"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:scaleType="fitXY"
+            android:src="@mipmap/yuyin" />
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:text=""
+            android:textColor="@color/main_color"
+            android:textSize="@dimen/txt_size_15"
+          />
+
+        <TextView
+        android:id="@+id/tv_begin_nursing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_8"
+        android:text=""
+        android:textColor="@color/main_color"
+        android:textSize="@dimen/txt_size_15"
+        android:background="@drawable/positive_background_positive_round_corner_border"/>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_sum_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text=""
+        android:textColor="@color/emphasis_color_2"
+        android:textSize="@dimen/txt_size_15"
+        android:visibility="gone"
+        />
+
+
+</LinearLayout>
