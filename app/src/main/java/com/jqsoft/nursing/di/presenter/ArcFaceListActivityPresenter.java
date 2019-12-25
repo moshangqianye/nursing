@@ -97,4 +97,56 @@ public class ArcFaceListActivityPresenter {
                 });
     }
 
+
+    /**
+     * 老人注销
+     *
+     * @param map
+     */
+    public void getLoadEndList(Map<String, String> map) {
+        final Context context = (Context)view;
+        AbstractActivity abstractActivity = (AbstractActivity) context;
+
+        if (!Util.isNetworkConnected(context)) {
+            view.onLoadHealtEndFail(Constants.HINT_LOADING_DATA_FAILURE);
+            return;
+        }
+
+        GCAService.getHealthEnd(map)
+                .compose(abstractActivity.<HttpResultNewBaseBean<String>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<HttpResultNewBaseBean<String>>() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        Util.showGifProgressDialog(context);
+
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        Util.hideGifProgressDialog(context);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Util.hideGifProgressDialog(context);
+                        view.onLoadHealtEndFail(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(HttpResultNewBaseBean<String> bean) {
+                        boolean isSuccessful = Util.isResponseNewSuccessful(bean);
+                        if (isSuccessful) {
+                            view.onLoadHealthEndSuccess(bean);
+                        } else {
+                            String msg = Util.getNewMessageFromHttpResponse(bean);
+                            view.onLoadHealtEndFail(msg);
+                        }
+
+                    }
+                });
+    }
+
 }

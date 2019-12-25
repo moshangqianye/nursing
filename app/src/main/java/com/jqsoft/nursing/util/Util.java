@@ -2610,7 +2610,11 @@ public class Util {
             return Constants.EMPTY_STRING;
         } else {
             String msg = bean.getErrorMsg();
+            if(msg==null){
+                msg = bean.getMessage();
+            }
             msg = trimString(msg);
+
             return msg;
         }
     }

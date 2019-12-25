@@ -32,7 +32,7 @@ public class FunctionOptions implements Serializable {
     private int checkedBoxDrawable;// 图片选择默认样式
     private int recordVideoSecond;// 录视频秒数
     private int recordVideoDefinition;// 视频清晰度
-    private boolean isCompress = false;// 是否压缩图片，默认不压缩
+    private boolean isCompress = true;// 是否压缩图片，默认不压缩
     private boolean isCheckNumMode;// 是否显示QQ风格选择图片
     private int previewColor; // 底部预览字体颜色
     private int completeColor; // 底部完成字体颜色
@@ -41,11 +41,11 @@ public class FunctionOptions implements Serializable {
     private int previewTopBgColor; // 预览标题背景色
     private int compressQuality;// 图片裁剪质量,默认无损
     private List<LocalMedia> selectMedia = new ArrayList<>();// 已选择的图片
-    private int compressFlag; // 1 系统自带压缩 2 luban压缩
+    private int compressFlag=2; // 1 系统自带压缩 2 luban压缩
     private int compressW; // 压缩宽
     private int compressH; // 压缩高
     private int grade;// 压缩档次
-    private int maxB;// 压缩多少kb以内
+    private int maxB=200;// 压缩多少kb以内
     private boolean isGif;// 是否显示gif
     private int qq_theme;// QQ数字风格
     private long videoS = 0;

@@ -16,6 +16,7 @@ public class Version {
    // public static String HTTP_URL = "http://60.173.247.168:9092/fdss-api/";
 
     public static String HTTP_URL = "http://192.168.44.226:9092/fdss-api/apis/";
+    public static String HTTP_APPID = "0b32e011-ab3c-40d0-bbc0-6a55af191b6b";
     public static String HTTP_UPLOAD_VIDEO_URL = "";
     public static String HTTP_UPLOAD_VIDEO_URL_HOST_PREFIX = "";
     // ceshi liuchao

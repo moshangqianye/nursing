@@ -30,7 +30,7 @@ public class FunctionConfig implements Serializable {
     public static final int CROP_FLAG = 2775;// 裁剪数据 标识
     public static final int CLOSE_PREVIEW_FLAG = 2776;// 只关闭预览界面activity 标识
 
-    public static final int SELECT_MAX_NUM = 9;
+    public static final int SELECT_MAX_NUM = 1;
     public static final int MAX_COMPRESS_SIZE = 102400;
     public static final String FUNCTION_TAKE = "function_take";
     public static final String TAKE_PHOTO_SUCCESS = "takePhotoSuccess";

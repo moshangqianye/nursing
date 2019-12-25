@@ -127,7 +127,7 @@ public class HealthListFragment extends AbstractFragment implements IHealthListV
                 loadHealthList();
             }
         });
-        mAdapter = new HealthListAdapter(mHealthListBeanList);
+//        mAdapter = new HealthListAdapter(getActivity(),mHealthListBeanList);
         mAdapter.setOnLoadMoreListener(this, mRvHealthList);
         mAdapter.setEnableLoadMore(false);
         mRvHealthList.setLayoutManager(new FullyLinearLayoutManager(getActivity()));

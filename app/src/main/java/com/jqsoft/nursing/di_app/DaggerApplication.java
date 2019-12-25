@@ -31,6 +31,7 @@ import com.jqsoft.nursing.service.MyJobService;
 import com.jqsoft.nursing.service.SecService;
 import com.jqsoft.nursing.util.Util;
 import com.jqsoft.nursing.utils.LogUtil;
+import com.msd.ocr.idcard.LibraryInitOCR;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
@@ -174,7 +175,8 @@ public class DaggerApplication extends MultiDexApplication {
             initQrcodeLibrary();
         }
 
-
+        // 1. 初始化lib库(需要授权) github上的身份证扫描识别
+        LibraryInitOCR.initOCR(this);
 
     }
 
@@ -397,7 +399,7 @@ public class DaggerApplication extends MultiDexApplication {
 //        }
 //        GCARetrofit.BASE_URL =  Util.getMetaDataFromManifest(this, "HTTP_ACCESS_URL");
         GCARetrofit.BASE_URL = baseHttpUrl;
-        Version.HTTP_URL = "";
+        Version.HTTP_URL = baseHttpUrl;
         Version.FIND_FILE_URL_BASE = "";
         Version.FILE_URL_BASE = "";
       //  Version.FILE_URL_BASE = Version.HTTP_URL.substring(0, Version.HTTP_URL.length() - 1);

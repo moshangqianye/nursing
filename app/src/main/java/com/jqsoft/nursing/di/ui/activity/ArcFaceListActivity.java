@@ -45,6 +45,7 @@ import com.jqsoft.nursing.util.SwitchUtil;
 import com.jqsoft.nursing.util.ToastUtil;
 import com.jqsoft.nursing.util.Util;
 import com.jqsoft.nursing.utils3.util.PreferencesUtils;
+import com.tencent.bugly.beta.Beta;
 
 import org.json.JSONObject;
 
@@ -97,7 +98,7 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
     @Inject
     ArcFaceListActivityPresenter mPresenter;  // 健康列表Presenter
 
-
+    private LoginResultNewBean userinfo;
 
     @Override
     protected int getLayoutId() {
@@ -113,6 +114,7 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
     protected void initView() {
         this.context= this;
         application = (DaggerApplication) ArcFaceListActivity.this.getApplication();
+        userinfo= PreferencesUtils.getUserLoginInfo(ArcFaceListActivity.this);
         fl_nursing_title_menu.setVisibility(View.VISIBLE);
         iv_nursing_title_menu.setImageResource(R.mipmap.search_white);
         iv_nursing_title_menu.setOnClickListener(this);
@@ -142,7 +144,7 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
                 loadHealthList("");
             }
         });
-        mAdapter = new HealthListAdapter(mHealthListBeanList);
+        mAdapter = new HealthListAdapter(ArcFaceListActivity.this,mHealthListBeanList);
         mAdapter.setOnLoadMoreListener(this, mRvHealthList);
         mAdapter.setEnableLoadMore(false);
         mRvHealthList.setLayoutManager(new FullyLinearLayoutManager(this));
@@ -166,6 +168,7 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
                 SwitchUtil.gotoVerifyNew(context,"","",100);
             }
         });
+        Beta.checkUpgrade();
     }
 
     @Override
@@ -249,7 +252,7 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
         }
 
 
-        params.put("userid", "c9e80a74-f7ce-4803-b914-54eca951423c");
+        params.put("userid", userinfo.getGKey());
         JSONObject jsonObject = new JSONObject();
         jsonObject = new JSONObject(params);
         Log.v("okhttp",jsonObject.toString());
@@ -412,6 +415,16 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
 
     }
 
+    @Override
+    public void onLoadHealthEndSuccess(HttpResultNewBaseBean<String> bean) {
+
+    }
+
+    @Override
+    public void onLoadHealtEndFail(String message) {
+
+    }
+
     /**
      * 加载更多请求
      */
@@ -436,4 +449,20 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
     }
 
 
+    public void face(HealthListBean.RowsBean bean){
+
+        if (bean != null) {
+
+            String sToken= PreferencesUtils.getString(ArcFaceListActivity.this,"token");
+            Map<String, String> params = new HashMap<>();
+            params.put("Token", sToken);
+            params.put("pageIndex", ""+currentPage);
+            params.put("pageSize", ""+pageSize);
+            params.put("name", "");
+            params.put("idCard", "");
+            params.put("userid", "c9e80a74-f7ce-4803-b914-54eca951423c");
+
+            mPresenter.getLoadHealthList(params, true);
+        }
+    }
 }

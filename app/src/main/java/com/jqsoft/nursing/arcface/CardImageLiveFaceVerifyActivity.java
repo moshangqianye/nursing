@@ -155,12 +155,12 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
     private boolean isPreviewVideo = true;
     private boolean theme = false;
     private boolean selectImageType = false;
-    private int maxB = 0;
+    private int maxB = 200;
     private int compressW = 0;
     private int compressH = 0;
-    private boolean isCompress = false;
+    private boolean isCompress = true;
     private boolean isCheckNumMode = false;
-    private int compressFlag = 1;// 1 系统自带压缩 2 luban压缩
+    private int compressFlag = 2;// 1 系统自带压缩 2 luban压缩
     private int themeStyle;
     private int previewColor, completeColor, previewBottomBgColor, previewTopBgColor, bottomBgColor, checkedBoxDrawable;
     private boolean mode = false;// 启动相册模式
@@ -232,7 +232,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
     private Uri photoPath;
     private String sCheckFacePhoto, sDeletePhoto;
     private ImageView iv_location,iv_idcard;
-    private EditText et_familyadress,et_name,et_idcard,et_hujiadress_new;
+    private EditText et_familyadress,et_name,et_idcard,et_hujiadress_new,et_phone;
     private TextView et_hujiadress,tv_nation,tv_sex,tv_birth;
 
     @Inject
@@ -280,6 +280,13 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
     private LoginResultNewBean userinfo;
     @Override
     protected void initView() {
+        iv_face1=(ImageView)findViewById(R.id.iv_face1);
+        tv_sex=(TextView)findViewById(R.id.tv_sex);
+        tv_birth=(TextView)findViewById(R.id.tv_birth);
+        et_name=(EditText)findViewById(R.id.et_name1);
+        et_idcard=(EditText)findViewById(R.id.et_idcard);
+        et_phone=(EditText)findViewById(R.id.et_phone);
+        et_hujiadress_new=(EditText)findViewById(R.id.et_hujiadress_new);
         initData1();
         initView1();
 
@@ -300,7 +307,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
              sAreaCode="";
          }
 
-        intSelectAdress(sAreaCode);
+//        intSelectAdress(sAreaCode);
         et_hujiadress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -385,8 +392,6 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
                     tv.setEnabled(true);
                     tv.setEnabled(true);
                 }
-
-
 
                 return tv;
             }
@@ -534,6 +539,20 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
             String pictureUrl = mpeopleBasebean.getSElderPhoto();
             GlideUtils.loadImageWithPlaceholderAndError(iv_face1, pictureUrl, com.jqsoft.nursing.R.mipmap.cf_click_to_collect, com.jqsoft.nursing.R.mipmap.cf_click_to_collect);
 
+//            ivCardFront.setVisibility(View.VISIBLE);
+//            ivCardFront.setVisibility(View.GONE);
+            String pictureUrl1 = mpeopleBasebean.getsCardPositive();
+            GlideUtils.loadImageWithPlaceholderAndError(ivCardFront, pictureUrl1, com.jqsoft.nursing.R.mipmap.cf_id_card_number, com.jqsoft.nursing.R.mipmap.cf_id_card_number);
+
+//            ivCardBack.setVisibility(View.VISIBLE);
+//            ivCardBack.setVisibility(View.GONE);
+            String pictureUrl2 = mpeopleBasebean.getsCardReverse();
+            GlideUtils.loadImageWithPlaceholderAndError(ivCardBack, pictureUrl2, com.jqsoft.nursing.R.mipmap.cf_id_card_number, com.jqsoft.nursing.R.mipmap.cf_id_card_number);
+
+
+
+
+
 //            final float scale = CardImageLiveFaceVerifyActivity.this.getResources().getDisplayMetrics().density;
 //           int px=(int) (190 * scale + 0.5f);
 //            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(px,
@@ -543,6 +562,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
             tv_birth.setText(mpeopleBasebean.getDBirthTime());
             tv_sex.setText(mpeopleBasebean.getSSexName());
             tv_nation.setText(mpeopleBasebean.getSNationName());
+            et_phone.setText(mpeopleBasebean.getsTel());
 
             iv_idcard.setVisibility(View.GONE);
             iv_location.setVisibility(View.GONE);
@@ -555,6 +575,8 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
             et_hujiadress.setClickable(true);
             et_familyadress.setFocusable(false);
             et_familyadress.setClickable(true);
+            et_phone.setFocusable(false);
+            et_phone.setClickable(true);
 
             et_hujiadress_new.setFocusable(false);
             et_hujiadress_new.setClickable(true);
@@ -723,12 +745,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
     private Bitmap headbitmap = null;
 
     private void initView1() {
-        iv_face1=(ImageView)findViewById(R.id.iv_face1);
-        tv_sex=(TextView)findViewById(R.id.tv_sex);
-        tv_birth=(TextView)findViewById(R.id.tv_birth);
-        et_name=(EditText)findViewById(R.id.et_name);
-        et_idcard=(EditText)findViewById(R.id.et_idcard);
-        et_hujiadress_new=(EditText)findViewById(R.id.et_hujiadress_new);
+
 
         mFlowLayout =(TagFlowLayout)findViewById(R.id.ll_people);
         tv_nation=(TextView)findViewById(R.id.tv_nation);
@@ -942,11 +959,11 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 //        refreshVerifyButtonStatus(cbLicense.isChecked());
 
         //判断是否只开启人脸比对，不开启人证比对
-        if (isOnlyFace.equals("1")) {
-            ll_card.setVisibility(View.GONE);
-        } else {
-            ll_card.setVisibility(View.VISIBLE);
-        }
+//        if (isOnlyFace.equals("1")) {
+//            ll_card.setVisibility(View.GONE);
+//        } else {
+//            ll_card.setVisibility(View.VISIBLE);
+//        }
         iv_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -965,11 +982,14 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
         iv_idcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(flag.equals("1")){
 
-                }else {
-                    selectImage();
-                }
+                ScanCardActivity.start(CardImageLiveFaceVerifyActivity.this, true);
+
+//                if(flag.equals("1")){
+//
+//                }else {
+//                    selectImage();
+//                }
 //                ScanCardActivity.start(CardImageLiveFaceVerifyActivity.this, true);
             }
         });
@@ -1023,10 +1043,39 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
         if (TextUtils.isEmpty(Version.getsReadCard_Value())) {
             Version.setsReadCard_Value(readcardType_VALUE);
         }
-        new Thread(netReadCard).start();
+//        new Thread(netReadCard).start();
 //        if (Version.getsReadCard_Value().equals("1")) {
 //
 //        }else {
+
+//
+            TecentHttpUtil.uploadIdCard(BitMapUtils.bitmapToBase64(bitmap), "0", new TecentHttpUtil.SimpleCallBack() {
+                @Override
+                public void Succ(String res) {
+                    identifyResult = new Gson().fromJson(res, IdentifyResult.class);
+                    if (identifyResult != null) {
+                        if (identifyResult.getErrorcode() == 0) {
+
+                            // 识别成功
+
+                            //    showDialogInfo(result);
+                            myhandler.sendEmptyMessage(PICSCCUSE);
+                        } else {
+                            Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
+                            myhandler.sendEmptyMessage(PICERROR);
+
+                        }
+
+                    }
+                }
+
+                @Override
+                public void error() {
+                    myhandler.sendEmptyMessage(PICERROR);
+                }
+            });
+
+//
 //            TecentHttpUtil.readIdCard(BitMapUtils.bitmapToBase64(bitmap), new TecentHttpUtil.SimpleCallBack() {
 //                @Override
 //                public void Succ(String res) {
@@ -1045,6 +1094,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 //        }
     }
 
+    private    IdentifyResult identifyResult;
     private String SuccResult = "";
 
     /**
@@ -1365,16 +1415,20 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
     }
 
     private void selectCardFrontImage() {
+
         imageSelectType = IMAGE_SELECT_TYPE_CARD_FRONT;
-        if (isCardFrontOnlyFromCamera) {
-            // PictureConfig.getInstance().init(options).startOpenCamera(CardImageLiveFaceVerifyActivity.this);
-
-                selectImage();
-
-
-        } else {
-            PictureConfig.getInstance().init(options).openPhoto(this, resultCallback);
-        }
+//        PictureConfig.getInstance().init(options).openPhoto(this, resultCallback);
+        PictureConfig.getInstance().init(options).startOpenCamera(this);
+//        imageSelectType = IMAGE_SELECT_TYPE_CARD_FRONT;
+//        if (isCardFrontOnlyFromCamera) {
+//            // PictureConfig.getInstance().init(options).startOpenCamera(CardImageLiveFaceVerifyActivity.this);
+//
+//                selectImage();
+//
+//
+//        } else {
+//            PictureConfig.getInstance().init(options).openPhoto(this, resultCallback);
+//        }
 
 
     }
@@ -1383,6 +1437,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
         imageSelectType = IMAGE_SELECT_TYPE_CARD_BACK;
 //        PictureConfig.getInstance().init(options).openPhoto(this, resultCallback);
+        PictureConfig.getInstance().init(options).startOpenCamera(this);
 
     }
 
@@ -1408,6 +1463,13 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
     private void deleteByFilePath(String filePath) {
         ivCardFront.setImageResource(R.mipmap.cf_id_card_number);
+        filePath = Util.trimString(filePath);
+        DeleteFileUtil.delete(filePath);
+    }
+
+
+    private void deleteBackByFilePath(String filePath) {
+        ivCardBack.setImageResource(R.mipmap.cf_id_card_number);
         filePath = Util.trimString(filePath);
         DeleteFileUtil.delete(filePath);
     }
@@ -1452,17 +1514,17 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
                         List<LocalMedia> mediaList = (List<LocalMedia>) data.getSerializableExtra(FunctionConfig.EXTRA_RESULT);
                         if (mediaList != null && mediaList.size() > 0) {
                             LocalMedia lm = mediaList.get(0);
-                            onSelectOneMedia(lm);
+                            onSelectOneFrontMedia(lm);
                         }
 
                     }
 
-                } else if (/*isFaceOnlyFromCamera && */imageSelectType == IMAGE_SELECT_TYPE_FACE) {
+                } else if (/*isFaceOnlyFromCamera && */imageSelectType == IMAGE_SELECT_TYPE_CARD_BACK) {
                     if (data != null) {
                         List<LocalMedia> mediaList = (List<LocalMedia>) data.getSerializableExtra(FunctionConfig.EXTRA_RESULT);
                         if (mediaList != null && mediaList.size() > 0) {
                             LocalMedia lm = mediaList.get(0);
-                            onSelectOneMediaForFace(lm);
+                            onSelectOneBackMedia(lm);
                         }
 
                     }
@@ -1760,13 +1822,54 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
             media.setFileName(aFileName);
         }
 
-//            String s1 = Base64Util.imageToBase64(paths);
-
         Bitmap bitmap = BitmapFactory.decodeFile(paths);
 
         refreshUI(IMAGE_SELECT_TYPE_CARD_FRONT, paths, bitmap);
 
         verifyIdCardNumber(bitmap);
+
+    }
+
+    private void onSelectOneBackMedia(LocalMedia media) {
+        String paths = Util.trimString(media.getCompressPath());
+        if (TextUtils.isEmpty(paths)) {
+            paths = Util.trimString(media.getPath());
+        } else {
+            deleteBackByFilePath(media.getPath());
+        }
+        String temp[] = paths.replaceAll("\\\\", "/").split("/");
+        if (temp.length > 1) {
+            String aFileName = temp[temp.length - 1];
+            media.setFileName(aFileName);
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeFile(paths);
+
+        refreshUI(IMAGE_SELECT_TYPE_CARD_BACK, paths, bitmap);
+
+//        verifyIdCardNumber(bitmap);
+
+    }
+
+
+    private void onSelectOneFrontMedia(LocalMedia media) {
+        String paths = Util.trimString(media.getCompressPath());
+        if (TextUtils.isEmpty(paths)) {
+            paths = Util.trimString(media.getPath());
+        } else {
+            deleteByFilePath(media.getPath());
+        }
+        String temp[] = paths.replaceAll("\\\\", "/").split("/");
+        if (temp.length > 1) {
+            String aFileName = temp[temp.length - 1];
+            media.setFileName(aFileName);
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeFile(paths);
+
+        refreshUI(IMAGE_SELECT_TYPE_CARD_FRONT, paths, bitmap);
+
+//        verifyIdCardNumber(bitmap);
 
     }
 
@@ -1821,7 +1924,8 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 //            deleteByFilePath(cardFrontPath);
             cardFrontPath = path;
             if (bitmap != null) {
-                ivCardFront.setImageBitmap(WaterMarkBitmapUtil.createWaterMaskBitmap(this, bitmap, "两卡制专用"));
+                ivCardFront.setImageBitmap(bitmap);
+//                ivCardFront.setImageBitmap(WaterMarkBitmapUtil.createWaterMaskBitmap(this, bitmap, "两卡制专用"));
             } else {
                 ivCardFront.setImageResource(R.mipmap.cf_id_card_number);
             }
@@ -2096,12 +2200,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
 
     private void verifyOnlyFace(String status) {
-        Util.showGifProgressDialog(this, new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                cancelNetworkRequest();
-            }
-        });
+
 
         String sName =et_name.getText().toString().trim();
         String sIdcard =et_idcard.getText().toString().trim();
@@ -2110,6 +2209,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
         String sBirth =tv_birth.getText().toString().trim();
         String sFamilyAdress=et_familyadress.getText().toString().trim();
         String shujiAdress=et_hujiadress_new.getText().toString().trim();
+        String tel=et_phone.getText().toString().trim();
 
         if(TextUtils.isEmpty(sName)){
                 Toast.makeText(CardImageLiveFaceVerifyActivity.this,"请输入姓名!",Toast.LENGTH_LONG).show();
@@ -2138,9 +2238,24 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
         }else if(TextUtils.isEmpty(facePath)){
             Toast.makeText(CardImageLiveFaceVerifyActivity.this,"请采集头像!",Toast.LENGTH_LONG).show();
             return;
+        }else if(TextUtils.isEmpty(cardFrontPath)){
+            Toast.makeText(CardImageLiveFaceVerifyActivity.this,"请采集身份证正面照!",Toast.LENGTH_LONG).show();
+            return;
+        }else if(TextUtils.isEmpty(cardBackPath)){
+            Toast.makeText(CardImageLiveFaceVerifyActivity.this,"请采集身份证反面照!",Toast.LENGTH_LONG).show();
+            return;
+        }else if(TextUtils.isEmpty(tel)){
+            Toast.makeText(CardImageLiveFaceVerifyActivity.this,"请输入联系方式!",Toast.LENGTH_LONG).show();
+            return;
         }else {
-
+            Util.showGifProgressDialog(this, new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    cancelNetworkRequest();
+                }
+            });
             String faceBase64String = Base64Util.imageToBase64(facePath);
+
             String sToken= PreferencesUtils.getString(CardImageLiveFaceVerifyActivity.this,"token");
             Map<String, String> params = new HashMap<>();
             params.put("Token", sToken);
@@ -2253,10 +2368,14 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
             params.put("sPersonTypeCode", sPeopleCode);
             params.put("sPersonTypeName", sPeople);
 
+            String cardFrontBase64String = Base64Util.imageToBase64(cardFrontPath);
+            String cardBackBase64String = Base64Util.imageToBase64(cardBackPath);
 
-
-            params.put("sAddUserId", userinfo.getSAddUserId());
+            params.put("sAddUserId", userinfo.getGKey());
             params.put("sElderPhoto", faceBase64String);
+            params.put("CardPositive", cardFrontBase64String);
+            params.put("CardReverse", cardBackBase64String);
+            params.put("sTel", tel);
 
         Util.showGifProgressDialog(getApplicationContext());
         saveFaceInfoPresenter.main(params);
@@ -2276,7 +2395,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
         }
 
         //String url = Version.BASE_URL + Version.CREATE_FEATURE_ONLYFACE_URL;
-        String url = "http://192.168.45.20:5444/api/DistinguishAPP/SaveElder";
+        String url = "http://192.168.45.20:5577/api/DistinguishAPP/SaveElder";
         Log.i("chenxu", "url" + url);
         call = OkHttpUtils.post()//
 //                .addFile("mFile", "agguigu-afu.jpe", file)//
@@ -2350,34 +2469,68 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PICSCCUSE:
+
                     isInResolveIdCardNumberMode = false;
                     Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
-                    String readAPIcard = cardBean.getsCardNo();
-                    String name = cardBean.getsPersonName();
-                    String nation = cardBean.getsNation();
-                    String address = cardBean.getsAddress();
+                    String readAPIcard = identifyResult.getId();
+                    String name = identifyResult.getName();
+                    String nation = identifyResult.getNation()+"族";
+                    String address = identifyResult.getAddress();
                     readAPIcard = Util.trimString(readAPIcard);
 
-//                        readAPIname = result.getName();
-//                        Toast.makeText(CardImageLiveFaceVerifyActivity.this, readAPIcard, Toast.LENGTH_SHORT).show();
                     if (!TextUtils.isEmpty(readAPIcard)) {
                         if(readAPIcard.length()==15 || readAPIcard.length()==18){
                             if(!TextUtils.isEmpty(name)){
                                 et_name.setText(name);
                             }
                             et_idcard.setText(readAPIcard);
-                            et_hujiadress_new.setText(cardBean.getsAddress());
+                            et_hujiadress_new.setText(address);
+                            tv_nation.setText(nation);
+
+                            for (int i = 0; i < realRaceList.size(); ++i) {
+                                if(realRaceList.get(i).getStringRepresentation().equals(nation)){
+                                      ssNationCode=realRaceList.get(i).getStringValue();
+                                      break;
+                                }
+                            }
+
+
 
                         }else {
                             showNotificationDialog("识别失败，请拍照清楚后重新识别", null);
                             Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
                         }
-//                        showNotificationDialog(name+readAPIcard+nation+address, null);
 
                     } else {
                         showNotificationDialog("识别失败，请拍照清楚后重新识别", null);
                         Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
                     }
+
+//                    isInResolveIdCardNumberMode = false;
+//                    Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
+//                    String readAPIcard = cardBean.getsCardNo();
+//                    String name = cardBean.getsPersonName();
+//                    String nation = cardBean.getsNation();
+//                    String address = cardBean.getsAddress();
+//                    readAPIcard = Util.trimString(readAPIcard);
+//
+//                    if (!TextUtils.isEmpty(readAPIcard)) {
+//                        if(readAPIcard.length()==15 || readAPIcard.length()==18){
+//                            if(!TextUtils.isEmpty(name)){
+//                                et_name.setText(name);
+//                            }
+//                            et_idcard.setText(readAPIcard);
+//                            et_hujiadress_new.setText(cardBean.getsAddress());
+//
+//                        }else {
+//                            showNotificationDialog("识别失败，请拍照清楚后重新识别", null);
+//                            Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
+//                        }
+//
+//                    } else {
+//                        showNotificationDialog("识别失败，请拍照清楚后重新识别", null);
+//                        Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
+//                    }
 
                     break;
                 case Constant.APPLy_SCUSSE:
@@ -2769,8 +2922,53 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
 
     @Override
-    public void onBackListener(ReadIdCardBean bean) {
-        ToastUtils.show(CardImageLiveFaceVerifyActivity.this,bean.getNum());
+    public void onBackListener(final ReadIdCardBean bean) {
+        // 识别成功
+        if (TextUtils.equals("1", bean.getType())) {
+
+            isInResolveIdCardNumberMode = false;
+//            Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
+            String readAPIcard = bean.getNum();
+            String name = bean.getName();
+            String nation = bean.getFolk()+"族";
+            String address = bean.getAddr();
+            readAPIcard = Util.trimString(readAPIcard);
+            et_name.setText(name);
+            if (!TextUtils.isEmpty(readAPIcard)) {
+                if(readAPIcard.length()==15 || readAPIcard.length()==18){
+                    if(!TextUtils.isEmpty(name)){
+                        et_name.setText(name);
+                    }
+                    et_idcard.setText(readAPIcard);
+                    et_hujiadress_new.setText(address);
+                    tv_nation.setText(nation);
+
+                    for (int i = 0; i < realRaceList.size(); ++i) {
+                        if(realRaceList.get(i).getStringRepresentation().equals(nation)){
+                            ssNationCode=realRaceList.get(i).getStringValue();
+                            break;
+                        }
+                    }
+
+
+
+
+
+                }else {
+                    showNotificationDialog("识别失败，请拍照清楚后重新识别", null);
+                    Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
+                }
+
+            } else {
+                showNotificationDialog("识别失败，请拍照清楚后重新识别", null);
+                Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
+            }
+
+        }else{
+            Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
+            myhandler.sendEmptyMessage(PICERROR);
+        }
+
 
     }
     private static final int ACTION_REQUEST_PERMISSIONS = 0x001;

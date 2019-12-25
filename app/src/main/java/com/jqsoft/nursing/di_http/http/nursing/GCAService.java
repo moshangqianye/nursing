@@ -851,6 +851,16 @@ public interface GCAService {
     @POST("api/DistinguishAPP/GetElderList")
     Observable<HttpResultNewBaseBean<String>> getHealthList(@FieldMap Map<String,String> map);
 
+    /**
+     * 老人注销
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api/DistinguishAPP/ElderLogOut")
+    Observable<HttpResultNewBaseBean<String>> getHealthEnd(@FieldMap Map<String,String> map);
+
+
     @FormUrlEncoded
     @POST("api.phone/SaveFaceRecognitionMsg")
     Observable<HttpResultNurseBaseBean<List<HealthListBean>>> saveHeadCollect(@FieldMap Map<String,String> map);

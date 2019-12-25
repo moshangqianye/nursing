@@ -175,12 +175,13 @@ public class ScanCardActivity extends AbstractActivity implements View.OnClickLi
                         new Thread() { // 解决没有及时销毁activity造成闪现黑屏
                             @Override
                             public void run() {
-                                try {
-                                    Thread.sleep(500);
-                                    finish();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                                finish();
+//                                try {
+//                                    Thread.sleep(500);
+//                                    finish();
+//                                } catch (InterruptedException e) {
+//                                    e.printStackTrace();
+//                                }
                             }
                         }.start();
                     } else {

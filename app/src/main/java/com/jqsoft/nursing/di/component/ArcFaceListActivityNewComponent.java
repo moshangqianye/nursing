@@ -1,10 +1,8 @@
 package com.jqsoft.nursing.di.component;
 
 import com.jqsoft.nursing.di.module.ArcFaceListActivityModule;
-import com.jqsoft.nursing.di.module.MedicalInstitutionActivityModule;
 import com.jqsoft.nursing.di.ui.activity.ArcFaceListActivity;
 import com.jqsoft.nursing.di.ui.activity.ElderLogOutActivity;
-import com.jqsoft.nursing.di.ui.activity.MedicalInstitutionActivity;
 import com.jqsoft.nursing.di_app.ActivityScope;
 
 import dagger.Subcomponent;
@@ -15,7 +13,6 @@ import dagger.Subcomponent;
 
 @ActivityScope
 @Subcomponent(modules = ArcFaceListActivityModule.class)
-public interface ArcFaceListActivityComponent {
-    void inject(ArcFaceListActivity  activity);
+public interface ArcFaceListActivityNewComponent {
     void inject(ElderLogOutActivity activity);
 }

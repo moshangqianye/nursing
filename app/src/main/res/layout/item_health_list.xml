@@ -9,11 +9,11 @@
     android:padding="@dimen/dp_10"
     android:layout_marginTop="@dimen/dp_10">
 
-    <com.jqsoft.nursing.view.ZQImageViewRoundOval
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_head"
-        android:layout_width="@dimen/dp_60"
-        android:layout_height="@dimen/dp_60"
-        android:scaleType="fitCenter"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="match_parent"
+        android:padding="5dip"
         android:src="@mipmap/icon_touxiang" />
 
     <LinearLayout
@@ -54,6 +54,8 @@
                 android:textSize="@dimen/sp_14"
                 tools:text="002" />
 
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -92,9 +94,15 @@
             android:layout_marginTop="@dimen/dp_10"/>
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="@dimen/dp_30"
-        android:layout_height="@dimen/dp_30"
-        android:src="@mipmap/next_black"/>
+    <TextView
+        android:layout_gravity="top"
+        android:id="@+id/tv_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="注销"
+        android:textColor="@color/main_color"
+        android:textSize="@dimen/txt_size_14"
+        android:background="@drawable/positive_background_positive_round_corner_border"/>
+
 
 </LinearLayout>

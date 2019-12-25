@@ -57,6 +57,7 @@
     <!-- android:name="android.hardware.usb.host" -->
     <!-- android:required="true" /> -->
     <application
+
         android:name="com.jqsoft.nursing.di_app.DaggerApplication"
         android:allowBackup="true"
         android:icon="@mipmap/mytubiao"
@@ -106,6 +107,7 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <provider
+
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${FILE_PROVIDER_AUTHORITIES_VALUE}"
             android:exported="false"
@@ -329,6 +331,7 @@
             android:windowSoftInputMode="stateAlwaysHidden"/>
 
         <activity
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:name=".arcface.CardImageLiveFaceVerifyActivity"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -887,6 +890,14 @@
         <!-- 图片预览页面 -->
         <activity
             android:name=".di.ui.activity.PreviewPicActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+
+
+        <!-- 病例列表 -->
+        <activity android:name="com.jqsoft.nursing.di.ui.activity.ElderLogOutActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />

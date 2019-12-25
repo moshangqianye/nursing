@@ -7,6 +7,7 @@ package com.jqsoft.nursing.bean.base;
 public class HttpResultNewBaseBean<T> {
     private String Success ;
     private String ErrorMsg;
+    private String Message;
     private T BackInfo;
 
     public HttpResultNewBaseBean() {
@@ -40,5 +41,13 @@ public class HttpResultNewBaseBean<T> {
 
     public void setBackInfo(T backInfo) {
         BackInfo = backInfo;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String message) {
+        Message = message;
     }
 }

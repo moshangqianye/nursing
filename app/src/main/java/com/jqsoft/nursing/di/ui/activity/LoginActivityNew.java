@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -123,18 +124,6 @@ import okhttp3.Response;
 
 import static com.jqsoft.nursing.base.Constants.WORKBENCH_ON_NEW_INTENT_INITIAL_INDEX_KEY;
 
-//import cn.jpush.android.api.JPushInterface;
-//import cn.jpush.android.api.TagAliasCallback;
-
-//import com.jqsoft.nursing.listener.IMProcessSuccessListener;
-//import com.jqsoft.nursing.util.ExampleUtil;
-//import cn.jpush.android.api.JPushInterface;
-//import cn.jpush.android.api.TagAliasCallback;
-//import cn.jpush.im.android.api.JMessageClient;
-//import cn.jpush.im.android.api.callback.GetUserInfoCallback;
-//import cn.jpush.im.android.api.model.UserInfo;
-//import cn.jpush.im.api.BasicCallback;
-
 /**
  * Created by Administrator on 2017-07-12.
  */
@@ -215,59 +204,19 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
         LogUtil.i("willRememberPassword:" + willRememberPassword);
         rememberPassword(willRememberPassword);
 
-//        boolean isVisible = Util.isAppVisibleToUser(this);
-//        LogUtil.i("isVisible:"+isVisible);
-//        boolean isRunning = Util.isAppRunning(this);
-//        LogUtil.i("isRunning:"+isRunning);
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Util.showNotification(LoginActivityNew.this, "消息", "王主任发送了一条消息");
-////                boolean visible = Util.isAppVisibleToUser(LoginActivityNew.this);
-////                LogUtil.i("now the app is visible:"+visible);
-////                boolean running = Util.isAppRunning(LoginActivityNew.this);
-////                LogUtil.i("now the app is running:"+running);
-//            }
-//        }, 5000);
-
-
-
-        if (!checkLogin(isManual)) {
-            return;
-        } else {
-//             doLogin();
-//            getToken();
-            Util.showGifProgressDialog(getApplicationContext());
+        if(TextUtils.isEmpty(getUsername())){
+            Toast.makeText(LoginActivityNew.this,"账号不能为空!",Toast.LENGTH_LONG).show();
+        }else if(TextUtils.isEmpty(getPassword())){
+            Toast.makeText(LoginActivityNew.this,"密码不能为空!",Toast.LENGTH_LONG).show();
+        }else {
+            Util.showGifProgressDialog(LoginActivityNew.this);
             new Thread(runNote).start();
-
         }
 
 
-//        testKey();
-//        Util.showToast(this, "登录按钮被点击了");
-//        LoginActivity.HAS_LOGGED_IN = true;
-//        ActivityUtils.launchActivity(Constants.PACKAGE_NAME,
-//                Constants.WORKBENCH_ACTIVITY_NAME);
+
     }
 
-    public boolean checkLogin(boolean isManual) {
-        String username = getUsername();
-        String password = getPassword();
-        if (StringUtils.isBlank(username)) {
-            if (isManual) {
-                Util.showToast(this, Constants.HINT_PLEASE_INPUT_USERNAME);
-            }
-            return false;
-        } else if (StringUtils.isBlank(password)) {
-            if (isManual) {
-                Util.showToast(this, Constants.HINT_PLEASE_INPUT_PASSWORD);
-            }
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     public void doLogin() {
 
@@ -329,9 +278,6 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
         cbRp.setChecked(true);
         copyDatabase();
 
-//        Resources resources = getApplication().getResources();
-//        Drawable btnDrawable = resources.getDrawable(R.drawable.llbg);
-//        sv_bg.setBackgroundDrawable(btnDrawable);
     }
 
 
@@ -364,7 +310,7 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
 
     public void initView() {
 
-
+        Beta.checkUpgrade();
 
         setAcrsoftFace();
 
@@ -491,7 +437,7 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
 
         showVersion();
 
-//        testKey();
+
 
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -509,25 +455,6 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
         });
     }
 
-//    int REQUEST_CODE=100;
-//    private void startActivityInAnotherApp(){
-//        try {
-//            PackageManager pm = getPackageManager();
-////            Intent intent = pm.getLaunchIntentForPackage("com.example.gareamedicalexaple");
-////            startActivity(intent);
-//
-//            Intent intent2 = new Intent();
-//            intent2.setClassName("com.example.gareamedicalexaple", "com.example.gareamedicalexample.EcgExample");
-//            startActivityForResult(intent2, REQUEST_CODE);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
 
     private void finishIntroductionActivity(){
         RxBus.getDefault().post(Constants.EVENT_TYPE_FINISH_INTRODUCTION_ACTIVITY, true);
@@ -548,32 +475,6 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
         String s = "<p>1.家庭医生</p><p >&nbsp;2.</p>";
         String replacedS = Util.getReplacedXmlTagString(s);
         LogUtil.i("replacedS:"+replacedS);
-
-//        LoginResultBean2 bean = SimulateData.getLoginResultBean2();
-//        LoginResultBean2 bean2 = SimulateData.getLoginResultBean2();
-//        TestResultBean trb = new TestResultBean("QTNDRTc2MjUtRTcxRC00NTg0LTlGNjEtODM0Mzc2RkM4QzYx","YWRtaW4=",
-//                "566h55CG5ZGY", "", "","MDAwMA==", "RkJBMzdGN0EtREJFOC00REJGLUJCREMtOTAwMEIyQzdCRUI4",
-//                "MDAwMDAwMDAtMA==", "566h55CG5py65p6E", "MzA=", "Mw==", "MzQxMjAy", "6aKN5bee5Yy6", bean);
-//        TestResultBean trb2 = new TestResultBean("QTNDRTc2MjUtRTcxRC00NTg0LTlGNjEtODM0Mzc2RkM4QzYx","YWRtaW4=",
-//                "566h55CG5ZGY", "", "","MDAwMA==", "RkJBMzdGN0EtREJFOC00REJGLUJCREMtOTAwMEIyQzdCRUI4",
-//                "MDAwMDAwMDAtMA==", "566h55CG5py65p6E", "MzA=", "Mw==", "MzQxMjAy", "6aKN5bee5Yy6", bean2);
-//        List<TestResultBean> list = new ArrayList<>();
-//        list.add(trb);
-//        list.add(trb2);
-//        BeanBase64Decoder.decodeBase64Bean(list);
-//        LogUtil.i("test key ended");
-
-
-//        Identity identity = Identity.getInstance();
-//        identity.getLoginMapFromUsernameAndPassword(getUsername(), getPassword());
-
-//        CommonParameters cp = identity.getCommonParametersObject();
-//        LoginParameters lp = new LoginParameters(cp.getKey(), cp.getTimestamp(), cp.getToken(), cp.getSig(), cp.getV(),
-//                "user", "pass");
-////        LoginParameters lp = new LoginParameters("key", "timestamp", "token", "sig", "v",
-////                "user", "pass");
-//        identity.getParametersKeysAndValuesExcludeSignature(cp);
-//        identity.getParametersKeysAndValuesExcludeSignature(lp);
     }
 
     public void initRememberPasswordCheckBox() {
@@ -651,215 +552,17 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-//            if(isReLogin){
-//                Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
-//                mHomeIntent.addCategory(Intent.CATEGORY_HOME);
-//                mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//                        | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-//                LoginActivityNew.this.startActivity(mHomeIntent);
-//            }else{
+
             LoginActivityNew.this.finish();
-//            }
+
             return false;
         } else {
             return super.onKeyDown(keyCode, event);
         }
     }
 
-    public void assignIdentityData(HttpResultBaseBean<LoginResultBean> bean) {
-        if (bean != null) {
-            LoginResultBean lrb = bean.getData();
-            Identity.initWithData(lrb);
-        }
-    }
-
-//    public void assignIdentityData2(HttpResultBaseBean<LoginResultBean2> bean) {
-//        if (bean != null) {
-//            LoginResultBean2 lrb = bean.getData();
-////            Util.decodeBase64Bean(lrb);
-////            decodeBase64FieldData(lrb);
-//            Identity.info = lrb;
-//
-//            Version.FILE_URL_BASE= Version.FILE_URL_BASE+Identity.info.getSmanagementdivisioncode()
-//                    +"/";
-//
-//        }
-//    }
-
-    public void assignSRCIdentityData(HttpResultNurseBaseBean<SRCLoginBean> bean) {
-        if (bean != null) {
-            SRCLoginBean lrb = bean.getData();
-
-            Identity.srcInfo = lrb;
-            Identity.srcInfo.setLoginSuccessUsername(getUsername());
-            Identity.srcInfo.setLoginSuccessPassword(getPassword());
-            Identity.srcInfo.setTrueName(lrb.getTrueName());
-            Identity.srcInfo.setsOrgName(lrb.getsOrgName());
-            Identity.srcInfo.setEmployeeSex(lrb.getEmployeeSex());
-            Identity.srcInfo.setEmployeeName(lrb.getEmployeeName());
-            Identity.srcInfo.setUserName(lrb.getUserName());
-            Identity.srcInfo.setRealName(lrb.getRealName());
-
-            Identity.srcInfo.setRoleId(lrb.getRoleId());
-            Identity.srcInfo.setAreaId(lrb.getAreaId());
-            Identity.srcInfo.setAreaLevel(lrb.getAreaLevel());
-
-            IdentityManager.setObjectToShare(this, Identity.srcInfo, Constants.SRC_LOGIN_RESULT_BEAN_KEY);
-
-           /* String srcAreaCode = Identity.srcInfo.getAreaCode();
-            if(TextUtils.isEmpty(srcAreaCode) ){
-                Version.FILE_URL_BASE= Version.FILE_URL_BASE+"null"
-                        +"/";
-            }else{
-                Version.FILE_URL_BASE= Version.FILE_URL_BASE+Util.trimString(Identity.srcInfo.getAreaCode())
-                        +"/";
-            }*/
-
-        }
-    }
-
-    public void decodeBase64FieldData(LoginResultBean2 lrb) {
-        if (lrb != null) {
-            lrb.setGuserid(Util.getDecodedBase64String(lrb.getGuserid()));
-            lrb.setSloginname(Util.getDecodedBase64String(lrb.getSloginname()));
-            lrb.setSusername(Util.getDecodedBase64String(lrb.getSusername()));
-            lrb.setSphone(Util.getDecodedBase64String(lrb.getSphone()));
-            lrb.setSsexname(Util.getDecodedBase64String(lrb.getSsexname()));
-            lrb.setShiploginname(Util.getDecodedBase64String(lrb.getShiploginname()));
-            lrb.setSorganizationkey(Util.getDecodedBase64String(lrb.getSorganizationkey()));
-            lrb.setSorgInstitutioncode(Util.getDecodedBase64String(lrb.getSorgInstitutioncode()));
-            lrb.setSorganizationname(Util.getDecodedBase64String(lrb.getSorganizationname()));
-            lrb.setSorganizationtypecode(Util.getDecodedBase64String(lrb.getSorganizationtypecode()));
-            lrb.setSorganizationlevelcode(Util.getDecodedBase64String(lrb.getSorganizationlevelcode()));
-            lrb.setSmanagementdivisioncode(Util.getDecodedBase64String(lrb.getSmanagementdivisioncode()));
-            lrb.setSmanagementdivisionname(Util.getDecodedBase64String(lrb.getSmanagementdivisionname()));
-        }
-    }
-
-//    public void registerAndLoginJMessage(final String userId, final String password, final IMProcessSuccessListener imProcessSuccessListener) {
-//        Util.showGifProgressDialog(this);
-//        JMessageClient.register(userId, password, new BasicCallback() {
-//
-//            @Override
-//            public void gotResult(final int status, final String desc) {
-//                if (status == Constants.JMESSAGE_REGISTER_SUCCESS_CODE ||
-//                        status == Constants.JMESSAGE_REGISTER_USER_EXIST_CODE) {
-//                    Util.showToast(LoginActivityNew.this, Constants.HINT_REGISTER_IM_SUCCESS);
-//                    JMessageClient.login(userId, password, new BasicCallback() {
-//                        @Override
-//                        public void gotResult(final int status, String desc) {
-//                            if (status == Constants.JMESSAGE_LOGIN_SUCCESS_CODE) {
-//                                Util.showToast(LoginActivityNew.this, Constants.HINT_LOGIN_IM_SUCCESS);
-//                                String username = JMessageClient.getMyInfo().getUserName();
-//                                String appKey = JMessageClient.getMyInfo().getAppKey();
-//                                JMessageClient.getUserInfo(userId, new GetUserInfoCallback() {
-//                                    @Override
-//                                    public void gotResult(int i, String s, UserInfo userInfo) {
-//                                        if (Constants.JMESSAGE_GET_USER_INFO_SUCCESS_CODE == i) {
-//                                            Identity.imUserInfo = userInfo;
-//                                            Util.showToast(LoginActivityNew.this, Constants.HINT_IM_GET_USER_INFO_SUCCESS);
-//                                            if (imProcessSuccessListener != null) {
-//                                                imProcessSuccessListener.onIMProcessSuccess(userInfo);
-//                                            }
-//                                        } else {
-//                                            Util.showToast(LoginActivityNew.this, Constants.HINT_IM_GET_USER_INFO_FAILURE);
-//                                        }
-//                                        Util.hideGifProgressDialog(LoginActivityNew.this);
-//                                    }
-//                                });
-////                                UserEntry user = UserEntry.getUser(username, appKey);
-////                                if (null == user) {
-////                                    user = new UserEntry(username, appKey);
-////                                    user.save();
-////                                }
-////                                mContext.onRegistSuccess();
-//                            } else {
-//                                Util.showToast(LoginActivityNew.this, Constants.HINT_LOGIN_IM_FAILURE);
-//                                Util.hideGifProgressDialog(LoginActivityNew.this);
-////                                mLoginDialog.dismiss();
-////                                HandleResponseCode.onHandle(mContext, status, false);
-//                            }
-//                        }
-//                    });
-//                } else {
-//                    Util.hideGifProgressDialog(LoginActivityNew.this);
-//                    Util.showToast(LoginActivityNew.this, Constants.HINT_REGISTER_IM_FAILURE);
-//                }
-//            }
-//        });
-//    }
-
-    private void setAlias(String alias) {
-//        if (Util.getAliasSetSuccess(getApplication())){
-//            return;
-//        }
-        alias = Util.trimString(alias);
-        if (TextUtils.isEmpty(alias)) {
-            Util.showToast(LoginActivityNew.this, Constants.HINT_ALIAS_EMPTY);
-            return;
-        }
-        if (!ExampleUtil.isValidTagAndAlias(alias)) {
-            Util.showToast(LoginActivityNew.this, Constants.HINT_ALIAS_INVALID);
-            return;
-        }
-
-        // 调用 Handler 来异步设置别名
-        mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, alias));
-    }
-
-//    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
-//        @Override
-//        public void gotResult(int code, String alias, Set<String> tags) {
-//            String logs;
-//            switch (code) {
-//                case Constants.JPUSH_SET_ALIAS_SUCCESS_CODE:
-//                    logs = "Set tag and alias success";
-//                    LogUtil.i(TAG, logs);
-//                    // 建议这里往 SharePreference 里写一个成功设置的状态。成功设置一次后，以后不必再次设置了。
-//                    Util.setAliasStatus(LoginActivityNew.this, true);
-////                    Util.showToast(LoginActivityNew.this, Constants.HINT_JPUSH_SET_ALIAS_SUCCESS);
-//                    break;
-//                case Constants.JPUSH_SET_ALIAS_FAILURE_CODE:
-//                    logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
-//                    LogUtil.i(TAG, logs);
-//                    // 延迟 60 秒来调用 Handler 设置别名
-//                    mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_SET_ALIAS, alias), 1000 * 60);
-//                    break;
-//                default:
-//                    logs = "Failed with errorCode = " + code;
-//                    LogUtil.i(TAG, logs);
-//            }
-//        }
-//    };
-    private static final int MSG_SET_ALIAS = Constants.HANDLER_SET_ALIAS_MSG_ID;
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(android.os.Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-//                case MSG_SET_ALIAS:
-//                    LogUtil.i(TAG, "Set alias in handler.");
-//                    // 调用 JPush 接口来设置别名。
-//                    JPushInterface.setAliasAndTags(LoginActivityNew.this,
-//                            (String) msg.obj,
-//                            null,
-//                            mAliasCallback);
-//                    break;
-                default:
-                    LogUtil.i(TAG, "Unhandled msg - " + msg.what);
-            }
-        }
-    };
 
     public void gotoWorkbenchActivity() {
-//        if (shouldFinishWhenLoginSuccess) {
-//            finish();
-//        } else {
-//
-//        }
-
-//        ActivityUtils.launchActivity(Constants.PACKAGE_NAME,
-//                Constants.WORKBENCH_ACTIVITY_NAME);
 
 
         Bundle bundle = new Bundle();
@@ -880,33 +583,6 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
         Util.gotoActivityWithBundle(this, ArcFaceListActivity.class, bundle);
     }
 
-//    @Override
-//    public void onLoginSuccess(HttpResultBaseBean<SRCLoginBean> bean) {
-//
-//
-//    //    Util.showToast(this, Constants.HINT_LOGIN_SUCCESS);
-//        HAS_LOGGED_IN = true;
-//
-//
-//
-//
-//        assignSRCIdentityData(bean);
-//        String alias = Util.trimString(IdentityManager.getCardNo(this));
-//        //禁用极光推送
-////        setAlias(alias);
-//        gotoWorkbenchActivity();
-//
-//
-//
-//
-//        if (shouldFinishWhenLoginSuccess){
-//            finish();
-//        } else {
-//
-//        }
-//        finishIntroductionActivity();
-//
-//    }
 
     @Override
     public void onLoginSuccess(HttpResultNewBaseBean<String> bean) {
@@ -1165,142 +841,17 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
 
 
 
-    public void initBugly() {
-//        Context context = getApplication();
-        Context context = this;
-        String packageName = context.getPackageName();
-        String processName = Util.getProcessName(android.os.Process.myPid());
-        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(context);
-        strategy.setUploadProcess(processName == null || processName.equals(packageName));
-
-//        设置是否显示消息通知
-//        如果你不想在通知栏显示下载进度，你可以将这个接口设置为false，默认值为true。
-        Beta.enableNotification = true;
-
-//        设置Wifi下自动下载
-//        如果你想在Wifi网络下自动下载，可以将这个接口设置为true，默认值为false。
-        Beta.autoDownloadOnWifi = false;
-
-        /* 设置更新状态回调接口 */
-        Beta.upgradeStateListener = new UpgradeStateListener() {
-            @Override
-            public void onUpgradeSuccess(boolean isManual) {
-                RxBus.getDefault().post(Constants.EVENT_TYPE_BUGLY_UPGRADE_CODE, Constants.EVENT_TYPE_BUGLY_UPGRADE_SUCCESS);
-            }
-
-            @Override
-            public void onUpgradeFailed(boolean isManual) {
-                RxBus.getDefault().post(Constants.EVENT_TYPE_BUGLY_UPGRADE_CODE, Constants.EVENT_TYPE_BUGLY_UPGRADE_FAILURE);
-            }
-
-            @Override
-            public void onUpgrading(boolean isManual) {
-                RxBus.getDefault().post(Constants.EVENT_TYPE_BUGLY_UPGRADE_CODE, Constants.EVENT_TYPE_BUGLY_UPGRADE_UPGRADING);
-            }
-
-            @Override
-            public void onDownloadCompleted(boolean b) {
-                RxBus.getDefault().post(Constants.EVENT_TYPE_BUGLY_UPGRADE_CODE, Constants.EVENT_TYPE_BUGLY_UPGRADE_DOWNLOAD_COMPLETED);
-            }
-
-            @Override
-            public void onUpgradeNoVersion(boolean isManual) {
-                RxBus.getDefault().post(Constants.EVENT_TYPE_BUGLY_UPGRADE_CODE, Constants.EVENT_TYPE_BUGLY_UPGRADE_NO_VERSION);
-            }
-        };
-
-
-        initParameters();
-
-
-//        CrashReport.initCrashreport(getapplication(), version.bugly_app_id, version.bugly_debug_mode, strategy);
-
-//        Bugly.init(this, Version.BUGLY_APP_ID, Version.BUGLY_DEBUG_MODE);
-        Bugly.init(this, Version.BUGLY_APP_ID, Version.BUGLY_DEBUG_MODE, strategy);
-    }
-
-
-//    public void getLogininfo() {
-//
-//        String requestUrl = "http://192.168.44.140:6868/api.phone/"+
-//                     "Login";
-//        String methodName = "Login";
-//
-//        Map<String, String> map = new HashMap<>();
-//
-//        String sPassword="123456";
-//        String publicKey="B41B7598-417F-46EC-90E6-D4BE901AB571";
-//        String privateKey ="E9E047B6-9B2F-4BE2-B151-CE945FB3D1AB";
-//
-//        String sNewPassword= DESUtil.encode("E9E047B6",sPassword);
-//
-//        map.put("UserName", "hltest");
-//        map.put("UserPass", sNewPassword);
-//
-//        String bodyJson = JSON.toJSONString(map);
-//
-//        String timestamp = Util.getTimestampLeading10CharactersString();
-//        String sSign =Util.getEncryptedDigestNew(privateKey, publicKey,timestamp);
-//
-//        JSONObject data = new JSONObject();
-//        try {
-//            data.put("Key", privateKey);
-//            data.put("Sign",sSign);
-//            data.put("Data", "");
-//            data.put("AddParams", bodyJson);
-//            data.put("Timestamp", timestamp);
-//        } catch (JSONException e1) {
-//            e1.printStackTrace();
-//        }
-//        new MyAsyncTask() {
-//            @Override
-//            public void dopre() {
-//
-//            }
-//
-//            @Override
-//            public void dopost(String result) {
-//                String s=result;
-//
-//
-//            }
-//
-//
-//        }.execute(methodName, data.toString(), requestUrl);
-//    }
-
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-
-            try {
-
-                JSONObject data = new JSONObject();
-
-                String content = WebServiceUtils.requestNoParams("GetToken",
-                       "http://192.168.45.20:5444/api/Auth/GetToken?appid=0b32e011-ab3c-40d0-bbc0-6a55af191b6b");
-                if (!TextUtils.isEmpty(content)) {
-
-                } else {
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-
-            }
-
-        }
-    };
-    RequestCall loadHeadImageCall;
     RequestCall call;
-    RequestCall pushLiveBodyCall;
     String sMessage="";
     String Token="";
     private void loadIDCardNumberHeadImageInfo(final String idNumber) {
 
         OkHttpClient okHttpClient = new OkHttpClient();
         Response response;
-        String url = "http://192.168.45.20:5444/api/Auth/GetToken?appid=0b32e011-ab3c-40d0-bbc0-6a55af191b6b";
+//        String url = "http://192.168.45.20:5577/api/Auth/GetToken?appid=0b32e011-ab3c-40d0-bbc0-6a55af191b6b";
+
+//        String url = Version.HTTP_URL+"api/Auth/GetToken?appid=0b32e011-ab3c-40d0-bbc0-6a55af191b6b";
+        String url = Version.HTTP_URL+"api/Auth/GetToken?appid="+Version.HTTP_APPID;
         Request request = new Request.Builder().url(url).get().build();
         try {
             response = okHttpClient.newCall(request).execute();
@@ -1377,7 +928,8 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
                     ToastUtil.show(LoginActivityNew.this,"返回数据为空");
                     break;
                 case Constant.MSG_LOAD_ERROR:
-
+                    Util.hideGifProgressDialog(LoginActivityNew.this);
+                    ToastUtil.show(LoginActivityNew.this,sMessage);
                     break;
                 case Constant.GETBASEPHOTO_LOAD_OVER:
 
@@ -1389,83 +941,6 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
 
             }
 
-        }
-    };
-
-
-
-    private void loadIDCardNumberHeadImageInfo1(final String idNumber) {
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Response response;
-        String url = "http://192.168.45.20:5444/api/DistinguishAPP/GetAreaInfo?Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJKUUFQSS5XZWJBUEkiLCJleHAiOjE1NzEzODA3NjksImlhdCI6MTU3MTIwNzk2OSwiYXBwSWQiOiIyYzA3ZjBhNC1kZTY1LTQ2N2YtYjZhYi0wZjE2ZWE2NTA3ZDIifQ.K0q8HLBZB_xwADFTu9MzkYIToI5pklW7_Q5uIxSbom0";
-        Request request = new Request.Builder().url(url).get().build();
-        try {
-            response = okHttpClient.newCall(request).execute();
-
-            String content=response.body().string();
-            if (!TextUtils.isEmpty(content)) {
-                try {
-                    List<DictionaryAreaData> dataList = new ArrayList<>();
-                    dataList.clear();
-
-
-                    JSONObject json = new JSONObject(content);
-                    String isSuccess = json.getString("Success");
-                    sMessage = json.getString("ErrorMsg");
-                    Token=json.getString("BackInfo");
-                    JSONArray jsonArray1 = new JSONArray(Token);
-                    LitePal.deleteAll(DictionaryAreaData.class);
-
-                        for (int i = 0; i < jsonArray1.length(); i++) {
-
-
-                                DictionaryAreaData info = new DictionaryAreaData();
-                                JSONObject jsonData = (JSONObject) jsonArray1.get(i);
-                                info.setArealevel(jsonData.getString("iLevel"));
-                                info.setAreaname(jsonData.getString("sName"));
-                                info.setDTIMESTAMP("");
-                                info.setKey("");
-                                info.setLevelName(jsonData
-                                        .getString("sLevelName"));
-                                info.setSsid(jsonData
-                                        .getString("sID"));
-                                info.setSuperId(jsonData
-                                        .getString("sSuperID"));
-
-                                dataList.add(info);
-//                                info.save();
-                                // BphsConstants.sAndroidReader=false;
-
-
-                        }
-//                  List<DictionaryAreaData> dataList1 =LitePal.findAll(DictionaryAreaData.class);
-//                        int s=dataList1.size();
-
-                    LitePal.saveAll(dataList);
-                    myhandler.sendEmptyMessage(Constant.MSG_LOAD_EMPTY);
-
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    sMessage = e.getMessage();
-                    myhandler.sendEmptyMessage(Constant.MSG_LOAD_EXC);
-//                        myhandler.sendEmptyMessage(Constant.MSG_LOAD_ERROR);
-                }
-            } else {
-                myhandler.sendEmptyMessage(Constant.MSG_LOAD_EMPTY);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-    Runnable runArea = new Runnable() {
-        @Override
-        public void run() {
-            loadIDCardNumberHeadImageInfo1("");
         }
     };
 
@@ -1600,14 +1075,13 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
                                public void showRationale(Context context, List<String> data, final RequestExecutor executor) {
                                    new AlertDialog.Builder(context)
                                            .setTitle("权限申请")
-                                           .setMessage("这里需要申请" + data.get(0))
+                                           .setMessage("这里需要申请" + "相机权限和读写存储权限")
                                            .setPositiveButton("好的", new DialogInterface.OnClickListener() {
                                                @Override
                                                public void onClick(DialogInterface dialog, int which) {
                                                    executor.execute();
                                                }
                                            })
-                                           .setNegativeButton("取消", null)
                                            .create()
                                            .show();
                                }
@@ -1628,23 +1102,29 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
                     @Override
                     public void onAction(List<String> permissions) {
                         if (AndPermission.hasAlwaysDeniedPermission(LoginActivityNew.this, permissions)) {
-                            new AlertDialog.Builder(LoginActivityNew.this)
-                                    .setTitle("权限获取失败")
-                                    .setMessage("没有相机权限和读写存储权限该功能不能使用，请进入应用设置中点击权限管理，设置相机和读写存储为允许!")
-                                    .setPositiveButton("好的", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    Intent intent = new Intent();
-                                                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                                    Uri uri = Uri.fromParts("package", LoginActivityNew.this.getPackageName(), null);
-                                                    intent.setData(uri);
-                                                    LoginActivityNew.this.startActivity(intent);
+
+                            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1) {
+
+                            }else {
+                                new AlertDialog.Builder(LoginActivityNew.this)
+                                        .setTitle("权限获取失败")
+                                        .setMessage("没有相机权限和读写存储权限该功能不能使用，请进入应用设置中点击权限管理，设置相机和读写存储为允许!")
+                                        .setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        Intent intent = new Intent();
+                                                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                                        Uri uri = Uri.fromParts("package", LoginActivityNew.this.getPackageName(), null);
+                                                        intent.setData(uri);
+                                                        LoginActivityNew.this.startActivity(intent);
+                                                    }
                                                 }
-                                            }
-                                    )
-                                    .setNegativeButton("取消", null)
-                                    .create()
-                                    .show();
+                                        )
+                                        .create()
+                                        .show();
+                            }
+
+
                         } else {
                             Toast.makeText(LoginActivityNew.this, "开启权限失败", Toast.LENGTH_SHORT);
                         }

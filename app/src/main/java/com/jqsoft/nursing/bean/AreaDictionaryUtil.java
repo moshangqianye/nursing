@@ -128,13 +128,18 @@ public class AreaDictionaryUtil {
         if (StringUtils.isBlank(areaCode)){
             return null;
         } else {
-            List<DictionaryAreaData> list = LitePal.where("ssid = ?",areaCode).find(DictionaryAreaData.class);
-            if(!ListUtils.isEmpty(list)){
-                DictionaryAreaData areaData = list.get(0);
-                return areaData;
-            } else {
+            try{
+                List<DictionaryAreaData> list = LitePal.where("ssid = ?",areaCode).find(DictionaryAreaData.class);
+                if(!ListUtils.isEmpty(list)){
+                    DictionaryAreaData areaData = list.get(0);
+                    return areaData;
+                } else {
+                    return null;
+                }
+            }catch (Exception e){
                 return null;
             }
+
         }
     }
     public static DictionaryAreaData getAreaDataBeanFromAreaCodeAndAreaLevel(String areaCode, String areaLevel){

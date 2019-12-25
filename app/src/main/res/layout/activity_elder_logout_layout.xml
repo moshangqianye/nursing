@@ -36,7 +36,7 @@
 
             <include
                 android:id="@+id/info_layout"
-                layout="@layout/activity_info"
+                layout="@layout/activity_elder_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -76,7 +76,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
                         android:gravity="left"
-                        android:text="头像采集(点击下方头像可以重拍)"
+                        android:text="请选择注销材料"
                         android:textAppearance="@style/TextView.Title" />
 
                     <LinearLayout
@@ -86,6 +86,7 @@
                         android:layout_weight="1"
                         ></LinearLayout>
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/ll_SwBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -127,7 +128,7 @@
                     android:id="@+id/iv_face"
                     android:layout_width="190dp"
                     android:layout_height="200dp"
-                    android:src="@mipmap/cf_click_to_collect" />
+                    android:src="@mipmap/cf_id_card_number" />
                     <ImageView
                         android:layout_marginBottom="10dip"
                         android:layout_marginTop="10dip"
@@ -143,6 +144,7 @@
             </LinearLayout>
             <LinearLayout
 
+                android:visibility="gone"
                 android:id="@+id/ll_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -198,10 +200,10 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_margin="10dip"
                         android:id="@+id/iv_card_front"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="10dip"
                         android:scaleType="centerInside"
                         android:src="@mipmap/cf_id_card_number" />
 
@@ -210,6 +212,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -244,10 +247,10 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_margin="10dip"
                         android:id="@+id/iv_card_back"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="10dip"
                         android:scaleType="centerInside"
                         android:src="@mipmap/cf_id_card_number" />
 
@@ -305,7 +308,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/colorTheme"
-                android:text="保存"
+                android:text="注销"
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp" />
         </LinearLayout>

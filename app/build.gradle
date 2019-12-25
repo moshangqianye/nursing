@@ -89,7 +89,7 @@ android {
 
         resConfigs "zh"
         manifestPlaceholders = [
-                "OCR_API_KEY" : "9ee81b73cb2bd3f70fb217685cc0cc89"    //OCR密钥
+                "OCR_API_KEY" : "9ee81b73cb2bd3f742e9b4ea8199a53d"    //OCR钥
         ]
         ndk {
 //            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
@@ -234,13 +234,15 @@ android {
         def buglyAppKey = null;
         def countyName = '';
         if (variant.flavorName.equals("generic")) { // 渠道1：channel1
-//            buglyAppId = 'e2d514d150'
-//            buglyAppKey = 'aced7116-af0e-4465-9dff-2d2b0b8810a4'
-//            countyName = '内部测试版'
-//荣康医院
+            //庐阳区
             buglyAppId = '0c15ec0404'
             buglyAppKey = 'e4c35cca-6ba0-4d6f-a291-085e0e915594'
-            countyName = '内部测试版'
+            countyName = '庐阳区'
+        }else if (variant.flavorName.equals("lieshanqu")) { // 渠道1：channel1
+            //庐阳区
+            buglyAppId = '52188b74cc'
+            buglyAppKey = '7e088370-ede1-4e83-a3bc-d3b7adfaa198'
+            countyName = '烈山区'
         }
         if (buglyAppId != null) {
             variant.ext.buglyAppId = buglyAppId
@@ -272,47 +274,17 @@ android {
     productFlavors {
         generic {
             applicationId = "com.jqsoft.launcher"
-            versionCode = 2
-            versionName = "2.0.1"
+            versionCode = 8
+            versionName = "2.0.8"
 
             manifestPlaceholders = [
-//                        HTTP_ACCESS_URL_VALUE          : "http://60.173.247.168:9092/fdss-api/",
-//                    HTTP_ACCESS_URL_VALUE          : "http://192.168.44.226:9092/fdss-api/",
-//HTTP_ACCESS_URL_VALUE          : "http://192.168.44.134:8080/sri/",
-// HTTP_ACCESS_URL_VALUE          : "http://60.173.247.168:8060/sri/",
-//HTTP_ACCESS_URL_VALUE          : "http://192.168.44.71:8080/sri/",
-//HTTP_ACCESS_URL_VALUE          : "http://192.168.44.230:8080/sri/",
-//HTTP_ACCESS_URL_VALUE          : "http://www.jqsoft.net:6072/sri/",
-// HTTP_ACCESS_URL_VALUE          : "http://192.168.44.51:8080/sri/",
-///HTTP_ACCESS_URL_VALUE          : "http://192.168.45.53:8080/sri/",
-////HTTP_ACCESS_URL_VALUE          : "http://192.168.45.53:8080/sri/",
-// HTTP_ACCESS_URL_VALUE          : "http://192.168.44.83:8080/sri/",
-//HTTP_ACCESS_URL_VALUE          : "http://192.168.44.140:6868/",
-//HTTP_ACCESS_URL_VALUE          :"http://192.168.45.66:6868/",
-//HTTP_ACCESS_URL_VALUE          :"http://192.168.44.170:8002/",
-//HTTP_ACCESS_URL_VALUE          :"http://192.168.44.140:6868/",
-//HTTP_ACCESS_URL_VALUE          :"http://60.173.247.168:6868/",
-//外网测试地址
-//        HTTP_ACCESS_URL_VALUE          :"http://api.365yiyang.com/",
 
-//荣康医院正式地址
-//HTTP_ACCESS_URL_VALUE          :"http://172.30.30.248:8002/",
+                    //正式地址
+HTTP_ACCESS_URL_VALUE          :"http://192.168.45.20:5577/",
 
-// 外网测试地址
-//HTTP_ACCESS_URL_VALUE          : "http://112.29.233.114:8002",
-
-// 内网测试地址
-HTTP_ACCESS_URL_VALUE          :"http://192.168.45.20:5444/",
-//HTTP_ACCESS_URL_VALUE          :"http://60.173.247.168:9600/",
-//内网地址
-//HTTP_ACCESS_URL_VALUE          :"http://192.168.44.140:6868/",
-//HTTP_ACCESS_URL_VALUE          :"http://api.365yiyang.com/",
-//                HTTP_ACCESS_URL_VALUE          : "http://192.168.88.36:8080/fdss-api/",
 FILE_PROVIDER_AUTHORITIES_VALUE: "com.jqsoft.launcher.fileProvider",
 LOGIN_APP_NAME_VALUE           : "老人信息采集",
 //                    BUGLY_APP_ID_VALUE值的格式为B+{真实的id}------------------
-//BUGLY_APP_ID_VALUE             : "Be2d514d150"
-//荣康医院
 BUGLY_APP_ID_VALUE             : "B0c15ec0404"
 //                    BUGLY_APP_ID_VALUE值的格式为B+{真实的id}------------------
 //,
@@ -321,7 +293,27 @@ BUGLY_APP_ID_VALUE             : "B0c15ec0404"
 //JPUSH_CHANNEL                  : "" //用户渠道统计的渠道名称
             ]
         }
+        lieshanqu {
+            applicationId = "com.jqsoft.launcher"
+            versionCode = 1
+            versionName = "1.0.1"
 
+            manifestPlaceholders = [
+
+                    //正式地址
+                    HTTP_ACCESS_URL_VALUE          :"http://192.168.45.20:5577/",
+
+                    FILE_PROVIDER_AUTHORITIES_VALUE: "com.jqsoft.launcher.fileProvider",
+                    LOGIN_APP_NAME_VALUE           : "老人信息采集",
+//                    BUGLY_APP_ID_VALUE值的格式为B+{真实的id}------------------
+                    BUGLY_APP_ID_VALUE             : "B52188b74cc"
+//                    BUGLY_APP_ID_VALUE值的格式为B+{真实的id}------------------
+//,
+//JPUSH_PKGNAME                  : applicationId,
+//JPUSH_APPKEY                   : "", //JPush上注册的包名对应的appkey.
+//JPUSH_CHANNEL                  : "" //用户渠道统计的渠道名称
+            ]
+        }
     }
     productFlavors.all {
 //        flavor -> flavor.manifestPlaceholders = [MTA_CHANNEL_VALUE: name]
@@ -534,7 +526,7 @@ dependencies {
     compile 'com.amap.api:location:3.5.0'
     compile 'com.amap.api:search:5.3.1'
     compile 'com.amap.api:navi-3dmap:5.3.0_3dmap5.3.0'
-    compile 'com.amap.api:map2d:latest.integration'
+    compile 'com.amap.api:map2d:5.2.0'
     //    compile 'com.amap.api:3dmap:5.0.0'
 
     // -------------------------------------------------------------
@@ -636,6 +628,7 @@ dependencies {
     compile 'com.github.chrisbanes:PhotoView:2.1.3'
     compile project(path: ':livebody_verify_lib')
     compile(name: 'library-ocr-1.0.5-SNAPSHOT', ext: 'aar')
+
     compile 'org.litepal.android:java:3.0.0'
 
     //    butterknife

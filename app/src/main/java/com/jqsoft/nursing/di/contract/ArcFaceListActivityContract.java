@@ -27,6 +27,20 @@ public interface ArcFaceListActivityContract {
          * @param isLoadMore
          */
         void onLoadHealthListFail(String message, boolean isLoadMore);
+
+
+        /**
+         * 成功回调方法
+         * @param bean
+         */
+        void onLoadHealthEndSuccess(HttpResultNewBaseBean<String> bean);
+
+        /**
+         * 失败回调方法
+         * @param message
+         */
+        void onLoadHealtEndFail(String message);
+
     }
 
     interface  presenter{

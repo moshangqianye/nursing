@@ -123,6 +123,34 @@ public class HealthListBean implements Serializable {
         private String sSexName;
         private String sStreet;
         private String sStreetName;
+        private String sTel;
+
+        private String sCardPositive;
+        private String sCardReverse;
+
+        public String getsCardPositive() {
+            return sCardPositive;
+        }
+
+        public void setsCardPositive(String sCardPositive) {
+            this.sCardPositive = sCardPositive;
+        }
+
+        public String getsCardReverse() {
+            return sCardReverse;
+        }
+
+        public void setsCardReverse(String sCardReverse) {
+            this.sCardReverse = sCardReverse;
+        }
+
+        public String getsTel() {
+            return sTel;
+        }
+
+        public void setsTel(String sTel) {
+            this.sTel = sTel;
+        }
 
         public String getDAddTime() {
             return dAddTime;
@@ -460,4 +488,8 @@ public class HealthListBean implements Serializable {
             this.sStreetName = sStreetName;
         }
     }
+
+
+
+
 }

@@ -1,6 +1,14 @@
 package com.jqsoft.nursing.util;
 
+import android.app.Activity;
+import android.content.Context;
+
+import com.jqsoft.nursing.R;
+import com.jqsoft.nursing.base.Constants;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
 import java.text.DecimalFormat;
+import java.util.Calendar;
 
 //import com.amap.api.navi.model.AMapNaviPath;
 //import com.amap.api.navi.model.AMapNaviStep;
@@ -71,4 +79,67 @@ public class Utils {
 //        }
 //        return trafficLightNumber;
 //    }
+
+
+    public static void showDateNewDialogWithMaxDate(Context context, String initialString, String tag, Calendar maxDate, DatePickerDialog.OnDateSetListener callback) {
+        Calendar now = Calendar.getInstance();
+        int[] ymdArray = getYearMonthDayFromCanonicalString(initialString);
+        int year = now.get(Calendar.YEAR);
+//        int month = now.get(Calendar.MONTH) - 1;
+        int month = now.get(Calendar.MONTH);
+        int day = now.get(Calendar.DAY_OF_MONTH);
+        if (ymdArray != null && ymdArray.length == 3) {
+            year = ymdArray[0];
+            month = ymdArray[1] - 1;
+            day = ymdArray[2];
+        }
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                callback,
+                year,
+                month,
+                day
+        );
+        dpd.dismissOnPause(false);
+        dpd.showYearPickerFirst(false);
+        dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+        dpd.setAccentColor(context.getResources().getColor(R.color.colorTheme));
+//        dpd.setAccentColor(Color.parseColor("#9C27B0"));
+        dpd.setTitle(context.getResources().getString(R.string.please_select_date));
+        Calendar date1 = Calendar.getInstance();
+        Calendar date2 = Calendar.getInstance();
+        date2.add(Calendar.WEEK_OF_MONTH, -1);
+        Calendar date3 = Calendar.getInstance();
+        date3.add(Calendar.WEEK_OF_MONTH, 1);
+        Calendar[] days = {date1, date2, date3};
+        dpd.setHighlightedDays(days);
+        dpd.setMaxDate(maxDate);
+        dpd.show(((Activity) context).getFragmentManager(), tag);
+//        dpd.show(getChildFragmentManager(), "Datepickerdialog1");
+    }
+
+
+    public static int[] getYearMonthDayFromCanonicalString(String s) {
+        s = Util.trimString(s);
+        String[] sArray = s.split(Constants.HYPHEN_STRING, 3);
+        if (sArray != null && sArray.length == 3) {
+            int year = getIntFromString(sArray[0]);
+            int month = getIntFromString(sArray[1]);
+            int day = getIntFromString(sArray[2]);
+            return new int[]{year, month, day};
+        } else {
+            return null;
+        }
+    }
+
+
+    public static int getIntFromString(String s) {
+        s = Util.trimString(s);
+        int result = 0;
+        try {
+            result = Integer.parseInt(s, 10);
+        } catch (NumberFormatException exception) {
+            result = 0;
+        }
+        return result;
+    }
 }

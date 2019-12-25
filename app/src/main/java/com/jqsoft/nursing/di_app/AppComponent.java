@@ -231,6 +231,9 @@ public interface AppComponent {
 //    ChatActivityComponent addChatActivity(ChatActivityModule chatActivityModule);
 
     ArcFaceListActivityComponent addArcFaceListActivity(ArcFaceListActivityModule medicalInstitutionActivityModule);
+
+    ArcFaceListActivityNewComponent addArcFacenewListActivity(ArcFaceListActivityModule medicalInstitutionActivityModule);
+
     HeadCollectActivityComponent addHeadCollectActivity(HeadCollectActivityModule module);
 
     MedicalInstitutionActivityComponent addMedicalInstitutionActivity(MedicalInstitutionActivityModule medicalInstitutionActivityModule);

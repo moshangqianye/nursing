@@ -35,7 +35,7 @@
             android:layout_marginRight="10dip"
             android:textColor="#818181"
             android:text=""
-            android:id="@+id/et_name"
+            android:id="@+id/et_name1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -486,6 +486,60 @@
 
             android:maxLength="40"
             android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view77"
+        android:background="#e8e8e8"
+        android:layout_below="@+id/ll_jiatingzhuzhi"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"/>
+
+
+    <LinearLayout
+        android:layout_marginLeft="10dip"
+        android:layout_below="@+id/view77"
+        android:gravity="center"
+        android:id="@+id/ll_dianhua"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+
+        >
+        <ImageView
+
+
+            android:src="@drawable/bitian"
+            android:layout_width="8dip"
+            android:layout_height="8dip" />
+
+        <TextView
+            android:layout_marginLeft="2dip"
+            android:textColor="#191616"
+            android:layout_width="70dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/white"
+            android:text="联系电话:"
+            android:textSize="15sp" />
+
+        <EditText
+            android:maxEms="11"
+            android:inputType="number|numberDecimal"
+            android:textColor="#818181"
+            android:id="@+id/et_phone"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dip"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_vertical|right"
+            android:hint="请输入联系电话"
+            android:maxLength="40"
+            android:textSize="14sp" />
+
 
     </LinearLayout>
 </RelativeLayout>
