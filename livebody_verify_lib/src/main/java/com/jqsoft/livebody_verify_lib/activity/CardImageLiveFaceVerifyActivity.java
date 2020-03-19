@@ -32,7 +32,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.arcsoft.arcfacedemo.activity.RegisterAndRecognizeActivity;
 import com.arcsoft.arcfacedemo.faceserver.FaceServer;
 import com.arcsoft.arcfacedemo.util.BitmapUtil;
 import com.arcsoft.arcfacedemo.util.ConfigUtil;
@@ -422,17 +421,17 @@ public class CardImageLiveFaceVerifyActivity extends AppCompatActivity  {
     }
 
     private void selectLiveHead() {
-        imageSelectType = IMAGE_SELECT_TYPE_FACE;
-        FaceDetector.init(CardImageLiveFaceVerifyActivity.this);
-        Intent intent = new Intent(CardImageLiveFaceVerifyActivity.this, RegisterAndRecognizeActivity.class);
-
-        intent.putExtra("isOnlyFace", isOnlyFace);
-        intent.putExtra("IdCardPath", IdCardPath);
-        intent.putExtra("formWay", "CardImageLiveFaceVerifyActivity");
-        intent.putExtra("path", cardFrontPath);
-        intent.putExtra("idNumber", idNumber);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivityForResult(intent, AFFACE_HEAD);
+//        imageSelectType = IMAGE_SELECT_TYPE_FACE;
+//        FaceDetector.init(CardImageLiveFaceVerifyActivity.this);
+//        Intent intent = new Intent(CardImageLiveFaceVerifyActivity.this, RegisterAndRecognizeActivity.class);
+//
+//        intent.putExtra("isOnlyFace", isOnlyFace);
+//        intent.putExtra("IdCardPath", IdCardPath);
+//        intent.putExtra("formWay", "CardImageLiveFaceVerifyActivity");
+//        intent.putExtra("path", cardFrontPath);
+//        intent.putExtra("idNumber", idNumber);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivityForResult(intent, AFFACE_HEAD);
 
     }
 
@@ -575,8 +574,8 @@ public class CardImageLiveFaceVerifyActivity extends AppCompatActivity  {
         params.put("head_base64", faceBase64String);
 
 //        String feature_base64= PreferencesUtils.getString(CardImageLiveFaceVerifyActivity.this,"faceFeature","");
-        String feature_base64 = FaceServer.getInstance().sFeature;
-        params.put("feature_base64", feature_base64);//人类特征数据  base64字符串（可为空）
+//        String feature_base64 = FaceServer.getInstance().sFeature;
+//        params.put("feature_base64", feature_base64);//人类特征数据  base64字符串（可为空）
         params.put("arcsoft_version", "2.1");//虹软引起版本号码（可为空）
 
         Log.i("chenxu", "acs_token:" + token);
@@ -1699,7 +1698,7 @@ public class CardImageLiveFaceVerifyActivity extends AppCompatActivity  {
         //本地人脸库初始化
         clearFaces();
         FaceServer.getInstance().init(this);
-        ConfigUtil.setFtOrient(CardImageLiveFaceVerifyActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
+//        ConfigUtil.setFtOrient(CardImageLiveFaceVerifyActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
 
         bmp = ImageUtil.alignBitmapForNv21(bmp);
         if (bmp == null) {
@@ -1725,9 +1724,9 @@ public class CardImageLiveFaceVerifyActivity extends AppCompatActivity  {
             //bitmap转NV21
             final byte[] nv21 = ImageUtil.bitmapToNv21(bmp, width, height);
             if (nv21 != null) {
-                boolean success = FaceServer.getInstance().registenew(CardImageLiveFaceVerifyActivity.this, nv21, bmp.getWidth(), bmp.getHeight(),
-                        "registered");
-                if (success) {
+//                boolean success = FaceServer.getInstance().registenew(CardImageLiveFaceVerifyActivity.this, nv21, bmp.getWidth(), bmp.getHeight(),
+//                        "registered");
+                if (true) {
                     Toast.makeText(this, "已获取比对人脸!", Toast.LENGTH_SHORT).show();
 
                     if (isOnlyFace.equals("1")) {
@@ -1848,7 +1847,7 @@ public class CardImageLiveFaceVerifyActivity extends AppCompatActivity  {
         //本地人脸库初始化
         clearFaces();
         FaceServer.getInstance().init(this);
-        ConfigUtil.setFtOrient(CardImageLiveFaceVerifyActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
+//        ConfigUtil.setFtOrient(CardImageLiveFaceVerifyActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
 
         bmp = ImageUtil.alignBitmapForNv21(bmp);
         if (bmp == null) {
@@ -1898,9 +1897,9 @@ public class CardImageLiveFaceVerifyActivity extends AppCompatActivity  {
 //                }
 
 
-                boolean success = FaceServer.getInstance().register(CardImageLiveFaceVerifyActivity.this, nv21, bmp.getWidth(), bmp.getHeight(),
-                        "registered");
-                if (success) {
+//                boolean success = FaceServer.getInstance().register(CardImageLiveFaceVerifyActivity.this, nv21, bmp.getWidth(), bmp.getHeight(),
+//                        "registered");
+                if (true) {
                     Toast.makeText(this, "已获取比对人脸!", Toast.LENGTH_SHORT).show();
                     verifyIdCardNumber(bitmap);
 

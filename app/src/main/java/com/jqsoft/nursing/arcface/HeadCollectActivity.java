@@ -34,7 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.arcsoft.arcfacedemo.activity.RegisterAndRecognizeActivity;
+//import com.arcsoft.arcfacedemo.activity.RegisterAndRecognizeActivity;
 import com.arcsoft.arcfacedemo.common.Constants;
 import com.arcsoft.arcfacedemo.faceserver.FaceServer;
 import com.arcsoft.arcfacedemo.util.BitmapUtil;
@@ -405,7 +405,7 @@ public class HeadCollectActivity extends AbstractActivity implements EasyPermiss
         if (1 == faceType) {
             ll_SwBtn.setVisibility(View.VISIBLE);
             FaceServer.getInstance().init(this);
-            ConfigUtil.setFtOrient(HeadCollectActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
+//            ConfigUtil.setFtOrient(HeadCollectActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
 
         } else {
             ll_SwBtn.setVisibility(View.INVISIBLE);
@@ -995,20 +995,20 @@ public class HeadCollectActivity extends AbstractActivity implements EasyPermiss
 //        clearFaces();
         imageSelectType = IMAGE_SELECT_TYPE_FACE;
 
-        Intent intent = new Intent(HeadCollectActivity.this, RegisterAndRecognizeActivity.class);
-
-//        bitmappath="/sdcard/dskqxt/pi/2019-03-27_16-24-49.jpg";
-//        if (!new File(bitmappath).exists()) {
-////            saveBitmapToFile(mainbitmap,bitmappath);
-//            saveBitmap(HeadCollectActivity.this,mainbitmap);
-//            /*saveBitmap()*/
-//        }
-        intent.putExtra("path", bitmappath);
-        intent.putExtra("idNumber", idNumber);
-        intent.putExtra("formWay", "HeadCollectActivity");
-        intent.putExtra("faceFeatrue", faceFerture);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivityForResult(intent, AFFACE_HEAD);
+//        Intent intent = new Intent(HeadCollectActivity.this, RegisterAndRecognizeActivity.class);
+//
+////        bitmappath="/sdcard/dskqxt/pi/2019-03-27_16-24-49.jpg";
+////        if (!new File(bitmappath).exists()) {
+//////            saveBitmapToFile(mainbitmap,bitmappath);
+////            saveBitmap(HeadCollectActivity.this,mainbitmap);
+////            /*saveBitmap()*/
+////        }
+//        intent.putExtra("path", bitmappath);
+//        intent.putExtra("idNumber", idNumber);
+//        intent.putExtra("formWay", "HeadCollectActivity");
+//        intent.putExtra("faceFeatrue", faceFerture);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivityForResult(intent, AFFACE_HEAD);
 
     }
 
@@ -1879,14 +1879,14 @@ public class HeadCollectActivity extends AbstractActivity implements EasyPermiss
 
     private void registerFaceFeature() {
         clearFaces();
-        FaceServer.getInstance().registenew1(
-                "registered ",faceFerture);
+//        FaceServer.getInstance().registenew1(
+//                "registered ",faceFerture);
     }
 
     private void registerFace(Bitmap bmp) {
         if (FaceServer.getInstance() == null) {
             FaceServer.getInstance().init(HeadCollectActivity.this);
-            ConfigUtil.setFtOrient(HeadCollectActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
+//            ConfigUtil.setFtOrient(HeadCollectActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
         }
         Photo_Base = bmp;
         Log.e("jieo1", Photo_Base + "");
@@ -1905,9 +1905,9 @@ public class HeadCollectActivity extends AbstractActivity implements EasyPermiss
             final byte[] nv21 = ImageUtil.bitmapToNv21(bmp, width, height);
             if (nv21 != null) {
 
-                boolean success = FaceServer.getInstance().register(HeadCollectActivity.this, nv21, bmp.getWidth(), bmp.getHeight(),
-                        "registered ");
-                if (success) {
+//                boolean success = FaceServer.getInstance().register(HeadCollectActivity.this, nv21, bmp.getWidth(), bmp.getHeight(),
+//                        "registered ");
+                if (true) {
                     Toast.makeText(this, "已获取比对人脸!", Toast.LENGTH_SHORT).show();
 
                 } else {
@@ -1937,7 +1937,7 @@ public class HeadCollectActivity extends AbstractActivity implements EasyPermiss
     private void registerFaceSixian(Bitmap bmp) {
         if (FaceServer.getInstance() == null) {
             FaceServer.getInstance().init(HeadCollectActivity.this);
-            ConfigUtil.setFtOrient(HeadCollectActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
+//            ConfigUtil.setFtOrient(HeadCollectActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
         }
         Photo_Base = bmp;
         Log.e("jieo1", Photo_Base + "");
@@ -1957,9 +1957,9 @@ public class HeadCollectActivity extends AbstractActivity implements EasyPermiss
             final byte[] nv21 = ImageUtil.bitmapToNv21(bmp, width, height);
             if (nv21 != null) {
 
-                boolean success = FaceServer.getInstance().register(HeadCollectActivity.this, nv21, bmp.getWidth(), bmp.getHeight(),
-                        "registered ");
-                if (success) {
+//                boolean success = FaceServer.getInstance().register(HeadCollectActivity.this, nv21, bmp.getWidth(), bmp.getHeight(),
+//                        "registered ");
+                if (true) {
                     Toast.makeText(this, "已获取比对人脸!", Toast.LENGTH_SHORT).show();
 
                 } else {

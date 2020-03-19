@@ -11,6 +11,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application
+        android:largeHeap="true"
     >
         <activity
             android:theme="@style/SampleTheme.Light"
@@ -39,6 +40,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/SampleTheme.Light"
             android:name=".activity.RegisterAndRecognizeActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/SampleTheme.Light"
+            android:name=".activity.ArcFaceRecognizeActivity"
             android:launchMode="singleTop" />
         <activity
             android:screenOrientation="landscape"

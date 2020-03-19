@@ -14,12 +14,12 @@
     <string name="active_success">active success</string>
     <string name="already_activated">already activated</string>
     <string name="active_failed">active failed,code is %d</string>
-    <string name="init_failed">init failed,code is %d</string>
-    <string name="engine_not_initialized">engine not initialized! code is %d</string>
+
+
     <string name="notice_choose_main_img">please choose main image first</string>
     <string name="compare_failed">compare failed!code is %d</string>
-    <string name="register">register</string>
-    <string name="liveness_detect">liveness detect</string>
+
+
     <string name="face_manage">face manage</string>
     <string name="batch_register">batch register</string>
     <string name="notification_register">please put the images that need to register into directory \nsdcard/arcfacedemo/register</string>
@@ -38,4 +38,32 @@
     <string name="arc_rate">识别率:</string>
     <string name="arc_score">识别结果:</string>
     <string name="arc_tips">智能提醒:</string>
+
+    <string name="init_failed">引擎初始化失败，错误码为 %d</string>
+    <string name="engine_not_initialized">引擎未初始化，错误码为 %d</string>
+
+    <!--单目、双目识别注册界面-->
+    <string name="register">注册</string>
+    <string name="switch_camera">切换相机</string>
+    <string name="switch_camera_failed">切换相机失败</string>
+    <string name="recognize_failed_notice">未通过:%s</string>
+    <string name="recognize_success_notice">通过:%s</string>
+    <string name="low_confidence_level">人脸置信度低</string>
+    <string name="specific_engine_init_failed">%s 初始化失败，错误码为:%d</string>
+    <string name="notice_change_detect_degree">相机已切换，若无法检测到人脸，需要在首页修改视频模式人脸检测角度</string>
+    <string name="liveness_detect">活体检测</string>
+    <string name="camera_rgb">RGB CAMERA</string>
+    <string name="camera_ir">IR CAMERA</string>
+    <string name="camera_rgb_preview_size">RGB CAMERA\n%dx%d</string>
+    <string name="camera_ir_preview_size">IR CAMERA\n%dx%d</string>
+    <string name="camera_error_notice">\n可能的原因：该设备不支持同时打开两个摄像头</string>
+    <string name="draw_ir_rect_mirror_horizontal">IR人脸框水平镜像绘制</string>
+    <string name="draw_ir_rect_mirror_vertical">IR人脸框垂直镜像绘制</string>
+    <string name="batch_process_path_is_not_dir">路径 \\n%s\\n 不存在</string>
+    <string name="batch_process_path_is_not_exists">路径 \\n%s\\n 不存在</string>
+    <string name="batch_process_processing_please_wait">处理中，请稍等</string>
+    <string name="batch_process_finished_info">处理完成！\\n处理总数 =  %d \\n成功数 = %d \\n失败数 = %d \\n处理失败的图片已保存在文件夹 \\\' %s \\\'</string>
+    <string name="batch_process_no_face_need_to_delete">无人脸需要删除</string>
+    <string name="batch_process_notification">提示</string>
+    <string name="batch_process_confirm_delete">确认删除这%d张图片及人脸特征？</string>
 </resources>

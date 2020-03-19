@@ -38,7 +38,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.arcsoft.arcfacedemo.activity.RegisterAndRecognizeActivity;
+import com.arcsoft.arcfacedemo.activity.ArcFaceRecognizeActivity;
+import com.arcsoft.arcfacedemo.activity.FaceManageActivity;
+
 import com.arcsoft.arcfacedemo.common.Constants;
 import com.arcsoft.arcfacedemo.faceserver.FaceServer;
 import com.arcsoft.arcfacedemo.util.BitmapUtil;
@@ -47,8 +49,13 @@ import com.arcsoft.arcfacedemo.util.IDCard;
 import com.arcsoft.arcfacedemo.util.ImageUtil;
 
 import com.arcsoft.arcfacedemo.util.ToastUtils;
+import com.arcsoft.face.ActiveFileInfo;
 import com.arcsoft.face.ErrorInfo;
 import com.arcsoft.face.FaceEngine;
+import com.arcsoft.face.enums.RuntimeABI;
+import com.arcsoft.imageutil.ArcSoftImageFormat;
+import com.arcsoft.imageutil.ArcSoftImageUtil;
+import com.arcsoft.imageutil.ArcSoftImageUtilError;
 import com.google.gson.Gson;
 import com.jqsoft.livebody_verify_lib.R;
 import com.jqsoft.livebody_verify_lib.bean.CardBean;
@@ -122,6 +129,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -137,6 +146,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+import static com.arcsoft.face.enums.DetectFaceOrientPriority.ASF_OP_ALL_OUT;
 import static com.jqsoft.livebody_verify_lib.bean.Constant.GETBASEPHOTO_LOAD_OVER;
 import static com.jqsoft.livebody_verify_lib.bean.Constant.GETBASEPHOTO_LOAD_SUCESS;
 import static com.jqsoft.livebody_verify_lib.util.Util.bitmapToBase64;
@@ -198,7 +208,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
     String cardFrontPath = "", cardBackPath = "", facePath = "";
     String idNumber = "";
-    String isOnlyFace = "";
+    String isOnlyFace = "1";
     String sPersonID = "";
     String sUserName = "";
     int imageSelectType = IMAGE_SELECT_TYPE_CARD_FRONT;
@@ -217,7 +227,6 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
     RequestCall call;
     private Bitmap bitmap = null;
-    private int AFFACE_HEAD = 800;
     private LinearLayout ll_card;
     LinearLayout ll_SwBtn;
     private SwitchButton btn_changeCamera;
@@ -225,26 +234,67 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
     private String IdCardPath;
     private TextView apply_btn;
     String sRemark = "";
-    private Bitmap takePhotoBitmap;
     private String mPhotoPath, Applymes;
     private File mPhotoFile;
-    private int TAKE_PHOTO = 100;
-    private Uri photoPath;
     private String sCheckFacePhoto, sDeletePhoto;
     private ImageView iv_location,iv_idcard;
     private EditText et_familyadress,et_name,et_idcard,et_hujiadress_new,et_phone;
     private TextView et_hujiadress,tv_nation,tv_sex,tv_birth;
+    private static final int ACTION_REQUEST_PERMISSIONS = 0x001;
+    private static final String TAG = "CompareFaceActivity";
+
+    private final int REQUEST_FACE_ARCHIVE_CREATION_CODE = 700;
+    //缓存
+    private SharedPreferences userSettings;
+
+    // 在线激活所需的权限
+    private static final String[] NEEDED_PERMISSIONS = new String[]{
+            Manifest.permission.READ_PHONE_STATE
+    };
+
+    /**
+     * 加载图片
+     */
+    private RequestCall loadHeadImageCall;
+    private String faceFerture = "";
+    /**
+     * 接口返回sMessage
+     */
+    private String sMessage;
+
+
+    /**
+     * 识别照片
+     */
+    private Bitmap Photo_Compare = null;
+    /**
+     * 提交底片
+     */
+    private Bitmap Photo_Base = null;
+
+    private String Photo_CompareBase64;
+    /**
+     * 保存 识别成功 图片路径
+     */
+    private static String bitmappath;
+    /**
+     * 删除底片 所需照片
+     */
+    private final int TAKE_PHOTO = 100;
+    private Uri photoPath;
+    private Bitmap takePhotoBitmap;
+    /**
+     * 虹软识别码
+     */
+    private final int AFFACE_HEAD = 800;
+    /**
+     * 激活识别标识
+     */
+    private String sActiveEngine = "0";
 
     @Inject
     SaveFaceInfoPresenter saveFaceInfoPresenter;
 
-//    @Override
-//    protected void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_card_image_live_face_verify_layout);
-//
-//
-//    }
 
 
     protected void initInject() {
@@ -695,24 +745,22 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
     }
 
-
+    private SharedPreferences.Editor editor;
     private void initData1() {
         initOkHttpUtils();
         populateData();
         initPictureLibrary();
-        activeEngine();
-        if (faceType != 2) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                activeEngine();
-//                clearFaces();
-            } else {
-                faceType = 2;
-                final SharedPreferences userSettings1 = getSharedPreferences("setting", 0);
-                final SharedPreferences.Editor editor1 = userSettings1.edit();
-                editor1.putInt("FaceType", 2);
-                editor1.apply();
-            }
+        userSettings = getSharedPreferences("setting", 0);
+        editor = userSettings.edit();
+        //激活引擎
+        if ("0".equals(sActiveEngine)) {
+            activeEngine();
+        } else if ("1".equals(sActiveEngine)) {
+
+        } else {
+            activeEngine();
         }
+        FaceServer.getInstance().init(CardImageLiveFaceVerifyActivity.this);
     }
 
     private void initOkHttpUtils() {
@@ -842,18 +890,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
         ivFace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(flag.equals("1")){
-
-                }else {
-                    final SharedPreferences userSettings = getSharedPreferences("setting", 0);
-                    int faceType = userSettings.getInt("FaceType", 0);
-                    if (faceType == 1) {
-                        selectLiveHead();
-                    } else {
-                        selectFaceImage();
-                    }
-                }
-//
+                selectLiveHead();
 
             }
         });
@@ -926,31 +963,8 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
                 if (bm == null) {
                     bm = headbitmap;
                 }
-
-
-
-
                 registerFace(bm);
-//
-//                if (faceType == 1) {
-//                    Bitmap bm = ((BitmapDrawable) ((ImageView) ivFace).getDrawable()).getBitmap();
-//                    if (bm == null) {
-//                        bm = headbitmap;
-//                    }
-//
-//
-//
-//
-//                    registerFace(bm);
-//                } else {
-//                    if (isOnlyFace.equals("1")) {
-//                        ToastUtil.show(CardImageLiveFaceVerifyActivity.this,"t");
-////                        onVerifyButtonOnlyFace();
-//                    } else {
-//                        ToastUtil.show(CardImageLiveFaceVerifyActivity.this,"t");
-////                        onVerifyButtonClicked();
-//                    }
-//                }
+
 
 
             }
@@ -995,6 +1009,116 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
         });
     }
 
+
+    private void registerFace(Bitmap bmp) {
+        //本地人脸库初始化
+        clearFaces();
+        FaceServer.getInstance().init(CardImageLiveFaceVerifyActivity.this);
+        ConfigUtil.setFtOrient(CardImageLiveFaceVerifyActivity.this, ASF_OP_ALL_OUT);
+        final ExecutorService executorService;
+        executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (bmp == null) {
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CardImageLiveFaceVerifyActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+                    builder.setTitle("提示");
+                    builder.setMessage("获取的图片为空,请点击刚刚拍摄的底片，可以重新采集!");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            refreshUI(IMAGE_SELECT_TYPE_FACE, "", null);
+                        }
+                    });
+
+                    android.app.AlertDialog dialog = builder.create();
+                    dialog.setCancelable(false);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
+                    return;
+                }
+                Bitmap bitmap = ArcSoftImageUtil.getAlignedBitmap(bmp, true);
+                if (bitmap == null) {
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CardImageLiveFaceVerifyActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+                    builder.setTitle("提示");
+                    builder.setMessage("获取的图片为空,请点击刚刚拍摄的底片，可以重新采集!");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            refreshUI(IMAGE_SELECT_TYPE_FACE, "", null);
+                        }
+                    });
+
+                    android.app.AlertDialog dialog = builder.create();
+                    dialog.setCancelable(false);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
+                    return;
+
+                }
+                byte[] bgr24 = ArcSoftImageUtil.createImageData(bitmap.getWidth(), bitmap.getHeight(), ArcSoftImageFormat.BGR24);
+                int transformCode = ArcSoftImageUtil.bitmapToImageData(bitmap, bgr24, ArcSoftImageFormat.BGR24);
+                if (transformCode != ArcSoftImageUtilError.CODE_SUCCESS) {
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CardImageLiveFaceVerifyActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+                    builder.setTitle("提示");
+                    builder.setMessage("获取的图片为空,请点击刚刚拍摄的底片，可以重新采集!");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            refreshUI(IMAGE_SELECT_TYPE_FACE, "", null);
+                        }
+                    });
+
+                    android.app.AlertDialog dialog = builder.create();
+                    dialog.setCancelable(false);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
+                    return;
+                }
+
+                boolean success = FaceServer.getInstance().registerBgr24(CardImageLiveFaceVerifyActivity.this, bgr24, bitmap.getWidth(), bitmap.getHeight(),
+                        "register");
+                if (!success) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CardImageLiveFaceVerifyActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+                            builder.setTitle("提示");
+                            builder.setMessage("未获取到图片信息,请点击刚刚拍摄的底片，可以重新采集!");
+                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int which) {
+                                    refreshUI(IMAGE_SELECT_TYPE_FACE, "", null);
+                                }
+                            });
+
+                            android.app.AlertDialog dialog = builder.create();
+                            dialog.setCancelable(false);
+                            dialog.setCanceledOnTouchOutside(false);
+                            dialog.show();
+                        }
+
+                    });
+
+                    return;
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            onVerifyButtonOnlyFace();
+                        }
+                    });
+
+                }
+
+
+            }
+        });
+
+    }
+
+
+
     @Override
     protected void loadData() {
 
@@ -1011,9 +1135,9 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
     private void selectLiveHead() {
         imageSelectType = IMAGE_SELECT_TYPE_FACE;
         FaceDetector.init(CardImageLiveFaceVerifyActivity.this);
-        Intent intent = new Intent(CardImageLiveFaceVerifyActivity.this, RegisterAndRecognizeActivity.class);
+        Intent intent = new Intent(CardImageLiveFaceVerifyActivity.this, ArcFaceRecognizeActivity.class);
 
-        intent.putExtra("isOnlyFace", isOnlyFace);
+        intent.putExtra("isOnlyFace", "1");
         intent.putExtra("IdCardPath", IdCardPath);
         intent.putExtra("formWay", "CardImageLiveFaceVerifyActivity");
         intent.putExtra("path", cardFrontPath);
@@ -1153,127 +1277,12 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 //        btnVerify.setEnabled(isChecked);
     }
 
-    private void verifyNormal() {
-        isForcePass = false;
-        verify(VERIFY_STATUS_NORMAL);
-    }
 
-    private void verifyForce() {
-        isForcePass = true;
-        verify(VERIFY_STATUS_FORCE);
-    }
 
 
     private String facebaseurl = "", readcardType_VALUE = "";
 
-    private void verify(String status) {
-        Util.showGifProgressDialog(this, new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                cancelNetworkRequest();
-            }
-        });
 
-        String cardFrontBase64String = Base64Util.imageToBase64(cardFrontPath);
-        String faceBase64String = Base64Util.imageToBase64(facePath);
-
-        long timestamp = Util.getTimeStamp();
-        String timestampString = String.valueOf(timestamp);
-        String token = Util.getProcessedToken(timestamp);
-
-        Map<String, String> params = new HashMap<>();
-        params.put("acs_token", token);
-        params.put("acs_time", timestampString);
-        params.put("idnum", idNumber);
-        params.put("status", status);
-        params.put("card_base64", cardFrontBase64String);
-        params.put("head_base64", faceBase64String);
-
-
-        String feature_base64 = FaceServer.getInstance().sFeature;
-        params.put("feature_base64", feature_base64);//人类特征数据  base64字符串（可为空）
-        params.put("arcsoft_version", "2.1");//虹软引起版本号码（可为空）
-
-
-        final SharedPreferences userSettings = getSharedPreferences("setting", 0);
-        facebaseurl = userSettings.getString("face_base_url", "");
-
-        if (TextUtils.isEmpty(Version.BASE_URL)) {
-            Version.BASE_URL = facebaseurl;
-        }
-
-
-        String url = Version.BASE_URL + Version.CREATE_FEATURE_URL;
-        Log.i("chenxu", "url" + url);
-        call = OkHttpUtils.post()//
-//                .addFile("mFile", "agguigu-afu.jpe", file)//
-                .url(url)//
-                .params(params)//
-//                .headers(headers)//
-                .build();//
-        call.execute(new MyResultCallback<VerifyResultBean>() {
-
-            @Override
-            public void onSuccess(VerifyResultBean response) {
-                Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
-                btnVerify.setClickable(true);
-                if (response != null && "1".equals(response.getRespond())) {
-                    deleteByFilePath(cardFrontPath);
-                    returnSuccess();
-                    Log.i("chenxu", "CardImageLiveFaceVerifyActivity onSuccess");
-                    showToast("验证成功");
-                } else {
-                    returnFailure();
-                    String suffix = "";
-                    if (response != null) {
-                        suffix = ":" + response.getMessage();
-                    }
-                    Log.i("chenxu", "CardImageLiveFaceVerifyActivity failure");
-                    showNotificationDialogForVerifyFailure("智能提示" + suffix, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            refreshUI(IMAGE_SELECT_TYPE_FACE, "", null);
-                        }
-                    });
-//                            showNotificationDialog("智能提示" + suffix+"。是否强制通过？", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    verifyForce();
-//                                }
-//                            });
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
-                btnVerify.setClickable(true);
-                returnFailure();
-                Log.i("chenxu", e.getMessage() + "CardImageLiveFaceVerifyActivity onFailure");
-                if (e.getMessage() != null) {
-                    showNotificationDialogForVerifyFailure(e.getMessage(), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            refreshUI(IMAGE_SELECT_TYPE_FACE, "", null);
-                        }
-                    });
-                } else {
-                    showNotificationDialogForVerifyFailure("", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            refreshUI(IMAGE_SELECT_TYPE_FACE, "", null);
-                        }
-                    });
-                }
-//                        showNotificationDialog("智能提示"+"。是否强制通过？", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                verifyForce();
-//                            }
-//                        });
-            }
-        });
-    }
 
     private void showNotificationDialog(String msg, DialogInterface.OnClickListener positiveListener) {
         try {
@@ -1333,28 +1342,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
     }
 
-    private void onVerifyButtonClicked() {
-        if (false/*!viewLicense.isChecked()*/) {
-//        if (!cbLicense.isChecked()){
-            showToast("请同意许可协议");
-            btnVerify.setClickable(true);
-        } else if (!isFilePathValid(cardFrontPath)) {
-            ivCardFront.setImageResource(R.mipmap.cf_id_card_number);
-            showToast("身份证正面照不能为空,请重新点击身份证拍照");
-            btnVerify.setClickable(true);
 
-        } /*else if (!isFilePathValid(cardBackPath)){
-            showToast("身份证背面照不能为空");
-        } */ else if (!isFilePathValid(facePath)) {
-            showToast("头像不能为空");
-            btnVerify.setClickable(true);
-        } else {
-            compressBitmap();
-//            new Thread(SaveBasePhotoRunnable).start();
-//
-            verifyNormal();
-        }
-    }
 
     private void compressBitmap() {
         if (cardFrontPath != null) {
@@ -1731,6 +1719,35 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
             }
 
 
+        }
+        //添加离线身份证识别，使用默认识别框
+        if(data!=null){
+            if(requestCode == 123){
+                try {
+                    String result = data.getStringExtra("OCRResult");
+                    String ocrResult = result;
+                    ReadIdCardBean bean = new Gson().fromJson(ocrResult, ReadIdCardBean.class);
+                    // 通知页面识别成功
+                    if (bean != null) {
+                        ScanCardUtil.doCallBackMethod(bean);
+                        new Thread() { // 解决没有及时销毁activity造成闪现黑屏
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }.start();
+                    } else {
+                        showNotificationDialog("识别失败，请拍照清楚后重新识别", null);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showNotificationDialog("识别失败，请拍照清楚后重新识别", null);
+                }
+            }
         }
     }
     private String slongitude = "", slocation = "";
@@ -2573,70 +2590,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
     };
 
 
-    private void registerFace(Bitmap bmp) {
-        //本地人脸库初始化
-        clearFaces();
-        FaceServer.getInstance().init(this);
-        ConfigUtil.setFtOrient(CardImageLiveFaceVerifyActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
 
-        bmp = ImageUtil.alignBitmapForNv21(bmp);
-        if (bmp == null) {
-
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CardImageLiveFaceVerifyActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
-            builder.setTitle("提示");
-            builder.setMessage("获取的图片为空,请点击刚刚拍摄的底片，可以重新采集!");
-            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                public void onClick(DialogInterface dialog, int which) {
-                    refreshUI(IMAGE_SELECT_TYPE_FACE, "", null);
-                }
-            });
-
-            android.app.AlertDialog dialog = builder.create();
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-        } else {
-
-            int width = bmp.getWidth();
-            int height = bmp.getHeight();
-            //bitmap转NV21
-            final byte[] nv21 = ImageUtil.bitmapToNv21(bmp, width, height);
-            if (nv21 != null) {
-                boolean success = FaceServer.getInstance().registenew(CardImageLiveFaceVerifyActivity.this, nv21, bmp.getWidth(), bmp.getHeight(),
-                        "registered");
-                if (success) {
-                    Toast.makeText(this, "已获取比对人脸!", Toast.LENGTH_SHORT).show();
-
-                    if (isOnlyFace.equals("1")) {
-                        onVerifyButtonOnlyFace();
-                    } else {
-                        onVerifyButtonClicked();
-                    }
-
-
-                } else {
-                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CardImageLiveFaceVerifyActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
-                    builder.setTitle("提示");
-                    builder.setMessage("未获取到图片信息,请点击刚刚拍摄的底片，可以重新采集!");
-                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog, int which) {
-                            refreshUI(IMAGE_SELECT_TYPE_FACE, "", null);
-                        }
-                    });
-
-                    android.app.AlertDialog dialog = builder.create();
-                    dialog.setCancelable(false);
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.show();
-
-                }
-
-
-            }
-        }
-    }
 
 
     public void clearFaces() {
@@ -2722,89 +2676,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
     private String sCardFeature = "";
 
-    private void registerFace1(Bitmap bmp) {
-        //本地人脸库初始化
-        clearFaces();
-        FaceServer.getInstance().init(this);
-        ConfigUtil.setFtOrient(CardImageLiveFaceVerifyActivity.this, FaceEngine.ASF_OP_0_HIGHER_EXT);
 
-        bmp = ImageUtil.alignBitmapForNv21(bmp);
-        if (bmp == null) {
-
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CardImageLiveFaceVerifyActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
-            builder.setTitle("提示");
-            builder.setMessage("获取的图片为空,请点击刚刚拍摄的底片，可以重新采集!");
-            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                public void onClick(DialogInterface dialog, int which) {
-                    refreshUI(IMAGE_SELECT_TYPE_CARD_FRONT, "", null);
-                }
-            });
-
-            android.app.AlertDialog dialog = builder.create();
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-        } else {
-
-            int width = bmp.getWidth();
-            int height = bmp.getHeight();
-            //bitmap转NV21
-            final byte[] nv21 = ImageUtil.bitmapToNv21(bmp, width, height);
-            if (nv21 != null) {
-//                int code=FaceServer.getInstance().extractFaceFeature(this,nv21, bmp.getWidth(), bmp.getHeight());
-//                if (code== ErrorInfo.MOK){
-//                    Toast.makeText(this, "已获取比对人脸!", Toast.LENGTH_SHORT).show();
-//                    verifyIdCardNumber(bitmap);
-//                }else {
-//
-//                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CardImageLiveFaceVerifyActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
-//                    builder.setTitle("提示");
-//                    builder.setMessage("获取特征值失败:"+code+"请重新采集身份证!");
-//                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            refreshUI(IMAGE_SELECT_TYPE_CARD_FRONT, "", null);
-//                        }
-//                    });
-//
-//                    android.app.AlertDialog dialog = builder.create();
-//                    dialog.setCancelable(false);
-//                    dialog.setCanceledOnTouchOutside(false);
-//                    dialog.show();
-//                }
-
-
-                boolean success = FaceServer.getInstance().register(CardImageLiveFaceVerifyActivity.this, nv21, bmp.getWidth(), bmp.getHeight(),
-                        "registered");
-                if (success) {
-                    Toast.makeText(this, "已获取比对人脸!", Toast.LENGTH_SHORT).show();
-                    verifyIdCardNumber(bitmap);
-
-                } else {
-                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CardImageLiveFaceVerifyActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
-                    builder.setTitle("提示");
-                    builder.setMessage("身份证不清晰，请重新采集身份证!");
-                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            refreshUI(IMAGE_SELECT_TYPE_CARD_FRONT, "", null);
-                        }
-                    });
-
-                    android.app.AlertDialog dialog = builder.create();
-                    dialog.setCancelable(false);
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.show();
-
-                }
-
-
-            }
-        }
-    }
 
     public void IntetActivity() {
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");//开始拍照
@@ -2971,51 +2843,27 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
 
     }
-    private static final int ACTION_REQUEST_PERMISSIONS = 0x001;
-    private static final String[] NEEDED_PERMISSIONS = new String[]{
-            Manifest.permission.READ_PHONE_STATE
-    };
+
     /**
      * 激活引擎
      *
      * @param
      */
     public void activeEngine() {
-        final SharedPreferences userSettings = getSharedPreferences("setting", 0);
-        final SharedPreferences.Editor editor = userSettings.edit();
+
         if (!checkPermissions(NEEDED_PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, NEEDED_PERMISSIONS, ACTION_REQUEST_PERMISSIONS);
             return;
         }
 
-        Observable.create(new ObservableOnSubscribe<Integer>() {
-            @Override
-            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
-                if (faceType != 9) {
-                    try {
-                        FaceEngine faceEngine = new FaceEngine();
-                        int activeCode = faceEngine.active(CardImageLiveFaceVerifyActivity.this, Constants.APP_ID, Constants.SDK_KEY);
-                        emitter.onNext(activeCode);
+        Observable.create((ObservableOnSubscribe<Integer>) emitter -> {
+            RuntimeABI runtimeABI = FaceEngine.getRuntimeABI();
+            Log.i(TAG, "subscribe: getRuntimeABI() " + runtimeABI);
 
-                    } catch (UnsatisfiedLinkError e) {
-                        Log.d("subscribe: ", "subscribe: "+e.getMessage());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                final SharedPreferences userSettings1 = getSharedPreferences("setting", 0);
-                                final SharedPreferences.Editor editor1 = userSettings1.edit();
-                                editor1.putInt("FaceType", 2);
-                                editor1.apply();
-//                        Toast.makeText(HeadCollectActivity.this, "活体引擎激活失败,请重新识别", Toast.LENGTH_SHORT).show();
-//                        finish();
-
-                            }
-                        });
-                    }
-                }
-
-
-            }
+            long start = System.currentTimeMillis();
+            int activeCode = FaceEngine.activeOnline(CardImageLiveFaceVerifyActivity.this, Constants.APP_ID, Constants.SDK_KEY);
+            Log.i(TAG, "subscribe cost: " + (System.currentTimeMillis() - start));
+            emitter.onNext(activeCode);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -3028,29 +2876,37 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
                     @Override
                     public void onNext(Integer activeCode) {
                         if (activeCode == ErrorInfo.MOK) {
-//                            showToast(getString(R.string.active_success));
-                            Toast.makeText(CardImageLiveFaceVerifyActivity.this, "活体引擎激活成功", Toast.LENGTH_SHORT).show();
-                            editor.putInt("FaceType", 1);
+                            Toast.makeText(CardImageLiveFaceVerifyActivity.this, "人脸识别激活成功！", Toast.LENGTH_LONG).show();
+                            editor.putString("sActiveEngine", "1");
                             editor.apply();
-                            ll_SwBtn.setVisibility(View.VISIBLE);
-
+//                            showToast(getString(com.arcsoft.arcfacedemo.R.string.active_success));
                         } else if (activeCode == ErrorInfo.MERR_ASF_ALREADY_ACTIVATED) {
-                            editor.putInt("FaceType", 1);
-                            editor.commit();
-                            ll_SwBtn.setVisibility(View.VISIBLE);
-
-//                            showToast(getString(R.string.already_activated));
+                            Toast.makeText(CardImageLiveFaceVerifyActivity.this, "已激活！", Toast.LENGTH_LONG).show();
+                            editor.putString("sActiveEngine", "1");
+                            editor.apply();
+//                            showToast(getString(com.arcsoft.arcfacedemo.R.string.already_activated));
                         } else {
-
+                            Toast.makeText(CardImageLiveFaceVerifyActivity.this, "人脸识别激活失败！" + activeCode, Toast.LENGTH_LONG).show();
+                            editor.putString("sActiveEngine", "2");
+                            editor.apply();
+//                            showToast(getString(com.arcsoft.arcfacedemo.R.string.active_failed, activeCode));
                         }
 
+                        ActiveFileInfo activeFileInfo = new ActiveFileInfo();
+                        int res = FaceEngine.getActiveFileInfo(CardImageLiveFaceVerifyActivity.this, activeFileInfo);
+                        if (res == ErrorInfo.MOK) {
+                            Log.i(TAG, activeFileInfo.toString());
+                        }
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        editor.putInt("FaceType", 2);
-                        editor.commit();
+                        Toast.makeText(CardImageLiveFaceVerifyActivity.this, "人脸识别失败！" + e.getMessage(), Toast.LENGTH_LONG).show();
+
+//                        if (view != null) {
+//                            view.setClickable(true);
+//                        }
                     }
 
                     @Override
@@ -3058,7 +2914,6 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
                     }
                 });
-
     }
 
 
@@ -3078,7 +2933,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
     @Override
     public void onSaveFaceInfoSuccess(HttpResultNewBaseBean<String> bean) {
 
-        com.jqsoft.nursing.util.Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
+        Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
         Toast.makeText(CardImageLiveFaceVerifyActivity.this,"保存成功",Toast.LENGTH_LONG).show();
 
         application.setiFlag(1);
@@ -3088,7 +2943,7 @@ public class CardImageLiveFaceVerifyActivity extends AbstractActivity implements
 
     @Override
     public void onSaveFaceInfoFailure(String message) {
-        com.jqsoft.nursing.util.Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
+        Util.hideGifProgressDialog(CardImageLiveFaceVerifyActivity.this);
         Toast.makeText(CardImageLiveFaceVerifyActivity.this,message,Toast.LENGTH_LONG).show();
     }
 

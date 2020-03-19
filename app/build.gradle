@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'bugly'
@@ -18,7 +20,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.3'
+        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.13'
     }
 }
 
@@ -80,13 +82,13 @@ android {
     defaultConfig {
         applicationId "com.jqsoft.launcher"
         minSdkVersion rootProject.ext.minSdk//也可以支持16级以上的不过页面跳转效果就没有了，透明状态栏也没有。
-        targetSdkVersion 26
+        targetSdkVersion rootProject.ext.targetSdk
         versionCode 2
         versionName "2.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //buildConfigField "String", "TINKER_ID", "\"${getTinkerIdValue()}\""
         multiDexEnabled true
-
+        flavorDimensions "default"
         resConfigs "zh"
         manifestPlaceholders = [
                 "OCR_API_KEY" : "9ee81b73cb2bd3f742e9b4ea8199a53d"    //OCR钥
@@ -122,64 +124,6 @@ android {
         }
     }
     signingConfigs {
-
-        //chenxu
-//       release {
-//              keyAlias 'android_key'
-//              keyPassword '12345678'
-//              storeFile file('E:/work/keystore/android_signature_keystore.jks')
-//              storePassword '12345678'
-//          }
-//          debug {
-//              keyAlias 'androiddebugkey'
-//              keyPassword 'android'
-//              storeFile file('C:/Users/Administrator/.android/debug.keystore')
-//              storePassword 'android'
-//          }
-
-        //lxj
-
-//        release {
-//            keyAlias 'android_key'
-//            keyPassword '111111'
-//            storeFile file('D:/JQproject/ChargeVillageskey')
-//            storePassword '111111'
-//        }
-//        debug {
-//            keyAlias 'androiddebugkey'
-//            keyPassword 'android'
-//            storeFile file('C:/Users/Administrator/.android/debug.keystore')
-//            storePassword 'android'
-//        }
-
-        //zyz
-//        release {
-//            keyAlias 'android_key'
-//            keyPassword '123456'
-//            storeFile file('E:/apk/mykey.jks')
-//            storePassword '123456'
-//        }
-//        debug {
-//            keyAlias 'androiddebugkey'
-//            keyPassword 'android'
-//            storeFile file('C:/Users/YLL/.android/debug.keystore')
-//            storePassword 'android'
-//
-//        }
-
-        //zyz
-//        release {
-//            keyAlias 'android_key'
-//            keyPassword '123456'
-//            storeFile file('E:/apk/mykey.jks')
-//            storePassword '123456'
-//        }
-//        debug {
-//            keyAlias 'androiddebugkey'
-//            keyPassword 'android'
-//            storeFile file('C:/Users/YLL/.android/debug.keystore')
-//            storePassword 'android'
-//        }
 
         // yedong
         release {
@@ -243,6 +187,11 @@ android {
             buglyAppId = '52188b74cc'
             buglyAppKey = '7e088370-ede1-4e83-a3bc-d3b7adfaa198'
             countyName = '烈山区'
+        }else if (variant.flavorName.equals("linquanxian")) { // 渠道1：channel1
+            //庐阳区
+            buglyAppId = '9fcd8a21af'
+            buglyAppKey = 'c3afcaf3-ef05-4ae7-8582-a0c22b6fe571'
+            countyName = '临泉县'
         }
         if (buglyAppId != null) {
             variant.ext.buglyAppId = buglyAppId
@@ -252,17 +201,15 @@ android {
         }
 
 //        if (variant.buildType.name.equals('release')){
-        variant.outputs.each { output ->
+
+        variant.outputs.all { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                // 输出apk名称为appname-1.0-beta1-xxxx-xx-xx.apk
-                def fileName = "${appName}${countyName}V${variant.versionName}.apk"
-//                    def fileName = "${appName}${appType}${countyName}V${variant.versionName}.apk"
-//                            def fileName = "${appName}-${variant.flavorName}-v${variant.versionName}-versioncode-${variant.versionCode}-${releaseTime()}.apk"
-//                            def fileName = "${appName}-${variant.flavorName}-v${defaultConfig.versionName}-versioncode-${defaultConfig.versionCode}-${releaseTime()}.apk"
-//                            def fileName = "${appName}-${variant.productFlavors[0].name}-v${defaultConfig.versionName}-versioncode-${defaultConfig.versionCode}-${releaseTime()}.apk"
-                output.outputFile = new File(outputFile.parent, fileName)
+                def newFileName = "${countyName}-${variant.buildType.name}-${variant.versionName}" +
+                        "-${new SimpleDateFormat("yyyyMMddHH").format(new Date())}.apk"
+                outputFileName = newFileName
             }
+
         }
 
 //        }
@@ -274,8 +221,8 @@ android {
     productFlavors {
         generic {
             applicationId = "com.jqsoft.launcher"
-            versionCode = 8
-            versionName = "2.0.8"
+            versionCode = 9
+            versionName = "2.0.9"
 
             manifestPlaceholders = [
 
@@ -295,13 +242,15 @@ BUGLY_APP_ID_VALUE             : "B0c15ec0404"
         }
         lieshanqu {
             applicationId = "com.jqsoft.launcher"
-            versionCode = 1
-            versionName = "1.0.1"
+            versionCode = 3
+            versionName = "1.0.3"
 
             manifestPlaceholders = [
 
                     //正式地址
                     HTTP_ACCESS_URL_VALUE          :"http://192.168.45.20:5577/",
+//                    HTTP_ACCESS_URL_VALUE          :"http://60.168.132.92:5577/",
+//                    HTTP_ACCESS_URL_VALUE          :"http://120.209.93.231:8002/",
 
                     FILE_PROVIDER_AUTHORITIES_VALUE: "com.jqsoft.launcher.fileProvider",
                     LOGIN_APP_NAME_VALUE           : "老人信息采集",
@@ -314,17 +263,41 @@ BUGLY_APP_ID_VALUE             : "B0c15ec0404"
 //JPUSH_CHANNEL                  : "" //用户渠道统计的渠道名称
             ]
         }
-    }
-    productFlavors.all {
-//        flavor -> flavor.manifestPlaceholders = [MTA_CHANNEL_VALUE: name]
+
+        linquanxian {
+            applicationId = "com.jqsoft.launcher"
+            versionCode = 2
+            versionName = "1.0.2"
+
+            manifestPlaceholders = [
+
+                    //正式地址lqxsq  123456
+                    HTTP_ACCESS_URL_VALUE          :"http://112.30.212.27:8002/",
+
+                    FILE_PROVIDER_AUTHORITIES_VALUE: "com.jqsoft.launcher.fileProvider",
+                    LOGIN_APP_NAME_VALUE           : "老人信息采集",
+//                    BUGLY_APP_ID_VALUE值的格式为B+{真实的id}------------------
+                    BUGLY_APP_ID_VALUE             : "B9fcd8a21af"
+//                    BUGLY_APP_ID_VALUE值的格式为B+{真实的id}------------------
+//,
+//JPUSH_PKGNAME                  : applicationId,
+//JPUSH_APPKEY                   : "", //JPush上注册的包名对应的appkey.
+//JPUSH_CHANNEL                  : "" //用户渠道统计的渠道名称
+            ]
+        }
     }
 
+
     lintOptions {
+        checkReleaseBuilds false
         abortOnError false
-        disable 'MissingTranslation'
     }
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 
     configurations.all {
@@ -534,13 +507,13 @@ dependencies {
     //    依赖注入--------------------------------------------
 
     //使用APT生成工具，生成需要的DI代码
-    compile 'com.google.dagger:dagger-compiler:2.5'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
     //    //JSR250的jar包，使用这个和使用glassFish的那个一样，仅为了使用@Inject 和@Named注解
 
     //    provided 'javax.annotation:jsr250-api:1.0'
 
     //Dagger2 的依赖
-    compile 'com.google.dagger:dagger:2.5'
+    compile 'com.google.dagger:dagger:2.16'
     // -------------------------------------------------------------
 
     //    RxJava,RxAndroid,RxBinding--------------------------------------------

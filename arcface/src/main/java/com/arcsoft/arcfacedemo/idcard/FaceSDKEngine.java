@@ -7,6 +7,8 @@ import com.arcsoft.face.FaceFeature;
 import com.arcsoft.face.FaceInfo;
 import com.arcsoft.face.FaceSimilar;
 import com.arcsoft.face.VersionInfo;
+import com.arcsoft.face.enums.DetectFaceOrientPriority;
+import com.arcsoft.face.enums.DetectMode;
 
 import java.util.List;
 
@@ -54,11 +56,11 @@ public class FaceSDKEngine {
             this.faceEnginePreview = new FaceEngine();
         }
 
-        this.engineErrorCode = this.faceEngine.init(context, 4294967295L, 5, 16, 5, 5);
+        this.engineErrorCode = this.faceEngine.init(context, DetectMode.ASF_DETECT_MODE_IMAGE, DetectFaceOrientPriority.ASF_OP_ALL_OUT, 16, 5, 5);
         if (this.engineErrorCode != 0) {
             return this.engineErrorCode;
         } else {
-            this.enginePreviewErrorCode = this.faceEnginePreview.init(context, 0L, 5, 16, 5, 5);
+            this.enginePreviewErrorCode = this.faceEnginePreview.init(context, DetectMode.ASF_DETECT_MODE_VIDEO, DetectFaceOrientPriority.ASF_OP_ALL_OUT, 16, 5, 5);
             return this.enginePreviewErrorCode != 0 ? this.enginePreviewErrorCode : 0;
         }
     }

@@ -3,11 +3,11 @@ package com.arcsoft.arcfacedemo.util.face;
 import android.support.annotation.Nullable;
 
 import com.arcsoft.face.FaceFeature;
-import com.arcsoft.face.FaceInfo;
 import com.arcsoft.face.LivenessInfo;
 
-import java.util.List;
-
+/**
+ * 人脸处理回调
+ */
 public interface FaceListener {
     /**
      * 当出现异常时执行
@@ -20,8 +20,18 @@ public interface FaceListener {
     /**
      * 请求人脸特征后的回调
      *
-     * @param faceFeature    人脸特征数据
-     * @param requestId 请求码
+     * @param faceFeature 人脸特征数据
+     * @param requestId   请求码
+     * @param errorCode   错误码
      */
-    void  onFaceFeatureInfoGet(@Nullable FaceFeature faceFeature, Integer requestId);
+    void onFaceFeatureInfoGet(@Nullable FaceFeature faceFeature,byte[] nv21, Integer requestId, Integer errorCode);
+
+    /**
+     * 请求活体检测后的回调
+     *
+     * @param livenessInfo 活体检测结果
+     * @param requestId    请求码
+     * @param errorCode    错误码
+     */
+    void onFaceLivenessInfoGet(@Nullable LivenessInfo livenessInfo,Integer requestId, Integer errorCode);
 }

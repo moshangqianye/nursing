@@ -43,7 +43,7 @@ public class ScanCardActivity extends AbstractActivity implements View.OnClickLi
     private CameraManager cameraManager;
     private boolean hasSurface;
     private boolean mIsSaveImg; // 是否保存图片
-
+    private static int REQUEST_CODE=123;
     /**
      * 跳转activity
      *
@@ -51,9 +51,16 @@ public class ScanCardActivity extends AbstractActivity implements View.OnClickLi
      * @param isSaveImg 是否保存图片
      */
     public static void start(Context context, boolean isSaveImg) {
-        Intent starter = new Intent(context, ScanCardActivity.class);
-        starter.putExtra(IS_SAVE_IMAGE, isSaveImg);
-        context.startActivity(starter);
+//        Intent starter = new Intent(context, ScanCardActivity.class);
+//        starter.putExtra(IS_SAVE_IMAGE, isSaveImg);
+//        context.startActivity(starter);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("saveImage",isSaveImg); // 是否保存识别图片
+        bundle.putBoolean("showSelect", false);                          // 是否显示选择图片
+        bundle.putBoolean("showCamera", false);                          // 显示图片界面是否显示拍照(驾照选择图片识别率比扫描高)
+        bundle.putInt("requestCode", REQUEST_CODE);                     // requestCode
+        bundle.putInt("type", 0);  // 0身份证, 1驾驶证
+        LibraryInitOCR.startScan(context, bundle);
     }
 
     @Override

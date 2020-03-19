@@ -6,6 +6,7 @@ import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
@@ -126,7 +127,24 @@ public class Util {
         return result;
     }
     public static void hideGifProgressDialog(Context context) {
-        LoadingUtil.getInstance(context).hide();
+        try{
+            final Context context1 = ((ContextWrapper) context).getBaseContext();
+            if (context1 instanceof Activity) {
+                if (!((Activity) context1).isFinishing() && !((Activity) context1).isDestroyed()){
+                    ((Activity) context1).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LoadingUtil.getInstance(context1).hide();
+                        }
+                    });
+                }
+
+            } else {//if the Context used wasnt an Activity, then dismiss it too
+                LoadingUtil.getInstance(context).hide();
+            }
+        }catch (Exception e){
+
+        }
     }
 
     public static void showGifProgressDialog(Context context) {

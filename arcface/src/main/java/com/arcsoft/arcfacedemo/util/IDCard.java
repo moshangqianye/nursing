@@ -225,14 +225,8 @@ public class IDCard {
         String Ai = "";
         int sexnumb = 0;
         try {
-            if(IDStr.length()==18){
-                Ai = IDStr.substring(0, 17);
-                sexnumb = Integer.parseInt(Ai.substring(16,17));
-            }else if(IDStr.length()==15){
-                Ai = IDStr.substring(0, 14);
-                sexnumb = Integer.parseInt(Ai.substring(13,14));
-            }
-
+            Ai = IDStr.substring(0, 17);
+            sexnumb = Integer.parseInt(Ai.substring(16,17));
         } catch (Exception e) {
             e.printStackTrace();
         }

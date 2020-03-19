@@ -90,6 +90,7 @@ public class SaveFaceInfoPresenter implements SaveFaceInfoContract.presenter {
                             Util.hideGifProgressDialog(context);
                             view.onSaveFaceInfoSuccess(bean);
                         } else {
+                            Util.hideGifProgressDialog(context);
                             String msg = Util.getNewMessageFromHttpResponse(bean);
                             view.onSaveFaceInfoFailure(msg);
                         }
