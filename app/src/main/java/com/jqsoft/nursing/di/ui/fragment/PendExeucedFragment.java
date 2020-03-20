@@ -9,12 +9,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jqsoft.nursing.R;
 import com.jqsoft.nursing.adapter.PendExecuAdapter;
 import com.jqsoft.nursing.adapter.nursing.HealthListAdapter;
 import com.jqsoft.nursing.base.Constants;
 import com.jqsoft.nursing.bean.PendExecuBeanList;
 import com.jqsoft.nursing.bean.PeopleBaseInfoBean;
+import com.jqsoft.nursing.bean.base.HttpResultNewBaseBean;
 import com.jqsoft.nursing.bean.nursing.HealthListBean;
 import com.jqsoft.nursing.di.ui.activity.ArcFaceListActivity;
 import com.jqsoft.nursing.di.ui.activity.PendExecuActivity;
@@ -25,6 +28,7 @@ import com.jqsoft.nursing.util.SwitchUtil;
 import com.jqsoft.nursing.utils3.util.ListUtils;
 import com.jqsoft.nursing.utils3.util.PreferencesUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +36,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 
-public class  PendExeucedFragment extends AbstractFragment implements BaseQuickAdapter.RequestLoadMoreListener{
+public class  PendExeucedFragment extends AbstractFragment implements  BaseQuickAdapter.RequestLoadMoreListener{
 
     @BindView(R.id.lay_content_nursing_list)
     View mLayContentNursingList;  // 有数据展示的布局
@@ -105,20 +109,20 @@ public class  PendExeucedFragment extends AbstractFragment implements BaseQuickA
             @Override
             public void onRefresh() {
                 // 刷新
+                currentPage = Constants.DEFAULT_INITIAL_PAGE;
                 isRefresh = true;
                 mAdapter.setEnableLoadMore(false);
-                currentPage = Constants.DEFAULT_INITIAL_PAGE;
                 PendExecuActivity parentActivity = (PendExecuActivity) getActivity();
                 parentActivity.loadHealthList("",currentPage,pageSize);
 
             }
         });
 
-        PendExecuActivity parentActivity = (PendExecuActivity) getActivity();
         currentPage = Constants.DEFAULT_INITIAL_PAGE;
+        isRefresh = true;
+        mAdapter.setEnableLoadMore(false);
+        PendExecuActivity parentActivity = (PendExecuActivity) getActivity();
         parentActivity.loadHealthList("",currentPage,pageSize);
-        mSrlHealthList.setRefreshing(false);
-        mAdapter.loadMoreComplete();
     }
 
     @Override
@@ -127,9 +131,14 @@ public class  PendExeucedFragment extends AbstractFragment implements BaseQuickA
     }
 
 
-    public void setPendbean(List<HealthListBean.RowsBean> data) {
+    public void setPendbean(HttpResultNewBaseBean<String> bean) {
+
+        Gson gson =new Gson();
+        Type type = new TypeToken<HealthListBean>() {}.getType();
+        HealthListBean healthListBean =  gson.fromJson(bean.getBackInfo().toString(),type);
 
 
+        List<HealthListBean.RowsBean> data = healthListBean.getRows();
         int listSize = getListSizeFromResult(data);
 
         mAdapter.setNewData(data);
@@ -223,7 +232,6 @@ public class  PendExeucedFragment extends AbstractFragment implements BaseQuickA
     @Override
     public void onLoadMoreRequested() {
         ++currentPage;
-        mSrlHealthList.setEnabled(false);
         PendExecuActivity parentActivity = (PendExecuActivity) getActivity();
         parentActivity.onLoadMoreRequested(currentPage,pageSize);
 

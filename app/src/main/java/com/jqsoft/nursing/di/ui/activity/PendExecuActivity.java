@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jqsoft.nursing.R;
@@ -57,7 +58,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 
-public class PendExecuActivity extends AbstractActivity implements ArcFaceListActivityContract.View {
+public class PendExecuActivity extends AbstractActivity implements ArcFaceListActivityContract.View{
 
 
     private PendExecuAdapter mPendExecuAdapter;
@@ -200,23 +201,11 @@ public class PendExecuActivity extends AbstractActivity implements ArcFaceListAc
     @Override
     public void onLoadHealthListSuccess(HttpResultNewBaseBean<String> bean) {
         if (bean != null) {
-            Gson gson =new Gson();
-            Type type = new TypeToken<HealthListBean>() {}.getType();
-            HealthListBean healthListBean =  gson.fromJson(bean.getBackInfo().toString(),type);
 
-            List<HealthListBean.RowsBean> data = healthListBean.getRows();
-            if (!CommentUtil.isEmpty(data)) {  // 请求到数据
             Fragment fragment = fragmentAdapters.getFragments().get(0);
-            ((PendExeucedFragment) fragment).setPendbean(data);
+            ((PendExeucedFragment) fragment).setPendbean(bean);
 
 
-            } else {   // 请求到数据但是数据为null或者size为0
-                if (isRefresh) {  // 刷新未得到数据
-
-                } else {   // 上拉加载未得到数据
-                    ToastUtil.show(this, "暂无更多数据了");
-                }
-            }
         }
 
     }
@@ -296,6 +285,8 @@ public class PendExecuActivity extends AbstractActivity implements ArcFaceListAc
 //        String endIndex = String.valueOf((currentPage + 1) * pageSize);
 //        return ParametersFactory.getHealthListMap(this, userId, beginIndex, endIndex, elderName);
 //    }
+
+
     public void onLoadMoreRequested(int currentPage,int pageSize) {
 
         String sToken= PreferencesUtils.getString(PendExecuActivity.this,"token");
@@ -306,11 +297,6 @@ public class PendExecuActivity extends AbstractActivity implements ArcFaceListAc
         params.put("name", "");
         params.put("idCard", "");
         params.put("userid", userinfo.getGKey());
-
-//        mPresenter.getLoadHealthList(params, false);
-
-//        Map<String, String> map = getHealthListRequestMap();
         mPresenter.getLoadHealthList(params, true);
     }
-
 }
