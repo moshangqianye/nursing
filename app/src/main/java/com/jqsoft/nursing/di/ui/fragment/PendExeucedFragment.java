@@ -1,141 +1,160 @@
 package com.jqsoft.nursing.di.ui.fragment;
 
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jqsoft.nursing.R;
 import com.jqsoft.nursing.adapter.PendExecuAdapter;
+import com.jqsoft.nursing.adapter.nursing.HealthListAdapter;
+import com.jqsoft.nursing.base.Constants;
 import com.jqsoft.nursing.bean.PendExecuBeanList;
 import com.jqsoft.nursing.bean.PeopleBaseInfoBean;
+import com.jqsoft.nursing.bean.nursing.HealthListBean;
+import com.jqsoft.nursing.di.ui.activity.ArcFaceListActivity;
 import com.jqsoft.nursing.di.ui.activity.PendExecuActivity;
 import com.jqsoft.nursing.di.ui.fragment.base.AbstractFragment;
+import com.jqsoft.nursing.helper.FullyLinearLayoutManager;
 import com.jqsoft.nursing.listener.NoDoubleClickListener;
+import com.jqsoft.nursing.util.SwitchUtil;
+import com.jqsoft.nursing.utils3.util.ListUtils;
+import com.jqsoft.nursing.utils3.util.PreferencesUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
-public class  PendExeucedFragment extends AbstractFragment {
-    @BindView(R.id.lv_pend_execu)
-    ListView lv_pend_execu;
-    private List<PendExecuBeanList> pendExecuBeanLists = new ArrayList<>();
-    private PendExecuAdapter mPendExecuAdapter;
+public class  PendExeucedFragment extends AbstractFragment implements BaseQuickAdapter.RequestLoadMoreListener{
+
+    @BindView(R.id.lay_content_nursing_list)
+    View mLayContentNursingList;  // 有数据展示的布局
+
+    private HealthListAdapter mPendExecuAdapter;
 
     @BindView(R.id.lay_pend_load_failure)
     View failureView;
-
+    private boolean isRefresh = true;    // 是否是刷新还是加载更多
     TextView tvFailureView;
-
+    private HealthListAdapter mAdapter; // 健康列表适配器
+    private List<HealthListBean.RowsBean> mHealthListBeanList;   // 列表数据
+    private SwipeRefreshLayout mSrlHealthList; // 刷新控件
     @Override
     protected void loadData() {
 
     }
 
+    private int currentPage = Constants.DEFAULT_INITIAL_PAGE; // 当前页
+    private int pageSize = Constants.DEFAULT_PAGE_SIZE;  // 每页数量
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof FragmentInteraction) {
-//            listterner = (FragmentInteraction) context; // 2.2 获取到宿主activity并赋值
-//        } else {
-//            throw new IllegalArgumentException("activity must implements FragmentInteraction");
-//        }
+
     }
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_pendexecu;
     }
+    @Override
+    protected void initView() {
+
+        tvFailureView=(TextView)failureView.findViewById(R.id.tv_load_failure_hint);
+        tvFailureView.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                super.onNoDoubleClick(v);
+
+            }
+        });
+
+        mHealthListBeanList = new ArrayList<>();
+        // 展示数据列表
+        RecyclerView mRvHealthList = (RecyclerView) mLayContentNursingList.findViewById(R.id.recyclerview);
+
+        mAdapter = new HealthListAdapter(getActivity(),mHealthListBeanList);
+        mAdapter.setOnLoadMoreListener(this, mRvHealthList);
+        mAdapter.setEnableLoadMore(false);
+        mRvHealthList.setLayoutManager(new FullyLinearLayoutManager(getActivity()));
+        mRvHealthList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        mRvHealthList.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                HealthListBean.RowsBean bean = (HealthListBean.RowsBean) baseQuickAdapter.getItem(i);
+                if (bean != null) {
+                    SwitchUtil.gotoVerifyNew1(getActivity(),"","",bean,100);
+
+                }
+            }
+        });
+
+
+        mSrlHealthList = (SwipeRefreshLayout) mLayContentNursingList;
+        mSrlHealthList.setColorSchemeColors(getResources().getColor(R.color.colorTheme));
+        mSrlHealthList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // 刷新
+                isRefresh = true;
+                mAdapter.setEnableLoadMore(false);
+                currentPage = Constants.DEFAULT_INITIAL_PAGE;
+                PendExecuActivity parentActivity = (PendExecuActivity) getActivity();
+                parentActivity.loadHealthList("",currentPage,pageSize);
+
+            }
+        });
+
+        PendExecuActivity parentActivity = (PendExecuActivity) getActivity();
+        currentPage = Constants.DEFAULT_INITIAL_PAGE;
+        parentActivity.loadHealthList("",currentPage,pageSize);
+        mSrlHealthList.setRefreshing(false);
+        mAdapter.loadMoreComplete();
+    }
 
     @Override
     protected void initData() {
-       /* serverAdapter = new SignDoctorServerAdapter(getActivity(), datalist);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        serverAdapter.setFragmentInteraction((SignDoctorServerAdapter.FragmentInteraction) getActivity());
-        recyclerView.setAdapter(serverAdapter);
-        serverAdapter.notifyDataSetChanged();
-        serverAdapter.setOnItemClickListener(new SignDoctorServersAdapter.OnItemClickListener() {
-            @Override
-            public void OnItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), DoctorServerDetails.class);
-                intent.putExtra(Constants.SEVER_KEY, datalist.get(position).getKey());
-                startActivity(intent);
-            }
-
-            @Override
-            public void OnItemLongClick(View view, int position) {
-
-            }
-        });*/
-    }
-
-
-    public void setPendbean(List<PendExecuBeanList> pp,PeopleBaseInfoBean mpeopleBasebean) {
-        pendExecuBeanLists = pp;
-
-        showSignInfoOverview(pendExecuBeanLists,mpeopleBasebean);
-
 
     }
 
 
-    public void showSignInfoOverview(List<PendExecuBeanList> list,PeopleBaseInfoBean mpeopleBasebean) {
-        if (list != null) {
-           /* final List<PendExecuBeanList> pendExecuBeanLists = new ArrayList<>();
-            final  List<PendExecuBeanList> execuProjectBeanLists = new ArrayList<>();
-
-            List<PendExecuBeanList> listPlanIDEmty =new ArrayList<>();
-            listPlanIDEmty=list;
-
-            pendExecuBeanLists.clear();
-            execuProjectBeanLists.clear();
-
-            for(int i=0;i<listPlanIDEmty.size();i++){
-                if(listPlanIDEmty.get(i).getFinished().equals("1")){
-                    listPlanIDEmty.get(i).setServicePlanID("");
-                    pendExecuBeanLists.add(listPlanIDEmty.get(i));
-                }
-            }
-            Set set=new HashSet();
-            set.addAll(pendExecuBeanLists);
-            pendExecuBeanLists.clear();
-            pendExecuBeanLists.addAll(set);*/
+    public void setPendbean(List<HealthListBean.RowsBean> data) {
 
 
+        int listSize = getListSizeFromResult(data);
 
-            if(list.size()==0){
-                lv_pend_execu.setAdapter(null);
-                showRecyclerViewOrFailureView(true, true);
-            }else{
-                showRecyclerViewOrFailureView(true, false);
-                mPendExecuAdapter = new PendExecuAdapter(getActivity(), list,mpeopleBasebean);
-                lv_pend_execu.setAdapter(mPendExecuAdapter);
+        mAdapter.setNewData(data);
 
-            }
+        mSrlHealthList.setRefreshing(false);
+        setLoadMoreStatus(pageSize, listSize, true);
+        isRefresh = false;
 
-
-          /*  mExecuProjectAdapter = new ExecuedProjectAdapter(this, execuProjectBeanLists);
-            lv_execued.setAdapter(mExecuProjectAdapter);
-
-            lv_execued.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(PendExecuActivity.this,MotifyExecuActivity.class);
-                    intent.putExtra("mpeopleBasebean", (Serializable)mpeopleBasebean);
-                    intent.putExtra("PendExecuBeanList", (Serializable)execuProjectBeanLists.get(position));
-                    startActivity(intent);
-                }
-            });*/
-
-
-        }
+        showRecyclerViewOrFailureView(true, ListUtils.isEmpty(mAdapter.getData()));
     }
 
-    private void showRecyclerViewOrFailureView(boolean success, boolean isListEmpty){
-        if (success){
-            if (isListEmpty){
+
+    public void setPendMorebean(List<HealthListBean.RowsBean> data) {
+        int listSize = getListSizeFromResult(data);
+
+        mAdapter.addData(data);
+
+        mSrlHealthList.setEnabled(true);
+        mSrlHealthList.setRefreshing(false);
+        setLoadMoreStatus(this.pageSize, listSize, true);
+    }
+
+    private void showRecyclerViewOrFailureView(boolean success, boolean isListEmpty) {
+        if (success) {
+            if (isListEmpty) {
                 //   srl.setVisibility(View.GONE);
                 failureView.setVisibility(View.VISIBLE);
                 tvFailureView.setText(getListEmptyHint());
@@ -150,6 +169,34 @@ public class  PendExeucedFragment extends AbstractFragment {
 
         }
     }
+    public void setLoadMoreStatus(int pageSize, int listSize, boolean isSuccessful) {
+        if (isSuccessful) {
+            if (listSize < pageSize) {
+//                mAdapter.setEnableLoadMore(false);
+                mAdapter.loadMoreEnd(true);
+            } else {
+                mAdapter.setEnableLoadMore(true);
+                mAdapter.loadMoreComplete();
+            }
+        } else {
+            mAdapter.setEnableLoadMore(true);
+            mAdapter.loadMoreFail();
+        }
+    }
+
+    public int getListSizeFromResult(List<HealthListBean.RowsBean> beanList) {
+        if (beanList != null) {
+            if (beanList != null) {
+                int size = beanList.size();
+                return size;
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
 
     private String getListEmptyHint(){
         return getResources().getString(R.string.hint_list_empty_pend_reserva);
@@ -160,22 +207,6 @@ public class  PendExeucedFragment extends AbstractFragment {
     }
 
 
-    @Override
-    protected void initView() {
-        tvFailureView=(TextView)failureView.findViewById(R.id.tv_load_failure_hint);
-        tvFailureView.setOnClickListener(new NoDoubleClickListener() {
-            @Override
-            public void onNoDoubleClick(View v) {
-                super.onNoDoubleClick(v);
-                //onRefresh();
-
-
-                PendExecuActivity parentActivity = (PendExecuActivity) getActivity();
-                parentActivity.update();
-            }
-        });
-
-    }
 
 
     @Override
@@ -186,6 +217,16 @@ public class  PendExeucedFragment extends AbstractFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        ++currentPage;
+        mSrlHealthList.setEnabled(false);
+        PendExecuActivity parentActivity = (PendExecuActivity) getActivity();
+        parentActivity.onLoadMoreRequested(currentPage,pageSize);
+
 
     }
 }

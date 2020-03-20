@@ -126,11 +126,6 @@ public class CancelReserverFragment extends AbstractFragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-                   /* Intent intent = new Intent(getActivity(),MotifyExecuActivity.class);
-                    intent.putExtra("mpeopleBasebean", (Serializable)mpeopleBasebean);
-                    intent.putExtra("PendExecuBeanList", (Serializable)list.get(position));
-                    startActivity(intent);*/
-
                     Intent intent = new Intent(getActivity(),HadReserrverServerActivity.class);
                     intent.putExtra("mpeopleBasebean", (Serializable)mpeopleBasebean);
                     intent.putExtra("PendExecuBeanList", (Serializable)list.get(position));

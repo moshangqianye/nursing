@@ -232,9 +232,6 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
     private void loadHealthList(String name) {
 
         String sToken= PreferencesUtils.getString(ArcFaceListActivity.this,"token");
-//        Map<String, String> map = ParametersFactory.getLoginMapFNew(this, getUsername(), getPassword(),sToken);
-//        loginPresenter.main(map);
-
         currentPage = Constants.DEFAULT_INITIAL_PAGE;
         if (mAdapter != null) {
             mAdapter.setEnableLoadMore(false);
@@ -250,8 +247,8 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
             params.put("idCard","" );
             params.put("name", name);
         }
-
-
+        params.put("community", userinfo.getCommunity());
+        params.put("type", "2");
         params.put("userid", userinfo.getGKey());
         JSONObject jsonObject = new JSONObject();
         jsonObject = new JSONObject(params);
@@ -311,85 +308,12 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
             }
         }
 
-//
-//        ArcDataBean arcDataBean=new ArcDataBean();
-//        SharedPreferences userSettings = getSharedPreferences("setting", 0);
-//        SharedPreferences.Editor editor = userSettings.edit();
-//        if (arcDataBean == null) {
-//            arcDataBean.setNoBrushAgeRange("0-18,65-2000");
-//            arcDataBean.setAction("3");
-//            arcDataBean.setRange("5");
-//            arcDataBean.setFrames("50");
-//            arcDataBean.setSimilarity("0-8:0.5,8-50:0.6,50-2000:0.4");
-//            arcDataBean.setScreenOf("0.1");
-//            arcDataBean.setManCardVerify("0-8:0.4,8-50:0.7,50-2000:0.4");
-//        } else if (TextUtils.isEmpty(arcDataBean.getNoBrushAgeRange())) {
-//            arcDataBean.setNoBrushAgeRange("0-18,65-2000");
-//        }
-//        else if (TextUtils.isEmpty(arcDataBean.getAction())) {
-//            arcDataBean.setAction("3");
-//        } else if (TextUtils.isEmpty(arcDataBean.getRange())) {
-//            arcDataBean.setRange("5");
-//        } else if (TextUtils.isEmpty(arcDataBean.getFrames())) {
-//            arcDataBean.setFrames("50");
-//        } else if (TextUtils.isEmpty(arcDataBean.getSimilarity())) {
-//            arcDataBean.setSimilarity("0-8:0.5,8-50:0.6,50-2000:0.4");
-//        } else if (TextUtils.isEmpty(arcDataBean.getScreenOf())) {
-//            arcDataBean.setScreenOf("0.1");
-//        } else if (TextUtils.isEmpty(arcDataBean.getManCardVerify())) {
-//            arcDataBean.setManCardVerify("0-8:0.4,8-50:0.6,50-2000:0.4");
-//        }
-//        try {
-//            editor.putString("LkzWsXxlb", arcDataBean.getLkzWsXxlb());
-//            editor.putString("NoBrushAgeRange", arcDataBean.getNoBrushAgeRange());
-//            editor.putInt("Action", Integer.parseInt(arcDataBean.getAction()));
-//            editor.putInt("Range", Integer.parseInt(arcDataBean.getRange()));
-//            editor.putInt("Frames", Integer.parseInt(arcDataBean.getFrames()));
-//            editor.putString("Similarity", arcDataBean.getSimilarity());
-//            editor.putString("ScreenOf", arcDataBean.getScreenOf());
-//            editor.putString("ManCardVerify", arcDataBean.getManCardVerify());
-//
-//        } catch (NumberFormatException e) {
-//            e.printStackTrace();
-//        }
-//
-//        if (arcDataBean != null) {
-//            if (!TextUtils.isEmpty(arcDataBean.getsAPPShuaKa())) {
-//                int shuake = Integer.parseInt(arcDataBean.getsAPPShuaKa());
-////                BphsConstants.IdVISIABLE = shuake;   // 1:是，：否，默认
-////                BphsConstants.saveCardID = shuake;  //< 右上角拍照是否接着刷卡  1表示刷卡>
-//            }
-//            if (!TextUtils.isEmpty(arcDataBean.getsAPPTanChuangShowButton())) {
-////                UserLoginInfo.setChecKStyle(arcDataBean.getsAPPTanChuangShowButton()); //弹出框是否带有人脸 、身份证刷卡
-//            }
-//            if (!TextUtils.isEmpty(arcDataBean.getsAPPDiaoYueLIS())) {
-//                editor.putString("appdiaoyuelis", arcDataBean.getsAPPDiaoYueLIS());
-//            }
-//            if (!TextUtils.isEmpty(arcDataBean.getsAPPDiaoYueBChao())) {
-//                editor.putString("appdiaoyuebchao", arcDataBean.getsAPPDiaoYueBChao());
-//            }
-//            if (!TextUtils.isEmpty(arcDataBean.getiAPPFaceNoPassCount())) {
-//                editor.putString("iAPPFaceNoPassCount", arcDataBean.getiAPPFaceNoPassCount());
-//            }
-//            if (!TextUtils.isEmpty(arcDataBean.getsAPPFaceFaZhi())) {
-//                editor.putString("sAPPFaceFaZhi", arcDataBean.getsAPPFaceFaZhi());
-//            }
-//            if (!TextUtils.isEmpty(arcDataBean.getsCheckFacePhoto())) {//是否开启申请人工审核照片功能
-//                editor.putString("sCheckFacePhoto", arcDataBean.getsCheckFacePhoto());
-//            } else {
-//                editor.putString("sCheckFacePhoto", "0");
-//            }
-//            if (!TextUtils.isEmpty(arcDataBean.getsDeletePhoto())) {///是否开启申请删除底片功能	1:开启 ,0:不开启，默认0
-//                editor.putString("sDeletePhoto", arcDataBean.getsDeletePhoto());
-//            } else {
-//                editor.putString("sDeletePhoto", "0");
-//            }
-//
-//        }
-//        editor.apply();
     }
 
+    @Override
+    public void onLoadMoreListSuccess(HttpResultNewBaseBean<String> bean) {
 
+    }
 
 
     /**
@@ -440,11 +364,7 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
         params.put("pageSize", ""+pageSize);
         params.put("name", "");
         params.put("idCard", "");
-        params.put("userid", "c9e80a74-f7ce-4803-b914-54eca951423c");
-
-//        mPresenter.getLoadHealthList(params, false);
-
-//        Map<String, String> map = getHealthListRequestMap();
+        params.put("userid", userinfo.getGKey());
         mPresenter.getLoadHealthList(params, true);
     }
 
@@ -460,7 +380,7 @@ public class ArcFaceListActivity extends AbstractActivity implements ArcFaceList
             params.put("pageSize", ""+pageSize);
             params.put("name", "");
             params.put("idCard", "");
-            params.put("userid", "c9e80a74-f7ce-4803-b914-54eca951423c");
+            params.put("userid", userinfo.getGKey());
 
             mPresenter.getLoadHealthList(params, true);
         }

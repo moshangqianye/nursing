@@ -31,10 +31,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HealthListAdapter extends BaseQuickAdapterEx<HealthListBean.RowsBean, BaseViewHolder> {
     private Context context;
-    private ArcFaceListActivity arcFaceListActivity;
+    private Context arcFaceListActivity;
 
 
-    public HealthListAdapter(ArcFaceListActivity arcFaceListActivity,List data) {
+    public HealthListAdapter(Context arcFaceListActivity,List data) {
         super(R.layout.item_health_list, data);
         this.context=context;
         this.arcFaceListActivity =arcFaceListActivity;

@@ -6,12 +6,13 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <ListView
-        android:clipToPadding="false"
-        android:paddingTop="20dip"
-        android:id="@+id/lv_pend_execu"
+
+    <include
+        android:id="@+id/lay_content_nursing_list"
+        layout="@layout/layout_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="match_parent"
+        />
     <include
         android:id="@+id/lay_pend_load_failure"
         layout="@layout/layout_load_list_result_empty_placeholder_view"

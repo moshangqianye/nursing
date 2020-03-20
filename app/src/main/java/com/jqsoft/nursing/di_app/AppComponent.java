@@ -191,7 +191,7 @@ public interface AppComponent {
 
     /*SearchDetailComponent addsearchdetail(SearchDetailActivityModule searchdetailActivityModule);*/
 
-    PendExecuComponent addpendexecu(PendExecuActivityModule pendexecuActivityModule);
+//    PendExecuComponent addpendexecu(PendExecuActivityModule pendexecuActivityModule);
 
   //  ReservationComponent addreservation(ReservationActivityModule reservationActivityModule);
 

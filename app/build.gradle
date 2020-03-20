@@ -249,6 +249,7 @@ BUGLY_APP_ID_VALUE             : "B0c15ec0404"
 
                     //正式地址
                     HTTP_ACCESS_URL_VALUE          :"http://192.168.45.20:5577/",
+//                    HTTP_ACCESS_URL_VALUE          :"http://10.1.55.89:5001/",
 //                    HTTP_ACCESS_URL_VALUE          :"http://60.168.132.92:5577/",
 //                    HTTP_ACCESS_URL_VALUE          :"http://120.209.93.231:8002/",
 

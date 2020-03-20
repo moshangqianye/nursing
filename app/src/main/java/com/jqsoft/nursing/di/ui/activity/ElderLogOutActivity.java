@@ -403,7 +403,10 @@ public class ElderLogOutActivity extends AbstractActivity implements ArcFaceList
 
     }
 
+    @Override
+    public void onLoadMoreListSuccess(HttpResultNewBaseBean<String> bean) {
 
+    }
 
 
     /**

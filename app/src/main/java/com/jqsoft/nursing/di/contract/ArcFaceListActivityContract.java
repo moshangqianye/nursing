@@ -21,6 +21,8 @@ public interface ArcFaceListActivityContract {
          */
         void onLoadHealthListSuccess(HttpResultNewBaseBean<String> bean);
 
+        void onLoadMoreListSuccess(HttpResultNewBaseBean<String> bean);
+
         /**
          * 失败回调方法
          * @param message

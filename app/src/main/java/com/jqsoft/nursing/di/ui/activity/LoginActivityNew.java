@@ -580,7 +580,8 @@ public    class LoginActivityNew extends AbstractActivity implements SRCLoginCon
         boolean isFromNfc = getDeliveredBooleanByKey(Constants.NURSING_IS_FROM_NFC_KEY);
         bundle.putString(Constants.NURSING_READ_RESULT_KEY, readResult);
         bundle.putBoolean(Constants.NURSING_IS_FROM_NFC_KEY, isFromNfc);
-        Util.gotoActivityWithBundle(this, ArcFaceListActivity.class, bundle);
+        Util.gotoActivityWithBundle(this, PendExecuActivity.class, bundle);
+//        Util.gotoActivityWithBundle(this, ArcFaceListActivity.class, bundle);
     }
 
 

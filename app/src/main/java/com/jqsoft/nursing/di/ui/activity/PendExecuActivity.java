@@ -1,43 +1,63 @@
 package com.jqsoft.nursing.di.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jqsoft.nursing.R;
 import com.jqsoft.nursing.adapter.ExecuedProjectAdapter;
 import com.jqsoft.nursing.adapter.PendExecuAdapter;
+import com.jqsoft.nursing.adapter.nursing.HealthListAdapter;
 import com.jqsoft.nursing.base.Constants;
+import com.jqsoft.nursing.base.IdentityManager;
 import com.jqsoft.nursing.base.ParametersFactory;
 import com.jqsoft.nursing.bean.PendExecuBeanList;
 import com.jqsoft.nursing.bean.PeopleBaseInfoBean;
 import com.jqsoft.nursing.bean.base.HttpResultBaseBean;
 import com.jqsoft.nursing.bean.base.HttpResultEmptyBean;
+import com.jqsoft.nursing.bean.base.HttpResultNewBaseBean;
+import com.jqsoft.nursing.bean.nursing.HealthListBean;
+import com.jqsoft.nursing.bean.nursing.LoginResultNewBean;
+import com.jqsoft.nursing.di.contract.ArcFaceListActivityContract;
 import com.jqsoft.nursing.di.contract.PendExecuContract;
+import com.jqsoft.nursing.di.module.ArcFaceListActivityModule;
 import com.jqsoft.nursing.di.module.PendExecuActivityModule;
+import com.jqsoft.nursing.di.presenter.ArcFaceListActivityPresenter;
 import com.jqsoft.nursing.di.presenter.PendExecuPresenter;
 import com.jqsoft.nursing.di.ui.activity.base.AbstractActivity;
-import com.jqsoft.nursing.di.ui.fragment.CancelReserverFragment;
-import com.jqsoft.nursing.di.ui.fragment.HadExeucedFragment;
 import com.jqsoft.nursing.di.ui.fragment.PendExeucedFragment;
 import com.jqsoft.nursing.di.ui.onlinesignadapter.FragmentAdapters;
 import com.jqsoft.nursing.di_app.DaggerApplication;
+import com.jqsoft.nursing.util.CommentUtil;
+import com.jqsoft.nursing.util.ToastUtil;
 import com.jqsoft.nursing.util.Util;
+import com.jqsoft.nursing.utils3.util.PreferencesUtils;
 import com.jqsoft.nursing.utils3.util.StringUtils;
 
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import okhttp3.RequestBody;
 
-public class PendExecuActivity extends AbstractActivity implements PendExecuContract.View {
+
+public class PendExecuActivity extends AbstractActivity implements ArcFaceListActivityContract.View {
 
 
     private PendExecuAdapter mPendExecuAdapter;
@@ -45,13 +65,8 @@ public class PendExecuActivity extends AbstractActivity implements PendExecuCont
     private FragmentAdapters fragmentAdapters;
 
     @Inject
-    PendExecuPresenter pendexecuPresenter;
-
-   /* @BindView(R.id.lv_pend_execu)
-    ListView lv_pend_execu;
-
-    @BindView(R.id.lv_execued)
-    ListView lv_execued;*/
+    ArcFaceListActivityPresenter mPresenter;  // 健康列表Presenter
+    private DaggerApplication application;
 
     private String sYear,sSignKey;
     private PeopleBaseInfoBean  mpeopleBasebean;
@@ -63,7 +78,17 @@ public class PendExecuActivity extends AbstractActivity implements PendExecuCont
     ViewPager mViewPager;
     @BindView(R.id.tabs)
     TabLayout mTabLayout;
-    private PendExeucedFragment pendExeucedFragment;
+
+
+    private TextView mTvHealthListFailure;  // 获取列表无数据或网络请求失败显示提示控件
+    private HealthListAdapter mAdapter; // 健康列表适配器
+//    private int currentPage = Constants.DEFAULT_INITIAL_PAGE; // 当前页
+//    private int pageSize = Constants.DEFAULT_PAGE_SIZE;  // 每页数量
+    private List<HealthListBean.RowsBean> mHealthListBeanList;   // 列表数据
+    private boolean isRefresh = true;    // 是否是刷新还是加载更多
+    private String elderName;   // 老人姓名（搜索出入的姓名）
+    private Context context;
+    private LoginResultNewBean userinfo;
 
 
 
@@ -81,10 +106,12 @@ public class PendExecuActivity extends AbstractActivity implements PendExecuCont
     @Override
     protected void initView() {
 
-
-   //     lv_execued.setAdapter(mPendExecuAdapter);
         setToolBar(toolbar, Constants.EMPTY_STRING);
         initfragment();
+
+        application = (DaggerApplication) PendExecuActivity.this.getApplication();
+        userinfo= PreferencesUtils.getUserLoginInfo(PendExecuActivity.this);
+
     }
 
     public void initfragment() {
@@ -92,20 +119,20 @@ public class PendExecuActivity extends AbstractActivity implements PendExecuCont
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         //初始化TabLayout的title
 
-        mTabLayout.addTab(mTabLayout.newTab().setText("待预约项目"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("已预约项目"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("已取消项目"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("全部"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("80-90岁老人"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("100岁以上老人"));
 
         List<String> titles = new ArrayList<>();
-        titles.add("待预约项目");
-        titles.add("已预约项目");
-        titles.add("已取消项目");
+        titles.add("全部");
+        titles.add("80-90岁老人");
+        titles.add("100岁以上老人");
 
         //初始化ViewPager的数据集
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new PendExeucedFragment());//
-        fragments.add(new HadExeucedFragment());//
-        fragments.add(new CancelReserverFragment());//
+        fragments.add(new PendExeucedFragment());//
+        fragments.add(new PendExeucedFragment());//
 
         //创建ViewPager的adapter
         mViewPager.setOffscreenPageLimit(Constants.VIEW_PAGER_OFF_SCREEN_NUMBER);
@@ -120,188 +147,27 @@ public class PendExecuActivity extends AbstractActivity implements PendExecuCont
 
     @Override
     protected void loadData() {
-        /*mpeopleBasebean = (PeopleBaseInfoBean) this.getIntent().getSerializableExtra("mpeopleBasebean");
-        sYear = (String) this.getIntent().getSerializableExtra("sYear");
-        sSignKey = (String) this.getIntent().getSerializableExtra("sSignKey");
-
-        Map<String, String> map = ParametersFactory.getPeopleSignInfo(sYear,sSignKey);
-        RequestBody body = Util.getBodyFromMap(map);
-        pendexecuPresenter.main(body);*/
 
     }
 
     @Override
     protected void initInject() {
+        super.initInject();
         DaggerApplication.get(this)
                 .getAppComponent()
-                .addpendexecu(new PendExecuActivityModule(this))
+                .addArcFaceListActivity(new ArcFaceListActivityModule(this))
                 .inject(this);
     }
 
-    @Override
-    public void onServicePackDetailSuccess(HttpResultBaseBean<List<PendExecuBeanList>> bean) {
-
-        Util.hideGifProgressDialog(this);
 
 
-        if (bean != null) {
-            HttpResultBaseBean<List<PendExecuBeanList>> bean2 = null;
-
-
-
-
-            List<PendExecuBeanList> list = new ArrayList<>();
-            List<PendExecuBeanList> list2 = new ArrayList<>();
-            list = bean.getData();
-            list2 = bean.getData();
-            final List<PendExecuBeanList> pendExecuBeanLists = new ArrayList<>();
-            final  List<PendExecuBeanList> execuProjectBeanLists = new ArrayList<>();
-            final  List<PendExecuBeanList> cancelProjectBeanLists = new ArrayList<>();
-
-
-            bean2 = new HttpResultBaseBean<List<PendExecuBeanList>>();
-            List<PendExecuBeanList> listPlanIDEmty =new ArrayList<>();
-            listPlanIDEmty=list;
-            pendExecuBeanLists.clear();
-            execuProjectBeanLists.clear();
-            cancelProjectBeanLists.clear();
-            for(int i=0;i<listPlanIDEmty.size();i++){
-
-                bean2.setData(list);
-                if(TextUtils.isEmpty(listPlanIDEmty.get(i).getServicePlanID())){
-                    pendExecuBeanLists.add(listPlanIDEmty.get(i));
-                }
-
-               if(bean.getData().get(i).getReservationState().equals("3")){
-                    cancelProjectBeanLists.add(bean.getData().get(i));
-                }
-            }
-           /* Set set=new HashSet();
-            set.addAll(pendExecuBeanLists);
-            pendExecuBeanLists.clear();
-            pendExecuBeanLists.addAll(set);*/
-
-
-        /*    for(int i=0;i<bean2.getData().size();i++){
-
-                if(!TextUtils.isEmpty(bean2.getData().get(i).getServicePlanID())){
-                    execuProjectBeanLists.add(bean2.getData().get(i));
-                }
-
-            }*/
-
-
-
-            Fragment fragment = fragmentAdapters.getFragments().get(0);
-            ((PendExeucedFragment) fragment).setPendbean(pendExecuBeanLists,mpeopleBasebean);
-
-           // Fragment fragment2 = fragmentAdapters.getFragments().get(1);
-           // ((HadExeucedFragment) fragment2).sethadbean1(execuProjectBeanLists,mpeopleBasebean);
-            Fragment fragment3 = fragmentAdapters.getFragments().get(2);
-            ((CancelReserverFragment) fragment3).sethadbean1(cancelProjectBeanLists,mpeopleBasebean);
-
-
-        }
-    }
-
-    @Override
-    public void onServicePackDetailSuccess1(HttpResultBaseBean<List<PendExecuBeanList>> bean) {
-        if (bean != null) {
-            List<PendExecuBeanList> list = new ArrayList<>();
-            List<PendExecuBeanList> list2 = new ArrayList<>();
-            list = bean.getData();
-            list2 = bean.getData();
-            final List<PendExecuBeanList> pendExecuBeanLists = new ArrayList<>();
-            final  List<PendExecuBeanList> execuProjectBeanLists = new ArrayList<>();
-            final  List<PendExecuBeanList> cancelProjectBeanLists = new ArrayList<>();
-
-            execuProjectBeanLists.clear();
-            cancelProjectBeanLists.clear();
-            for(int i=0;i<bean.getData().size();i++){
-
-                if(bean.getData().get(i).getReservationState().equals("1")){
-                    execuProjectBeanLists.add(bean.getData().get(i));
-
-                }else if(bean.getData().get(i).getReservationState().equals("3")){
-                    cancelProjectBeanLists.add(bean.getData().get(i));
-                }
-
-            }
-
-
-            Fragment fragment2 = fragmentAdapters.getFragments().get(1);
-            ((HadExeucedFragment) fragment2).sethadbean1(execuProjectBeanLists,mpeopleBasebean);
-
-            Fragment fragment3 = fragmentAdapters.getFragments().get(2);
-            ((CancelReserverFragment) fragment3).sethadbean1(cancelProjectBeanLists,mpeopleBasebean);
-
-
-
-        }
-    }
-
-    @Override
-    public void onServicePackDetailFailure1(String message) {
-
-    }
 
     public void showSignInfoOverview(List<PendExecuBeanList> list) {
-        /*if (list != null) {
-            final List<PendExecuBeanList> pendExecuBeanLists = new ArrayList<>();
-            final  List<PendExecuBeanList> execuProjectBeanLists = new ArrayList<>();
-            pendExecuBeanLists.clear();
-            execuProjectBeanLists.clear();
-
-            for(int i=0;i<list.size();i++){
-                if(list.get(i).getFinished().equals("1")){
-                    pendExecuBeanLists.add(list.get(i));
-                }
-                if(!TextUtils.isEmpty(list.get(i).getServicePlanID())){
-                    execuProjectBeanLists.add(list.get(i));
-                }
-
-            }
-
-
-            mPendExecuAdapter = new PendExecuAdapter(this, pendExecuBeanLists,mpeopleBasebean);
-            lv_pend_execu.setAdapter(mPendExecuAdapter);
-
-            mExecuProjectAdapter = new ExecuedProjectAdapter(this, execuProjectBeanLists);
-            lv_execued.setAdapter(mExecuProjectAdapter);
-
-            lv_execued.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(PendExecuActivity.this,MotifyExecuActivity.class);
-                    intent.putExtra("mpeopleBasebean", (Serializable)mpeopleBasebean);
-                    intent.putExtra("PendExecuBeanList", (Serializable)execuProjectBeanLists.get(position));
-                    startActivity(intent);
-                }
-            });
-
-
-        }*/
-    }
-
-    @Override
-    public void onLoadMoreServicePackDetailSuccess(HttpResultBaseBean<List<PendExecuBeanList>> bean) {
 
     }
 
-    @Override
-    public void onServicePackDetailFailure(String message) {
 
-    }
 
-    @Override
-    public void onDeleteExecuServeritemSuccess(HttpResultBaseBean<HttpResultEmptyBean> bean) {
-
-    }
-
-    @Override
-    public void onLoadDeleteExecuServeritemFailure(String message) {
-
-    }
 
 
 
@@ -321,43 +187,130 @@ public class PendExecuActivity extends AbstractActivity implements PendExecuCont
         }
     }
 
-    public void deleteExecuInfo(PendExecuBeanList deletedata){
-
-/*
-        String sYear =mpeopleBasebean.getYear();
-        String servicePlanId =deletedata.getServicePlanID();
-        String skey =deletedata.getPackageExecutiveKey
-
-        Map<String, Object> map = ParametersFactory.getdeleteSignInfo("","");
-        RequestBody body = Util.getBodyFromMap1(map);
-        pendexecuPresenter.maindelete(body);*/
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        mpeopleBasebean = (PeopleBaseInfoBean) this.getIntent().getSerializableExtra("mpeopleBasebean");
-        sYear = (String) this.getIntent().getSerializableExtra("sYear");
-        sSignKey = (String) this.getIntent().getSerializableExtra("sSignKey");
-
-        Map<String, String> map = ParametersFactory.getPeopleSignInfo(this, sYear,sSignKey);
-        RequestBody body = Util.getBodyFromMap1(map);
-        pendexecuPresenter.main(body);
-
-        pendexecuPresenter.main1(body);
-
     }
 
     public void update(){
-        mpeopleBasebean = (PeopleBaseInfoBean) this.getIntent().getSerializableExtra("mpeopleBasebean");
-        sYear = (String) this.getIntent().getSerializableExtra("sYear");
-        sSignKey = (String) this.getIntent().getSerializableExtra("sSignKey");
-
-        Map<String, String> map = ParametersFactory.getPeopleSignInfo(this, sYear,sSignKey);
-        RequestBody body = Util.getBodyFromMap1(map);
-        pendexecuPresenter.main(body);
-
-        pendexecuPresenter.main1(body);
     }
+
+    @Override
+    public void onLoadHealthListSuccess(HttpResultNewBaseBean<String> bean) {
+        if (bean != null) {
+            Gson gson =new Gson();
+            Type type = new TypeToken<HealthListBean>() {}.getType();
+            HealthListBean healthListBean =  gson.fromJson(bean.getBackInfo().toString(),type);
+
+            List<HealthListBean.RowsBean> data = healthListBean.getRows();
+            if (!CommentUtil.isEmpty(data)) {  // 请求到数据
+            Fragment fragment = fragmentAdapters.getFragments().get(0);
+            ((PendExeucedFragment) fragment).setPendbean(data);
+
+
+            } else {   // 请求到数据但是数据为null或者size为0
+                if (isRefresh) {  // 刷新未得到数据
+
+                } else {   // 上拉加载未得到数据
+                    ToastUtil.show(this, "暂无更多数据了");
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void onLoadMoreListSuccess(HttpResultNewBaseBean<String> bean) {
+        if (bean != null) {
+            Gson gson =new Gson();
+            Type type = new TypeToken<HealthListBean>() {}.getType();
+            HealthListBean healthListBean =  gson.fromJson(bean.getBackInfo().toString(),type);
+
+            List<HealthListBean.RowsBean> data = healthListBean.getRows();
+            if (!CommentUtil.isEmpty(data)) {  // 请求到数据
+                Fragment fragment = fragmentAdapters.getFragments().get(0);
+                ((PendExeucedFragment) fragment).setPendMorebean(data);
+
+
+            } else {   // 请求到数据但是数据为null或者size为0
+                if (isRefresh) {  // 刷新未得到数据
+
+                } else {   // 上拉加载未得到数据
+                    ToastUtil.show(this, "暂无更多数据了");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onLoadHealthListFail(String message, boolean isLoadMore) {
+
+    }
+
+    @Override
+    public void onLoadHealthEndSuccess(HttpResultNewBaseBean<String> bean) {
+
+    }
+
+    @Override
+    public void onLoadHealtEndFail(String message) {
+
+    }
+
+    /**
+     * 加载请求老人健康列表
+     */
+    public void loadHealthList(String name, int currentPage,int pageSize) {
+
+        String sToken= PreferencesUtils.getString(PendExecuActivity.this,"token");
+        Map<String, String> params = new HashMap<>();
+        params.put("Token", sToken);
+        params.put("pageIndex", ""+currentPage);
+        params.put("pageSize", ""+pageSize);
+        if(name.length()==15 || name.length()==18){
+            params.put("idCard", name);
+            params.put("name", "");
+        }else {
+            params.put("idCard","" );
+            params.put("name", name);
+        }
+
+
+        params.put("userid", userinfo.getGKey());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject = new JSONObject(params);
+        Log.v("okhttp",jsonObject.toString());
+        mPresenter.getLoadHealthList(params, false);
+    }
+
+    /**
+     * 获取健康列表请求参数
+     *
+     * @return 返回map
+     */
+//    private Map<String, String> getHealthListRequestMap() {
+//        String userId = IdentityManager.getUserId(this);
+//        String beginIndex = String.valueOf(currentPage * pageSize);
+//        String endIndex = String.valueOf((currentPage + 1) * pageSize);
+//        return ParametersFactory.getHealthListMap(this, userId, beginIndex, endIndex, elderName);
+//    }
+    public void onLoadMoreRequested(int currentPage,int pageSize) {
+
+        String sToken= PreferencesUtils.getString(PendExecuActivity.this,"token");
+        Map<String, String> params = new HashMap<>();
+        params.put("Token", sToken);
+        params.put("pageIndex", ""+currentPage);
+        params.put("pageSize", ""+pageSize);
+        params.put("name", "");
+        params.put("idCard", "");
+        params.put("userid", userinfo.getGKey());
+
+//        mPresenter.getLoadHealthList(params, false);
+
+//        Map<String, String> map = getHealthListRequestMap();
+        mPresenter.getLoadHealthList(params, true);
+    }
+
 }
